@@ -1,4 +1,5 @@
 ---
 name: carbon-c-relay
 dependencies: []
-files: []
+files:
+  - carbon-c-relay/carbon-c-relay-1.10.tar.gz

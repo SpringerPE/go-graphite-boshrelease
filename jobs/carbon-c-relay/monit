@@ -1,5 +1,5 @@
 check process carbon-c-relay
   with pidfile /var/vcap/sys/run/carbon-c-relay/carbon-c-relay.pid
-  start program "/var/vcap/jobs/carbon-c-relay/bin/monit_debugger carbon-c-relay_ctl '/var/vcap/jobs/carbon-c-relay/bin/ctl start'"
-  stop program "/var/vcap/jobs/carbon-c-relay/bin/monit_debugger carbon-c-relay_ctl '/var/vcap/jobs/carbon-c-relay/bin/ctl stop'"
+  start program "/var/vcap/jobs/carbon-c-relay/bin/monit_debugger carbon-c-relay_ctl '/var/vcap/jobs/carbon-c-relay/bin/carbon-c-relay_ctl start'"
+  stop program "/var/vcap/jobs/carbon-c-relay/bin/monit_debugger carbon-c-relay_ctl '/var/vcap/jobs/carbon-c-relay/bin/carbon-c-relay_ctl stop'"
   group vcap
