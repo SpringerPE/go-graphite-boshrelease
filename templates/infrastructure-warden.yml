@@ -30,10 +30,9 @@ networks:
 - name: go_graphite1
   type: manual
   subnets:
-  - cloud_properties:
-    name: random
-    range: 10.244.21.0/29
+  - name: random
+    range: 10.0.2.0/29
     reserved:
-      - 10.244.21.1
+      - 10.0.2.1
     static:
-      - 10.244.21.2 - 10.244.21.6
+      - 10.0.2.2 - 10.0.2.4

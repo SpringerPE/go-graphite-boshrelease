@@ -19,4 +19,9 @@ jobs:
 
 networks: (( param "please set networks" ))
 
-properties: {}
+properties:
+  carbon-c-relay:
+    replication: 1
+    backends:
+      - host: 127.0.0.1
+        port: 2003

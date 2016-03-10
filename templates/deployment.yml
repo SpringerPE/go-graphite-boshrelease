@@ -11,7 +11,7 @@ releases: (( param "please set release" ))
 jobs: (( param "please set jobs" ))
 
 compilation:
-  workers: 3
+  workers: 1
   network: go_graphite1
   reuse_compilation_vms: true
   cloud_properties: (( param "please set compilation cloud properties" ))
