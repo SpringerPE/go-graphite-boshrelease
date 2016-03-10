@@ -12,9 +12,10 @@ update:
   update_watch_time: 1000-30000
 
 jobs:
-  - name: just_install_packages
+  - name: carbon_c_relay_z1
     networks:
       - name: go_graphite1
+        static_ips: (( static_ips(0) ))
 
 compilation:
   cloud_properties:
@@ -29,8 +30,10 @@ networks:
 - name: go_graphite1
   type: manual
   subnets:
-  - range: 10.244.21.0/24
-    name: go_graphite1
-    gateway: 10.244.21.1
+  - cloud_properties:
+    name: random
+    range: 10.244.21.0/29
+    reserved:
+      - 10.244.21.1
     static:
-      - 10.244.21.2 - 10.244.21.60
+      - 10.244.21.2 - 10.244.21.6

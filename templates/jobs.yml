@@ -9,14 +9,13 @@ update:
   serial: false
 
 jobs:
-  - name: just_install_packages
+  - name: carbon_c_relay_z1
     templates:
-    - name: just_install_packages
-      release: go-graphite
+      - name: carbon-c-relay
     instances: 1
     persistent_disk: 0
     resource_pool: small_z1
-    networks: (( param "please set just_install_package networks" ))
+    networks: (( param "please set carbon-c-relay networks" ))
 
 networks: (( param "please set networks" ))
 
