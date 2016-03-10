@@ -34,3 +34,24 @@ properties:
   carbon-c-relay.rewrite:
     description: List of hash with the definition of rules to rewrite metrics
     default: []
+  carbon_c_relay.port:
+    description: listen on port for connections
+    default: 2003
+  carbon_c_relay.workers:
+    description: number of worker threads
+    default: 4
+  carbon_c_relay.batch_size:
+    description: server send batch size
+    default: 2500
+  carbon_c_relay.queue_size:
+    description: server queue size
+    default: 25000
+  carbon_c_relay.stats_interval:
+    description: statistics sending interval in seconds
+    default: 60
+  carbon_c_relay.stats_prefix:
+    description: adds prefix into the namespace when sending stats. Example using "LIVE" you will get "carbon.relays.LIVE_carbon_c_relay_leader_z1_0"
+    default: ""
+  carbon_c_relay.allowed_chars:
+    description: characters to allow next to [A-Za-z0-9]
+    default: "-_:#"

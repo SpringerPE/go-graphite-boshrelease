@@ -17,7 +17,21 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap carbon-c-relay \
+    <% if p("carbon_c_relay.stats_prefix") != "" %>
+      export HOSTNAME=<%= p("carbon_c_relay.stats_prefix") %>.<%= name %>.<%= index %>
+    <% else %>
+      export HOSTNAME=<%= name %>.<%= index %>
+    <% end %>
+
+    exec chpst -u vcap:vcap /var/vcap/jobs/carbon-c-relay/packages/carbon-c-relay/relay \
+         -f /var/vcap/jobs/carbon-c-relay/config/carbon-c-relay.conf \
+         -p <%= p("carbon_c_relay.port") %> \
+         -w <%= p("carbon_c_relay.workers") %> \
+         -b <%= p("carbon_c_relay.batch_size") %> \
+         -q <%= p("carbon_c_relay.queue_size") %> \
+         -S <%= p("carbon_c_relay.stats_interval") %> \
+         -H $HOSTNAME \
+         -c <%= p("carbon_c_relay.allowed_chars") %> \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
