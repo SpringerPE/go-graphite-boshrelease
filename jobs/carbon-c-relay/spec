@@ -5,7 +5,7 @@ packages:
 - carbon-c-relay
 
 templates:
-  bin/ctl: bin/carbon-c-relay_ctl
+  bin/carbon-c-relay_ctl: bin/carbon-c-relay_ctl
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
@@ -21,9 +21,6 @@ properties:
     default: 2
   carbon-c-relay.backends:
     description: List of backends host (and optionally port) keys in a hash
-    default: []
-  carbon-c-relay.ext_clusters:
-    description: List of hash with the definition of external clusters
     default: []
   carbon-c-relay.ext_clusters:
     description: List of hash with the definition of external clusters
