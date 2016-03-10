@@ -1,7 +1,9 @@
 ---
 name: carbon-c-relay
+
 packages:
 - carbon-c-relay
+
 templates:
   bin/ctl: bin/carbon-c-relay_ctl
   bin/monit_debugger: bin/monit_debugger
@@ -10,4 +12,25 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/carbon-c-relay.conf: config/carbon-c-relay.conf
 
-properties: {}
+properties:
+  carbon-c-relay.lb:
+    description: "Load balancing for the backends: <forward | any_of [useall] | failover | <carbon_ch | fnv1a_ch | jump_fnv1a_ch>"
+    default: "fnv1a_ch"
+  carbon-c-relay.replication:
+    description: Replication factor over the backends
+    default: 2
+  carbon-c-relay.backends:
+    description: List of backends host (and optionally port) keys in a hash
+    default: []
+  carbon-c-relay.ext_clusters:
+    description: List of hash with the definition of external clusters
+    default: []
+  carbon-c-relay.ext_clusters:
+    description: List of hash with the definition of external clusters
+    default: []
+  carbon-c-relay.ext_rules:
+    description: List of hash with the definition of rules to send to external clusters
+    default: []
+  carbon-c-relay.rewrite:
+    description: List of hash with the definition of rules to rewrite metrics
+    default: []
