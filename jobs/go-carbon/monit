@@ -1,0 +1,5 @@
+check process go-carbon
+  with pidfile /var/vcap/sys/run/go-carbon/go-carbon.pid
+  start program "/var/vcap/jobs/go-carbon/bin/monit_debugger go-carbon_ctl '/var/vcap/jobs/go-carbon/bin/ctl start'"
+  stop program "/var/vcap/jobs/go-carbon/bin/monit_debugger go-carbon_ctl '/var/vcap/jobs/go-carbon/bin/ctl stop'"
+  group vcap
