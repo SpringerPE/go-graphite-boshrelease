@@ -1,11 +1,17 @@
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+# abort script on any command that exits with a non zero value
+set -e -x
 
-# Detect # of CPUs so make jobs can be parallelized
-CPUS=$(grep -c ^processor /proc/cpuinfo)
- # Available variables
-# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
-# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
-export HOME=/var/vcap
+echo "Extracting carbonserver ..."
+tar xvf carbonserver/carbonserver-88ae672.tar.gz
 
+echo "Setting the GO env variables ..."
+export GOPATH=${BOSH_COMPILE_TARGET}/carbonserver
+export GOROOT=$(readlink -nf /var/vcap/packages/golang1.6)
+export PATH=${GOROOT}/bin:${PATH}
 
+echo "Installing carbonserver ..."
+pushd carbonserver
+  go build
+  mkdir -p ${BOSH_INSTALL_TARGET}/bin
+  install -m 0755 carbonserver ${BOSH_INSTALL_TARGET}/bin
+popd

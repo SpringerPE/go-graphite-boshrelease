@@ -1,4 +1,8 @@
 ---
 name: carbonserver
-dependencies: []
-files: []
+
+dependencies:
+  - golang1.6
+
+files: 
+  - carbonserver/carbonserver-88ae672.tar.gz
