@@ -2,7 +2,7 @@
 set -e -x
 
 echo "Extracting go-carbon ..."
-tar xvf go-carbon/go-carbon_0.7.tar.gz
+tar xvf go-carbon/go-carbon-0.7.tar.gz
 
 echo "Setting the GO env variables ..."
 export GOPATH=${BOSH_COMPILE_TARGET}/go-carbon-0.7/_vendor
