@@ -1,4 +1,5 @@
 ---
 name: golang1.6
-dependencies: []
-files: []
+
+files: 
+  - golang/go1.6.linux-amd64.tar.gz
