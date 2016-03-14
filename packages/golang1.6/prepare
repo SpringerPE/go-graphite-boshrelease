@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+PACKAGE="golang1.6"
+VERSION="1.6"
+FILE="go${version}.linux-amd64.tar.gz"
+URL=https://storage.googleapis.com/golang/go${VERSION}.linux-amd64.tar.gz
+
+if [ ! -s "${PACKAGE}/${FILE}" ]; then
+  mkdir -p ${PACKAGE}
+  curl -s "${URL}" -o "${PACKAGE}/${FILE}"
+fi
