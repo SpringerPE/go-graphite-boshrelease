@@ -1,4 +1,8 @@
 ---
 name: carbonapi
-dependencies: []
-files: []
+
+dependencies:
+  - golang1.6
+
+files:
+  - carbonapi/carbonapi-4332883.tar.gz
