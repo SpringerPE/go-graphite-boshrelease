@@ -16,6 +16,14 @@ jobs:
     persistent_disk: 0
     resource_pool: small_z1
     networks: (( param "please set carbon-c-relay networks" ))
+  - name: go_carbon_z1
+    templates:
+      - name: go-carbon
+    instances: 1
+    persistent_disk: 0
+    resource_pool: small_z1
+    networks: (( param "please set carbon-c-relay networks" ))
+
 
 networks: (( param "please set networks" ))
 

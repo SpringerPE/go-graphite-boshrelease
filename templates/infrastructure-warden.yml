@@ -16,6 +16,10 @@ jobs:
     networks:
       - name: go_graphite1
         static_ips: (( static_ips(0) ))
+  - name: go_carbon_z1
+    networks:
+      - name: go_graphite1
+        static_ips: (( static_ips(1) ))
 
 compilation:
   cloud_properties:
