@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/go-carbon/helpers/ctl_setup.sh 'carbonserver'
+
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE_CARBONSERVER ${JOB_NAME}_carbonserver
+
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE_CARBONSERVER
+
+    exec chpst -u vcap:vcap /var/vcap/jobs/go-carbon/packages/carbonserver/bin/carbonserver \
+         -i <%= p("carbonserver.duration") %> \
+         -logdir $LOG_DIR \
+         -maxprocs <%= p("carbonserver.maxprocs") %> \
+         -p <%= p("carbonserver.port") %> \
+         -w "/var/vcap/store/go-carbon/whisper/" \
+         >>$LOG_DIR/$LOG_FILE_CARBONSERVER.log 2>&1
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE_CARBONSERVER
+
+    ;;
+  *)
+    echo "Usage: carbonserver_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

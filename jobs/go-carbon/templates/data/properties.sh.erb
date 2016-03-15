@@ -8,3 +8,10 @@ export NAME='<%= name %>'
 export JOB_INDEX=<%= index %>
 # full job name, like redis/0 or webapp/3
 export JOB_FULL="$NAME/$JOB_INDEX"
+
+export PIDFILE_CARBONSERVER=/var/vcap/sys/run/carbonserver.pid
+export LOG_FILE_CARBONSERVER=carbonserver.log
+
+export PIDFILE_GO_CARBON=/var/vcap/sys/run/go-carbon.pid
+export LOG_FILE_GO_CARBON=go-carbon.log
+

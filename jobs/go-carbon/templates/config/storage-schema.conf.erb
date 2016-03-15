@@ -1,0 +1,16 @@
+# Schema definitions for Whisper files. Entries are scanned in order,
+# and first match wins. This file is scanned for changes every 60 seconds.
+#
+#  [name]
+#  pattern = regex
+#  retentions = timePerPoint:timeToStore, timePerPoint:timeToStore, ...
+
+<% if_p("go-carbon.schemas") do %>
+<% p("go-carbon.schemas").each do |schemas| %>
+[<%= schemas["name"] %>]
+pattern = <%= schemas["pattern"] %>
+retentions = <%= schemas["retentions"] %>
+
+<% end %>
+<% end %>
+

@@ -6,24 +6,26 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/go-carbon/helpers/ctl_setup.sh 'go-carbon'
 
-export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE $JOB_NAME
+    pid_guard $PIDFILE_GO_CARBON ${JOB_NAME}_go-carbon
 
     # store pid in $PIDFILE
-    echo $$ > $PIDFILE
+    echo $$ > $PIDFILE_GO_CARBON
 
-    exec chpst -u vcap:vcap go-carbon \
-         >>$LOG_DIR/$JOB_NAME.log 2>&1
+    exec chpst -u vcap:vcap /var/vcap/jobs/go-carbon/packages/go-carbon/bin/go-carbon \
+         -config="/var/vcap/jobs/go-carbon/config/go-carbon.conf" \
+         -config-print-default=false \
+         -daemon=true \
+         >>$LOG_DIR/$LOG_FILE_GO_CARBON 2>&1
 
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $PIDFILE_GO_CARBON
 
     ;;
   *)

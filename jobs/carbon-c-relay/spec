@@ -3,6 +3,7 @@ name: carbon-c-relay
 
 packages:
 - carbon-c-relay
+- carbonserver
 
 templates:
   bin/carbon-c-relay_ctl: bin/carbon-c-relay_ctl

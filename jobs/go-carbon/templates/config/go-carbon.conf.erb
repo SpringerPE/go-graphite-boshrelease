@@ -1,0 +1,79 @@
+[common]
+# Run as user. Works only in daemon mode
+user = "vcap"
+# If logfile is empty use stderr
+logfile = "/var/vcap/sys/log/go-carbon/go-carbon.log"
+# Logging error level. Valid values: "debug", "info", "warn", "warning", "error"
+log-level = "info"
+# Prefix for store all internal go-carbon graphs. Supported macroses: {host}
+graph-prefix = "carbon.agents.<%= name %>.<%= index %>"
+# Interval of storing internal metrics. Like CARBON_METRIC_INTERVAL
+metric-interval = "<%= p("go-carbon.metric_interval") %>"
+# Increase for configuration with multi persisters
+max-cpu = <%= p("go-carbon.max_cpu") %>
+
+
+[whisper]
+enabled = true
+data-dir = "/var/vcap/store/go-carbon/whisper/"
+# http://graphite.readthedocs.org/en/latest/config-carbon.html#storage-schemas-conf. Required
+schemas-file = "/var/vcap/jobs/go-carbon/config/storage-schemas.conf"
+# http://graphite.readthedocs.org/en/latest/config-carbon.html#storage-aggregation-conf. Optional
+aggregation-file = ""
+# Workers count. Metrics sharded by "crc32(metricName) % workers"
+workers = <%= p("go-carbon.whisper_workers") %>
+# Limits the number of whisper update_many() calls per second. 0 - no limit
+max-updates-per-second = 0
+
+
+[cache]
+# Limit of in-memory stored points (not metrics)
+max-size = <%= p("go-carbon.cache_max_size") %>
+# Capacity of queue between receivers and cache
+input-buffer = <%= p("go-carbon.cache_input_buffer") %>
+
+
+[tcp]
+listen = ":<%= p("go-carbon.tcp_listen") %>"
+enabled = true
+
+
+[udp]
+<% if_p("go-carbon.udp") do |udp| %>
+enabled = true
+# Enable optional logging of incomplete messages (chunked by MTU)
+log-incomplete = false
+listen = "<%= p("go-carbon.udp.host", "") %>:<%= p("go-carbon.udp.port", "2003") %>"
+<% end.else do %>
+enabled = false
+<% end %>
+
+
+[pickle]
+<% if_p("go-carbon.pickle") do |pickle| %>
+enabled = true
+# Limit message size for prevent memory overflow
+max-message-size = 67108864
+listen = "<%= p("go-carbon.pickle.host", "") %>:<%= p("go-carbon.pickle.port", "2004") %>"
+<% end.else do %>
+enabled = false
+<% end %>
+
+
+[carbonlink]
+<% if_p("go-carbon.carbonlink") do |carbonlink| %>
+enabled = true
+# Close inactive connections after "read-timeout"
+read-timeout = "30s"
+# Return empty result if cache not reply
+query-timeout = "100ms"
+listen = "<%= p("go-carbon.carbonlink.host", "") %>:<%= p("go-carbon.carbonlink.port", "7002") %>"
+<% end.else do %>
+enabled = false
+<% end %>
+
+
+[pprof]
+listen = "localhost:7007"
+enabled = false
+
