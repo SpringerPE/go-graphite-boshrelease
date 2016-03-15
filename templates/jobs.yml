@@ -37,7 +37,7 @@ networks: (( param "please set networks" ))
 
 properties:
   carbon-c-relay:
-    replication: 1
+    replication: 2
     backends:
       - host: (( grab jobs.go_carbon_z1.networks.go_graphite1.static_ips.0 ))
         port: 2003
