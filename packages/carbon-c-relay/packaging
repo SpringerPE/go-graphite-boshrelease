@@ -9,6 +9,5 @@ cd $BOSH_COMPILE_TARGET/carbon-c-relay/
 tar xvfz carbon-c-relay-1.10.tar.gz
 cd carbon-c-relay-1.10
 make
-cp relay $BOSH_INSTALL_TARGET
-
-
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+install -m 0755 relay ${BOSH_INSTALL_TARGET}/bin

@@ -6,24 +6,18 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/carbon-c-relay/helpers/ctl_setup.sh 'carbon-c-relay'
 
-export PORT=${PORT:-5000}
-export LANG=en_US.UTF-8
-
 case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME
 
-    # store pid in $PIDFILE
-    echo $$ > $PIDFILE
-
     <% if p("carbon_c_relay.stats_prefix") != "" %>
-      export HOSTNAME=<%= p("carbon_c_relay.stats_prefix") %>.<%= name %>.<%= index %>
+      HOSTNAME=<%= p("carbon_c_relay.stats_prefix") %>.<%= name %>.<%= index %>
     <% else %>
-      export HOSTNAME=<%= name %>.<%= index %>
+      HOSTNAME=<%= name %>.<%= index %>
     <% end %>
 
-    exec chpst -u vcap:vcap /var/vcap/jobs/carbon-c-relay/packages/carbon-c-relay/relay \
+    exec chpst -u vcap:vcap /var/vcap/jobs/carbon-c-relay/packages/carbon-c-relay/bin/relay \
          -f /var/vcap/jobs/carbon-c-relay/config/carbon-c-relay.conf \
          -p <%= p("carbon_c_relay.port") %> \
          -w <%= p("carbon_c_relay.workers") %> \
@@ -32,7 +26,8 @@ case $1 in
          -S <%= p("carbon_c_relay.stats_interval") %> \
          -H $HOSTNAME \
          -c <%= p("carbon_c_relay.allowed_chars") %> \
-         >>$LOG_DIR/$JOB_NAME.log 2>&1
+         -l $LOG_DIR/carbon-c-relay.log \
+         -D -P $PIDFILE
 
     ;;
 
