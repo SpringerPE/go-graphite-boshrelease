@@ -19,7 +19,7 @@ jobs:
   - name: go_carbon_z1
     templates:
       - name: go-carbon
-    instances: 1
+    instances: 2
     persistent_disk: 0
     resource_pool: small_z1
     networks: (( param "please set carbon-c-relay networks" ))
@@ -31,5 +31,7 @@ properties:
   carbon-c-relay:
     replication: 1
     backends:
-      - host: 127.0.0.1
+      - host: (( grab jobs.go_carbon_z1.networks.go_graphite1.static_ips.0 ))
+        port: 2003
+      - host: (( grab jobs.go_carbon_z1.networks.go_graphite1.static_ips.1 ))
         port: 2003
