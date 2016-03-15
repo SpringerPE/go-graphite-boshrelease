@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+PACKAGE="carbonzipper"
+VERSION="462ed6c"
+FILE="carbonzipper-${VERSION}.tar.gz"
+URL="https://github.com/dgryski/carbonzipper"
+
+if [ ! -s "${PACKAGE}/${FILE}" ]; then
+  mkdir -p ${PACKAGE}
+  echo "> Cloning source repo ${URL} ..."
+  git clone ${URL} "${PACKAGE}-${VERSION}"
+  pushd "${PACKAGE}-${VERSION}"
+    echo "> Doing Checkout to tag ..."
+    git checkout ${VERSION}
+    echo "> Getting all the go dependencies ..."
+    GOPATH=$(pwd) go get
+  popd
+  echo "> Creating ${PACKAGE}/${FILE} ..."
+  tar --exclude-vcs --exclude .git --exclude .gitmodules --exclude .gitignore -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
+  echo "> Deleting temp folder ..."
+  rm -rf "${PACKAGE}-${VERSION}"
+fi

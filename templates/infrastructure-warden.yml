@@ -20,6 +20,10 @@ jobs:
     networks:
       - name: go_graphite1
         static_ips: (( static_ips(1, 2) ))
+  - name: go_carbonapi_z1
+    networks:
+      - name: go_graphite1
+        static_ips: (( static_ips(3) ))
 
 compilation:
   cloud_properties:
@@ -35,8 +39,8 @@ networks:
   type: manual
   subnets:
   - name: random
-    range: 10.0.2.0/29
+    range: 10.0.2.0/28
     reserved:
       - 10.0.2.1
     static:
-      - 10.0.2.2 - 10.0.2.4
+      - 10.0.2.2 - 10.0.2.14
