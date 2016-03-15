@@ -6,32 +6,55 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/go-carbon/helpers/ctl_setup.sh 'go-carbon'
 
-export LANG=en_US.UTF-8
-
 case $1 in
-
   start)
-    pid_guard $PIDFILE_GO_CARBON ${JOB_NAME}_go-carbon
+    echo "Starting go-carbon: $(date) ..."
+    pid_guard $PIDFILE $JOB_NAME
 
-    # store pid in $PIDFILE
-    echo $$ > $PIDFILE_GO_CARBON
+    # Performance settings
+    if grep -q '/instance' /proc/self/cgroup; then
+        echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
+    else
+        # Ephemeral port range
+        echo "10000 65535" > /proc/sys/net/ipv4/ip_local_port_range
 
-    exec chpst -u vcap:vcap /var/vcap/jobs/go-carbon/packages/go-carbon/bin/go-carbon \
-         -config="/var/vcap/jobs/go-carbon/config/go-carbon.conf" \
-         -config-print-default=false \
-         -daemon=true \
-         >>$LOG_DIR/$LOG_FILE_GO_CARBON 2>&1
+        # TCP_FIN_TIMEOUT
+        # This setting determines the time that must elapse before TCP/IP can release a closed connection and reuse
+        # its resources. During this TIME_WAIT state, reopening the connection to the client costs less than establishing
+        # a new connection. By reducing the value of this entry, TCP/IP can release closed connections faster, making more
+        # resources available for new connections. Addjust this in the presense of many connections sitting in the
+        # TIME_WAIT state:
+        echo 5 > /proc/sys/net/ipv4/tcp_fin_timeout
 
+        # TCP_TW_RECYCLE
+        # It enables fast recycling of TIME_WAIT sockets. The default value is 0 (disabled). The sysctl documentation
+        # incorrectly states the default as enabled. It can be changed to 1 (enabled) in many cases. Known to cause some
+        # issues with hoststated (load balancing and fail over) if enabled, should be used with caution.
+        echo 0 > /proc/sys/net/ipv4/tcp_tw_recycle
+
+        # TCP_TW_REUSE
+        # This allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint.
+        # Default value is 0 (disabled). It is generally a safer alternative to tcp_tw_recycle
+        echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+    fi
+    # Allow a few more queued connections than are allowed by default
+    echo 1024 > /proc/sys/net/core/somaxconn
+    # Allowed number of open file descriptors
+    ulimit -n 100000
+
+    exec chpst -v -u vcap:vcap \
+        /var/vcap/jobs/go-carbon/packages/go-carbon/bin/go-carbon \
+        -config="/var/vcap/jobs/go-carbon/config/go-carbon.conf" \
+        -daemon=true \
+        -pidfile=$PIDFILE
     ;;
-
   stop)
-    kill_and_wait $PIDFILE_GO_CARBON
-
+    echo "Stopping carbonserver $(date) ..."
+    kill_and_wait $PIDFILE
     ;;
   *)
     echo "Usage: go-carbon_ctl {start|stop}"
-
     ;;
-
 esac
+
 exit 0
