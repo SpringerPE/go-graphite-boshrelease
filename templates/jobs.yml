@@ -22,7 +22,15 @@ jobs:
     instances: 2
     persistent_disk: 0
     resource_pool: small_z1
-    networks: (( param "please set carbon-c-relay networks" ))
+    networks: (( param "please set go-carbon networks" ))
+  - name: go_carbonapi_z1
+    templates: 
+      - name: go-carbonapi
+    instances: 1
+    persistent_disk: 0
+    resource_pool: small_z1
+    networks: (( param "please set go-carbonapi networks" ))
+
 
 
 networks: (( param "please set networks" ))
@@ -35,3 +43,7 @@ properties:
         port: 2003
       - host: (( grab jobs.go_carbon_z1.networks.go_graphite1.static_ips.1 ))
         port: 2003
+  carbonzipper:
+    backends:
+    - host: (( concat "http://" jobs.go_carbon_z1.networks.go_graphite1.static_ips.0 ":8080" ))
+    - host: (( concat "http://" jobs.go_carbon_z1.networks.go_graphite1.static_ips.1 ":8080" ))

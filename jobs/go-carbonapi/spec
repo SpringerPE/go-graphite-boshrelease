@@ -17,7 +17,9 @@ properties:
   carbonzipper.maxprocs:
     description: "GOMAXPROCS"
     default: 3
-  carbonszipper.port:
+  carbonzipper.port:
     description: "port to bind to"
     default: 8080
-
+  carbonzipper.backends:
+    description: List of backends host keys in a hash
+    default: []

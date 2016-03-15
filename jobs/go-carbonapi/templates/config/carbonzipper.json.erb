@@ -1,0 +1,10 @@
+{
+    "Backends": [
+    <% if_p("carbonzipper.backends") do %>
+    <% p("carbonzipper.backends").each_with_index do |backend, i| %>
+    "<%= backend["host"] %>"<%= ',' if i < (p("carbonzipper.backends").size - 1) %>
+    <% end %>
+    <% end %>
+    ]
+}
+
