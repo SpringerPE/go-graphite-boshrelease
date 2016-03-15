@@ -1,11 +1,17 @@
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+# abort script on any command that exits with a non zero value
+set -e -x
 
-# Detect # of CPUs so make jobs can be parallelized
-CPUS=$(grep -c ^processor /proc/cpuinfo)
- # Available variables
-# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
-# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
-export HOME=/var/vcap
+echo "Extracting carbonapi ..."
+tar xvf carbonapi/carbonapi-4332883.tar.gz
 
+echo "Setting the GO env variables ..."
+export GOPATH=${BOSH_COMPILE_TARGET}/carbonapi-4332883
+export GOROOT=$(readlink -nf /var/vcap/packages/golang1.6)
+export PATH=${GOROOT}/bin:${PATH}
 
+echo "Installing carbonapi ..."
+pushd carbonapi-4332883
+  go build -o carbonapi
+  mkdir -p ${BOSH_INSTALL_TARGET}/bin
+  install -m 0755 carbonapi ${BOSH_INSTALL_TARGET}/bin
+popd
