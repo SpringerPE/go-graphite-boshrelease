@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+PACKAGE="carbon-c-relay"
+VERSION="1.10"
+FILE="carbon-c-relay-${VERSION}.tar.gz"
+URL=https://github.com/grobian/carbon-c-relay/archive/v${VERSION}.tar.gz
+
+if [ ! -s "${PACKAGE}/${FILE}" ]; then
+  echo "Downloading ${URL} ..."
+  mkdir -p ${PACKAGE}
+  curl -sL "${URL}" -o "${PACKAGE}/${FILE}"
+fi
