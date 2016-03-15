@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/go-carbonapi/helpers/ctl_setup.sh 'go-carbonapi' 'carbonapi'
+
+CARBONZIPPER="http://localhost:8080"
+LISTEN_PORT="80"
+
+case $1 in
+  start)
+    echo "Starting carbonapi: $(date) ..."
+    pid_guard $PIDFILE $JOB_NAME
+
+    CARBONAPI_ARGS="-z=${CARBONZIPPER} -p=${LISTEN_PORT}"
+    <% if_p("carbonapi.graphite") do |graphite| %>
+      CARBONAPI_ARGS="$CARBONAPI_ARGS -graphite=<%= graphite['host'] %>"
+      <% if graphite['interval'] %>
+        CARBONAPI_ARGS="$CARBONAPI_ARGS -i=<%= graphite['interval'] %>"
+      <% end %>
+    <% end %>
+    <% if_p("carbonapi.cache") do |cache| %>
+      CARBONAPI_ARGS="$CARBONAPI_ARGS -cache=<%= cache['type'] %>"
+      <% if cache['type'] == 'memcache' %>
+        CARBONAPI_ARGS="$CARBONAPI_ARGS -mc=<%= cache['servers'].join(',') %>"
+      <% elif cache['type'] == 'mem' %>
+        CARBONAPI_ARGS="$CARBONAPI_ARGS -memsize=<%= cache['memsize'] %>"
+      <% end %>
+    <% end %>
+    (
+        {
+            # Allow a few more queued connections than are allowed by default
+            echo 1024 > /proc/sys/net/core/somaxconn
+            # Allowed number of open file descriptors
+            ulimit -n 100000
+
+            # To be able to listen on privileged ports
+            setcap cap_net_bind_service=+ep /var/vcap/packages/carbonapi/bin/carbonapi
+
+            exec chpst -v -u vcap:vcap \
+            /var/vcap/jobs/go-carbonapi/packages/carbonapi/bin/carbonapi \
+        	${CARBONAPI_ARGS} \
+        	-logdir ${LOG_DIR} \
+        	-l <%= p("carbonapi.concurrency") %> \
+        	-cpus <%= p("carbonapi.max_cpus") %> \
+        	-tz "<%= p("carbonapi.timezone") %>"
+        } 2>&1
+    ) &
+    echo $! > $PIDFILE
+    ;;
+  stop)
+    echo "Stopping carbonapi $(date) ..."
+    kill_and_wait $PIDFILE
+    ;;
+  *)
+    echo "Usage: carbonapi_ctl {start|stop}"
+    ;;
+esac
+
+exit 0

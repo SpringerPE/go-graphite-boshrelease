@@ -1,5 +1,5 @@
-check process go-carbonapi
-  with pidfile /var/vcap/sys/run/go-carbonapi/go-carbonapi.pid
-  start program "/var/vcap/jobs/go-carbonapi/bin/monit_debugger go-carbonapi_ctl '/var/vcap/jobs/go-carbonapi/bin/ctl start'"
-  stop program "/var/vcap/jobs/go-carbonapi/bin/monit_debugger go-carbonapi_ctl '/var/vcap/jobs/go-carbonapi/bin/ctl stop'"
+check process carbonapi
+  with pidfile /var/vcap/sys/run/go-carbonapi/carbonapi.pid
+  start program "/var/vcap/jobs/go-carbonapi/bin/monit_debugger carbonapi_ctl '/var/vcap/jobs/go-carbonapi/bin/carbonapi_ctl start'"
+  stop program "/var/vcap/jobs/go-carbonapi/bin/monit_debugger carbonapi_ctl '/var/vcap/jobs/go-carbonapi/bin/carbonapi_ctl stop'"
   group vcap

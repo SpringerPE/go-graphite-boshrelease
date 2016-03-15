@@ -1,9 +1,30 @@
 ---
 name: go-carbonapi
-packages: []
+
+packages:
+- carbonapi
+
 templates:
-  bin/ctl: bin/ctl
+  bin/carbonapi_ctl: bin/carbonapi_ctl
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+properties:
+  carbonapi.graphite:
+    description: "Hash defining graphite endpoint for internal metrics: host, interval"
+  carbonapi.cache:
+    description: "Hash defining the type of cache to use: mem or memcache"
+    default:
+      type: mem
+      memsize: 0
+  carbonapi.concurrency:
+    description: "Concurrency limit (for api queries)"
+    default: 20
+  carbonapi.max_cpus:
+    description: "Number of CPUs to use (GOMAXPROCS, 0 == unlimited)"
+    default: 0
+  carbonapi.timezone:
+    description: "Timezone,offset to use for dates with no timezone"
+    default: "UTC,0"
