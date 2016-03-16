@@ -9,3 +9,5 @@ bosh_prepare() {
     fi
   done
 }
+
+bosh_prepare
