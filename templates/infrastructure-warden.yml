@@ -28,6 +28,7 @@ jobs:
 compilation:
   cloud_properties:
     name: random
+  workers: 1
 
 resource_pools:
   - name: small_z1
@@ -66,29 +67,24 @@ networks:
     range: 10.0.2.16/30
     reserved:
       - 10.0.2.17
-    static:
-      - 10.0.2.18
+    static: []
   - name: random
     range: 10.0.2.20/30
     reserved:
       - 10.0.2.21
-    static:
-      - 10.0.2.22
+    static: []
   - name: random
     range: 10.0.2.24/30
     reserved:
       - 10.0.2.25
-    static:
-      - 10.0.2.26
+    static: []
   - name: random
     range: 10.0.2.28/30
     reserved:
       - 10.0.2.29
-    static:
-      - 10.0.2.30
+    static: []
   - name: random
     range: 10.0.2.32/30
     reserved:
       - 10.0.2.33
-    static:
-      - 10.0.2.34
+    static: []

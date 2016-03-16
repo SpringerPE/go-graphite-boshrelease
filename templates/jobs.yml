@@ -9,13 +9,6 @@ update:
   serial: false
 
 jobs:
-  - name: carbon_c_relay_z1
-    templates:
-      - name: carbon-c-relay
-    instances: 1
-    persistent_disk: 0
-    resource_pool: small_z1
-    networks: (( param "please set carbon-c-relay networks" ))
   - name: go_carbon_z1
     templates:
       - name: go-carbon
@@ -23,6 +16,13 @@ jobs:
     persistent_disk: 0
     resource_pool: small_z1
     networks: (( param "please set go-carbon networks" ))
+  - name: carbon_c_relay_z1
+    templates:
+      - name: carbon-c-relay
+    instances: 1
+    persistent_disk: 0
+    resource_pool: small_z1
+    networks: (( param "please set carbon-c-relay networks" ))
   - name: go_carbonapi_z1
     templates: 
       - name: go-carbonapi
