@@ -1,14 +1,24 @@
 # BOSH Release for go-graphite
 
+The aim of this bosh release is to deploy a go-graphite cluster consisting of the following components:
+
+* carbon-c-relay
+* go-carbon / carbonserver
+* carbonzipper / carbonapi
+
+## Disclaimer
+
+This is not presently a production ready go-graphite BOSH release. This is a work in progress. It is suitable for experimentation and may not become supported in the future.
+
 ## Usage
 
 To use this bosh release, first upload it to your bosh:
 
 ```
 bosh target BOSH_HOST
-git clone https://github.com/cloudfoundry-community/go-graphite-boshrelease.git
+git clone https://github.com/SpringerPE/go-graphite-boshrelease.git
 cd go-graphite-boshrelease
-bosh upload release releases/go-graphite-1.yml
+bosh create release && bosh upload release
 ```
 
 For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment manifest & deploy a cluster:
@@ -18,43 +28,17 @@ templates/make_manifest warden
 bosh -n deploy
 ```
 
-For AWS EC2, create a single VM:
+For AWS EC2:
 
-```
-templates/make_manifest aws-ec2
-bosh -n deploy
-```
-
-### Override security groups
-
-For AWS & Openstack, the default deployment assumes there is a `default` security group. If you wish to use a different security group(s) then you can pass in additional configuration when running `make_manifest` above.
-
-Create a file `my-networking.yml`:
-
-``` yaml
----
-networks:
-  - name: go-graphite1
-    type: dynamic
-    cloud_properties:
-      security_groups:
-        - go-graphite
-```
-
-Where `- go-graphite` means you wish to use an existing security group called `go-graphite`.
-
-You now suffix this file path to the `make_manifest` command:
-
-```
-templates/make_manifest openstack-nova my-networking.yml
-bosh -n deploy
-```
+NOT YET IMPLEMENTED
 
 ### Development
 
 As a developer of this release, create new releases and upload them:
 
 ```
+# Prepare the golang packages resolving their dependencies beforehand
+./bosh_prepare
 bosh create release --force && bosh -n upload release
 ```
 
