@@ -15,7 +15,7 @@ jobs:
   - name: go_carbon_z1
     networks:
       - name: go_graphite1
-        static_ips: (( static_ips(1, 2, 4) ))
+        static_ips: (( static_ips(1, 2) ))
   - name: carbon_c_relay_z1
     networks:
       - name: go_graphite1

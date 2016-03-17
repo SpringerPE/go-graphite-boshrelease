@@ -12,7 +12,7 @@ jobs:
   - name: go_carbon_z1
     templates:
       - name: go-carbon
-    instances: 3
+    instances: 2
     persistent_disk: 0
     resource_pool: small_z1
     networks: (( param "please set go-carbon networks" ))
