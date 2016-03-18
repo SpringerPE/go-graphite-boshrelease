@@ -11,13 +11,20 @@ fail() {
 	echo >&2 $*
 }
 
-if [[ "$infrastructure" != "warden" ]] ; then
-  fail "usage: ./make_manifest <warden>"
-  exit 1
+
+if ! [ -x "$(command -v spruce)" ]; then
+  echo 'spruce is not installed. Please download at https://github.com/geofffranks/spruce/releases' >&2
+fi
+
+if !( [ "$infrastructure" == "openstack" ] || \
+     [ "$infrastructure" == "warden" ]); then
+ echo "Usage: ./make_manifest <openstack|warden>"
+ exit 1
 fi
 
 case "${infrastructure}/${STEMCELL_OS}" in
   (warden/*)       STEMCELL_URL="https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent" ;;
+  (openstack/*)    STEMCELL_URL="https://bosh.io/d/stemcells/bosh-openstack-kvm-ubuntu-trusty-go_agent" ;;
   (*)
     fail "Invalid infrastructure or OS specified."
     exit 1
@@ -35,6 +42,13 @@ NAME=$template_prefix-$infrastructure
 if [[ $DIRECTOR_NAME = "warden" && ${infrastructure} != "warden" ]]; then
   fail "Not targeting bosh-lite with warden CPI. Please make sure you have run 'bosh target' and are targeting a BOSH lite before running this script."
   exit 1
+fi
+
+if [ $infrastructure = "openstack" ]; then
+ if [ $DIRECTOR_CPI != "openstack" ]; then
+   echo "Not targeting an OPENSTACK BOSH. Please use 'bosh target' before running this script."
+   exit 1
+ fi
 fi
 
 function latest_uploaded_stemcell {
@@ -61,9 +75,6 @@ perl -pi -e "s/PLACEHOLDER-DIRECTOR-UUID/$DIRECTOR_UUID/g" $tmpdir/stub-with-uui
 perl -pi -e "s/NAME/$NAME/g" $tmpdir/stub-with-uuid.yml
 perl -pi -e "s/STEMCELL/$STEMCELL/g" $tmpdir/stub-with-uuid.yml
 
-if ! [ -x "$(command -v spruce)" ]; then
-  echo 'spruce is not installed. Please download at https://github.com/geofffranks/spruce/releases' >&2
-fi
 
 spruce merge --prune meta \
   $templates/deployment.yml \

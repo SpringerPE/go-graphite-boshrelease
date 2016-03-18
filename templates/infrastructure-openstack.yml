@@ -1,0 +1,67 @@
+meta:
+  environment: go-graphite-openstack
+
+resource_pools:
+  - name: small_z1
+    network: go_graphite1
+    stemcell:
+      name: bosh-openstack-kvm-ubuntu-trusty-go_agent
+      version: 3215
+      url: https://bosh.io/d/stemcells/bosh-openstack-kvm-ubuntu-trusty-go_agent
+      sha1: 6e103aab1c4aa22e48743eb3a5d8c51410fd172f  
+    cloud_properties:
+      instance_type: small
+      availability_zone: Dordrecht
+   
+update:
+  canaries: 1
+  max_in_flight: 50
+  canary_watch_time: 1000-30000
+  update_watch_time: 1000-30000
+
+jobs:
+  - name: go_carbon_z1
+    networks:
+      - name: go_graphite1
+        static_ips: (( static_ips(1, 2) ))
+  - name: carbon_c_relay_z1
+    networks:
+      - name: go_graphite1
+        static_ips: (( static_ips(0) ))
+        default: [dns, gateway]
+      - name: public
+        static_ips: [10.230.25.112]
+  - name: go_carbonapi_z1
+    networks:
+      - name: go_graphite1
+        static_ips: (( static_ips(3) ))
+        default: [dns, gateway]
+      - name: public
+        static_ips: [10.230.25.113]
+
+compilation:
+  network: go_graphite1
+  cloud_properties:
+    instance_type: small
+    availability_zone: Dordrecht
+  workers: 1
+
+networks:
+ - name: go_graphite1
+   type: manual
+   subnets:
+   - range: 10.0.0.0/24
+     gateway: 10.0.0.1
+     static:
+     - 10.0.0.11 - 10.0.0.20
+     reserved:
+     - 10.0.0.2 - 10.0.0.10
+     - 10.0.0.25 - 10.0.0.254
+     dns:
+     - 8.8.8.8
+     cloud_properties:
+       net_id: ce9925cb-0d2c-4dac-a0d0-6e7f1a070649
+       security_groups: 
+       - default
+ - name: public
+   type: vip

@@ -1,9 +1,14 @@
 meta:
   environment: go-graphite-warden
 
-  stemcell:
-    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
-    version: latest
+
+  resource_pools:
+    cloud_properties:
+      name: random
+    name: small_z1
+    stemcell:
+      name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+      version: latest
 
 update:
   canaries: 1
