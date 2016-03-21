@@ -1,1 +1,25 @@
---- {}
+---
+carbon-c-relay/carbon-c-relay-1.10.tar.gz:
+  object_id: 5128fc74-668e-47db-b48f-f33fa2d29afd
+  sha: a7cb63cf48e01d50771c146b487ac1fe48c11c3e
+  size: 72045
+carbonserver/carbonserver-88ae672.tar.gz:
+  object_id: 5eb31c6d-3c56-4e12-9a39-462674a4e066
+  sha: 0e13bf245896eb887c0794799b9f29c3e5371926
+  size: 1886623
+golang1.6/go1.6.linux-amd64.tar.gz:
+  object_id: 2a29ce25-017b-4aa0-9483-2859d152ced2
+  sha: 01a6a28dbe31a53103b600979bbbbd63a8104456
+  size: 84799480
+go-carbon/go-carbon-0.7.tar.gz:
+  object_id: 3409b191-7999-49c6-9143-177e86192396
+  sha: 1ed38f01e6a85f16c675800d7a1aa5dabdcbf6a2
+  size: 302628
+carbonapi/carbonapi-4332883.tar.gz:
+  object_id: a68b2955-8f57-40fc-8ff0-821afaf0f8fa
+  sha: d3074d5ebc1a334956a3cbe3415648fb711dc93f
+  size: 8867437
+carbonzipper/carbonzipper-462ed6c.tar.gz:
+  object_id: c5db8532-0f36-4ccf-8f3d-c78e2fd6f191
+  sha: 785e2bbe1eb0e324976308002e627c9642d5cbaf
+  size: 1878287
