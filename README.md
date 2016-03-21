@@ -28,6 +28,14 @@ templates/make_manifest warden
 bosh -n deploy
 ```
 
+For Openstack:
+
+```
+templates/make_manifest openstack
+bosh -n deploy
+```
+
+
 For AWS EC2:
 
 NOT YET IMPLEMENTED
