@@ -2,13 +2,14 @@ meta:
   environment: go-graphite-warden
 
 
-  resource_pools:
-    cloud_properties:
-      name: random
-    name: small_z1
+resource_pools:
+  - name: small_z1
+    network: go_graphite1
     stemcell:
       name: bosh-warden-boshlite-ubuntu-trusty-go_agent
       version: latest
+    cloud_properties:
+      name: random
 
 update:
   canaries: 1
@@ -34,11 +35,6 @@ compilation:
   cloud_properties:
     name: random
   workers: 1
-
-resource_pools:
-  - name: small_z1
-    cloud_properties:
-      name: random
 
 networks:
 - name: go_graphite1

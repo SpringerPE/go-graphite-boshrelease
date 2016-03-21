@@ -18,7 +18,7 @@ fi
 
 if !( [ "$infrastructure" == "openstack" ] || \
      [ "$infrastructure" == "warden" ]); then
- echo "Usage: ./make_manifest <openstack|warden>"
+ echo "Usage: ./make_manifest <openstack|warden|aws>"
  exit 1
 fi
 
