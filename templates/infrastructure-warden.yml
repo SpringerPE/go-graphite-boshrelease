@@ -9,6 +9,7 @@ meta:
     stemcell:
       name: bosh-warden-boshlite-ubuntu-trusty-go_agent
       version: latest
+      url: ""
 
 update:
   canaries: 1
