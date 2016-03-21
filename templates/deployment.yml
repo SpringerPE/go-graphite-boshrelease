@@ -12,7 +12,7 @@ jobs: (( param "please set jobs" ))
 
 compilation:
   workers: 1
-  network: compile_network
+  network: go_graphite1
   reuse_compilation_vms: true
   cloud_properties: (( param "please set compilation cloud properties" ))
 
