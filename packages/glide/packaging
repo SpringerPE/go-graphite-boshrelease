@@ -6,10 +6,9 @@ set -u # report the usage of uninitialized variables
 GLIDE_VERSION=$(ls -v -r glide/glide-*-linux-amd64.tar.gz | sed 's/.*\/glide-\(.*\)\-linux-amd64\.tar\.gz$/\1/' | head -1)
 
 echo "Extracting glide ${GLIDE_VERSION} ... "
-tar xzf "glide/glide-${GOLAN_VERSION}-linux-amd64.tar.gz"
+tar xzf "glide/glide-${GLIDE_VERSION}-linux-amd64.tar.gz"
 
 echo "Installing glide ..."
 mkdir -p ${BOSH_INSTALL_TARGET}/bin
-cp -R linux-amd64/glide ${BOSH_INSTALL_TARGET}/bin
+cp linux-amd64/glide ${BOSH_INSTALL_TARGET}/bin
 chmod 0755 ${BOSH_INSTALL_TARGET}/bin/glide
-
