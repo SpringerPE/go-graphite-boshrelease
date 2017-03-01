@@ -1,0 +1,8 @@
+---
+name: golang1.8
+
+dependencies: []
+
+files: 
+  - golang1.8/go1.8.linux-amd64.tar.gz # https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz
+
