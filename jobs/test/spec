@@ -1,0 +1,9 @@
+---
+name: test
+
+packages:
+- git
+- glide
+- golang1.8
+
+templates: {}
