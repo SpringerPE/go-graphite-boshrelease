@@ -1,0 +1,11 @@
+# packages/git/spec
+
+---
+
+name: git
+dependencies:
+- autoconf
+- python
+
+files:
+- git/git-2.12.0.tar.gz # https://github.com/git/git/archive/v2.12.0.tar.gz

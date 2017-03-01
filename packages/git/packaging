@@ -1,0 +1,19 @@
+# packages/git/packaging
+
+# abort script on any command that exit with a non zero value
+# treat unset variables as an error when substituting.
+set -e
+set -u
+
+tar xzf git/git-2.12.0.tar.gz
+
+PATH=$PATH:/var/vcap/packages/python/bin/:/var/vcap/packages/autoconf/bin/
+export PATH
+
+(
+  cd git-2.12.0
+  make configure
+  ./configure --prefix=${BOSH_INSTALL_TARGET} --without-tcltk
+  make -j 3 NO_TCLTK=Yes NO_MSGFMT=Yes NO_GETTEXT=Yes
+  make install
+)
