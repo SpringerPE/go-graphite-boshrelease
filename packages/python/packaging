@@ -1,0 +1,15 @@
+# packages/python/packaging
+
+# abort script on any command that exit with a non zero value
+# treat unset variables as an error when substituting.
+set -e
+set -u
+
+VERSION=2.7.13
+
+cd python
+tar xfz Python-${VERSION}.tgz
+cd Python-${VERSION}
+./configure  --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
