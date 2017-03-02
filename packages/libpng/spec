@@ -1,0 +1,8 @@
+---
+name: libpng
+
+dependencies:
+- zlib
+
+files:
+- libpng/libpng-1.6.28.tar.gz   # http://download.sourceforge.net/libpng/libpng-1.6.28.tar.gz

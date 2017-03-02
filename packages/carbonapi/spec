@@ -2,7 +2,9 @@
 name: carbonapi
 
 dependencies:
-  - golang1.6
+- golang1.8
+- glide
+- git
 
 files:
-  - carbonapi/carbonapi-4332883.tar.gz
+- carbonapi/*

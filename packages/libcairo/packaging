@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# abort script on any command that exits with a non zero value
+set -e -x
+
+# Grab the latest versions that are in the directory
+PKGCONFIG_VERSION=$(ls -v -r libcairo/pkg-config-*.tar.gz | sed 's/.*\/pkg-config-\(.*\)\.tar\.gz$/\1/' | head -1)
+PIXMAN_VERSION=$(ls -v -r libcairo/pixman-*.tar.gz | sed 's/.*\/pixman-\(.*\)\.tar\.gz$/\1/' | head -1)
+CAIRO_VERSION=$(ls -v -r libcairo/cairo-*.tar.xz | sed 's/.*\/cairo-\(.*\)\.tar\.xz$/\1/' | head -1)
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
+echo "Extracting pkg-config ${PKGCONFIG_VERSION} ... "
+tar xvf "libcairo/pkg-config-${PKGCONFIG_VERSION}.tar.gz"
+
+echo "Extracting pixman ${PIXMAN_VERSION} ... "
+tar xvf "libcairo/pixman-${PIXMAN_VERSION}.tar.gz"
+
+echo "Extracting cairo ${CAIRO_VERSION} ... "
+tar xvf "libcairo/cairo-${CAIRO_VERSION}.tar.xz"
+
+echo "Building pkg-config ... "
+pushd pkg-config-${PKGCONFIG_VERSION}
+  ./configure --with-internal-glib --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd
+
+echo "Building pixman ... "
+export PKG_CONFIG="${BOSH_INSTALL_TARGET}/bin/pkg-config"
+export PKG_CONFIG_PATH="/var/vcap/packages/libpng/lib/pkgconfig:/var/vcap/packages/zlib/lib/pkgconfig"
+pushd pixman-${PIXMAN_VERSION}
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd
+
+echo "Building cairo ... "
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${BOSH_INSTALL_TARGET}/lib/pkgconfig"
+export LIBRARY_PATH="/var/vcap/packages/zlib/lib:${LIBRARY_PATH}"
+export CPPFLAGS="-I/var/vcap/packages/zlib/include ${CPPFLAGS}"
+export LDFLAGS="-L/var/vcap/packages/zlib/lib ${LDFLAGS}"
+pushd cairo-${CAIRO_VERSION}
+  ./configure --prefix=${BOSH_INSTALL_TARGET} --enable-xlib=no --enable-xlib-xrender=no --enable-xcb=no --enable-quartz=no --enable-win32=no --enable-ft=no --enable-fc=no --enable-ps=no --enable-pdf=no --enable-svg=yes 
+  make
+  make install
+popd
+

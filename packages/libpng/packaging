@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# abort script on any command that exits with a non zero value
+set -e -x
+
+# Grab the latest versions that are in the directory
+LIBPNG_VERSION=$(ls -v -r libpng/libpng-*.tar.gz | sed 's/.*\/libpng-\(.*\)\.tar\.gz$/\1/' | head -1)
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
+echo "Extracting libpng ${LIBPNG_VERSION} ... "
+tar xzvf "libpng/libpng-${LIBPNG_VERSION}.tar.gz"
+
+echo "Defining libraries path ..."
+export CPPFLAGS="-I/var/vcap/packages/zlib/include ${CPPFLAGS}"
+export LDFLAGS="-L/var/vcap/packages/zlib/lib ${LDFLAGS}"
+export LIBRARY_PATH="/var/vcap/packages/zlib/lib:${LIBRARY_PATH}"
+
+echo "Building libpng ... "
+pushd "libpng-${LIBPNG_VERSION}"
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd
+

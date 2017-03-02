@@ -1,0 +1,12 @@
+---
+name: libcairo
+
+dependencies:
+- zlib
+- libpng
+
+files:
+- libcairo/cairo-1.14.8.tar.xz          # http://cairographics.org/releases/cairo-1.14.8.tar.xz
+- libcairo/pixman-0.32.8.tar.gz         # http://cairographics.org/releases/pixman-0.32.8.tar.gz
+- libcairo/pkg-config-0.29.1.tar.gz     # http://pkgconfig.freedesktop.org/releases/pkg-config-0.29.1.tar.gz
+

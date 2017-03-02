@@ -1,17 +1,53 @@
-# abort script on any command that exits with a non zero value
+#!/usr/bin/env bash
 set -e -x
 
-echo "Extracting carbonapi ..."
-tar xvf carbonapi/carbonapi-4332883.tar.gz
+CARBONAPI_URL="https://github.com/dgryski/carbonapi.git"
+CARBONAPI_BRANCH="master"
+CARBONAPI_TAG=''
+CARBONAPI_COMMIT="9a17fbb"
+
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
+echo "Setting path ..."
+for package_bin_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/bin 2>/dev/null); do
+    PATH="${package_bin_dir}:${PATH}"
+done
+export PATH
+
+echo "Cloning and setting carbonapi repo ..."
+git clone ${CARBONAPI_URL} --branch ${CARBONAPI_BRANCH} --single-branch ${BOSH_COMPILE_TARGET}/carbonapi
+pushd ${BOSH_COMPILE_TARGET}/carbonapi
+  [ ! -z "${CARBONAPI_TAG}" ] && git checkout "tags/${CARBONAPI_TAG}"
+  [ ! -z "${CARBONAPI_COMMIT}" ] && git reset --hard "${CARBONAPI_COMMIT}"
+popd
+cp -av * ${BOSH_COMPILE_TARGET}/carbonapi/
 
 echo "Setting the GO env variables ..."
-export GOPATH=${BOSH_COMPILE_TARGET}/carbonapi-4332883
-export GOROOT=$(readlink -nf /var/vcap/packages/golang1.6)
+export ${BOSH_COMPILE_TARGET}/carbonapi
+export GOROOT=$(readlink -nf /var/vcap/packages/golang1.8)
 export PATH=${GOROOT}/bin:${PATH}
 
-echo "Installing carbonapi ..."
-pushd carbonapi-4332883
+echo "Defining libraries path ..."
+for package_lib_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/lib 2>/dev/null); do
+  LDFLAGS="-L${package_lib_dir} ${LDFLAGS}"
+  LIBRARY_PATH="${package_lib_dir}:${LIBRARY_PATH}"
+  [ -d "${package_lib_dir}/pkgconfig" ] && PKG_CONFIG_PATH="${package_lib_dir}/pkgconfig:${PKG_CONFIG_PATH}"
+done
+export LDFLAGS
+export LIBRARY_PATH
+export PKG_CONFIG_PATH
+export LD_LIBRARY_PATH="${LIBRARY_PATH}"
+
+echo "Running glide ..."
+cp -av glide.* ${BOSH_COMPILE_TARGET}/carbonapi/
+pushd ${BOSH_COMPILE_TARGET}/carbonapi
+  glide install
+popd
+
+echo "Building carbonapi ..."
+pushd ${BOSH_COMPILE_TARGET}/carbonapi
   go build -o carbonapi
   mkdir -p ${BOSH_INSTALL_TARGET}/bin
   install -m 0755 carbonapi ${BOSH_INSTALL_TARGET}/bin
 popd
+
