@@ -2,4 +2,4 @@
 name: carbon-c-relay
 dependencies: []
 files:
-  - carbon-c-relay/carbon-c-relay-1.10.tar.gz
+  - carbon-c-relay/carbon-c-relay-2.6.tar.gz # https://github.com/grobian/carbon-c-relay/archive/v2.6.tar.gz
