@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+#
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Load job properties
+source /var/vcap/jobs/carbonapi/data/properties.sh
+
+# Setup env vars and folders for the ctl script
+source /var/vcap/jobs/carbonapi/packages/carbonapi/helpers/setup.sh "carbonapi"
+
+# Load function lib (alway before setup, there are some global variables needed)
+source /var/vcap/jobs/carbonapi/packages/carbonapi/helpers/lib.sh
+
+
+# There is no configuration for carbonapi, just args which are loaded
+# in a $CARBONAPI_ARGS variable
+source /var/vcap/jobs/carbonapi/config/carbonapi.sh
+
+case ${1:-help} in
+  start)
+    echon_log "Starting carbonapi: "
+    pid_guard $PIDFILE
+    # Load python library path for dynamic libs
+    ldconf "$LD_LIBRARY_PATH"
+    (
+        {
+            # Allow a few more queued connections than are allowed by default
+            echo 1024 > /proc/sys/net/core/somaxconn
+            # Allowed number of open file descriptors
+            ulimit -n 100000
+
+            # To be able to listen on privileged ports
+            setcap 'cap_net_bind_service=+ep' $(readlink -nf $(which carbonapi))
+
+            exec chpst -v -u vcap:vcap carbonapi ${CARBONAPI_ARGS}
+
+        } >>$LOG_DIR/carbonapi.stdout.log \
+        2>>$LOG_DIR/carbonapi.stderr.log
+    ) &
+    echo $! > $PIDFILE
+    echo "$(<${PIDFILE}). Done"
+    ;;
+  stop)
+    echo_log "Stopping carbonapi: $(<${PIDFILE}). "
+    kill_and_wait $PIDFILE
+    rm -f $PIDFILE
+    echo_log "Done"
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    ;;
+esac
+

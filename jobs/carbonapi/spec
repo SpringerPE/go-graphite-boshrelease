@@ -1,0 +1,38 @@
+---
+name: carbonapi
+
+packages:
+- carbonapi
+- zlib
+- libcairo
+- libpng
+
+templates:
+  bin/carbonapi_ctl: bin/carbonapi_ctl
+  data/properties.sh.erb: data/properties.sh
+  config/carbonapi.sh.erb: config/carbonapi.sh
+
+properties:
+  carbonapi.graphite:
+    description: "Hash defining graphite endpoint for internal metrics: host, interval"
+  carbonapi.cache:
+    description: "Hash defining the type of cache to use: mem or memcache"
+    default:
+      type: mem
+      memsize: 0
+  carbonapi.concurrency:
+    description: "Concurrency limit (for api queries)"
+    default: 20
+  carbonapi.max_cpus:
+    description: "Number of CPUs to use (GOMAXPROCS, 0 == unlimited)"
+    default: 0
+  carbonapi.timezone:
+    description: "Timezone,offset to use for dates with no timezone"
+    default: "UTC,0"
+  carbonapi.carbonzipper:
+    description: "Carbonzipper backend URL"
+    default: "http://localhost:8080"
+  carbonapi.port:
+    description: "Carbonapi listening port"
+    default: 80
+

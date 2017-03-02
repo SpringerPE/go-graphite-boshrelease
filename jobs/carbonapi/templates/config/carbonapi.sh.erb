@@ -1,0 +1,38 @@
+#!/bin/sh
+
+CARBONAPI_ZIPPER="<= p('carbonapi.carbonzipper','http://localhost:8080') %>"
+CARBONAPI_PORT="<= p('carbonapi.port','80') %>"
+CARBONAPI_LOGDIR=/var/vcap/sys/logs/carbonapi/
+
+CARBONAPI_ARGS="-z=${CARBONAPI_ZIPPER} -p=${CARBONAPI_PORT} -logdir=${CARBONAPI_LOGDIR}"
+
+<% if_p("carbonapi.max_cpus") do |cpus| %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -cpus=<%= cpus %>"
+<% end %>
+
+<% if_p("carbonapi.concurrency") do |l| %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -l=<%= l %>"
+<% end %>
+
+<% if_p("carbonapi.timezone") do |tz| %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -tz=<%= tz %>"
+<% end %>
+
+<% if_p("carbonapi.graphite") do |graphite| %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -graphite=<%= graphite['host'] %>"
+<% if graphite['interval'] %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -i=<%= graphite['interval'] %>"
+<% end %>
+<% end %>
+
+<% if_p("carbonapi.cache") do |cache| %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -cache=<%= cache['type'] %>"
+<% if cache['type'] == 'memcache' %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -mc=<%= cache['servers'].join(',') %>"
+<% elif cache['type'] == 'mem' %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -memsize=<%= cache['memsize'] %>"
+<% end %>
+<% end %>
+
+export CARBONAPI_ARGS
+

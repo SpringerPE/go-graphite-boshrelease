@@ -1,0 +1,5 @@
+check process carbonapi
+  with pidfile /var/vcap/sys/run/carbonapi/carbonapi.pid
+  start program "/var/vcap/jobs/carbonapi/bin/carbonapi_ctl start"
+  stop program "/var/vcap/jobs/carbonapi/bin/carbonapi_ctl stop"
+  group vcap
