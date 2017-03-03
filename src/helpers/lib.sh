@@ -19,21 +19,38 @@ function ldconf {
 function log {
   local message=${1}
   local timestamp=`date +%y:%m:%d-%H:%M:%S`
-  echo "${timestamp} :: ${message}" >> "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}_script.log"
+  echo "${timestamp} :: ${message}" >> "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}.script.log"
 }
 
 # Print a message
 function echo_log {
   local message=${1}
   local timestamp=`date +%y:%m:%d-%H:%M:%S`
-  echo "${timestamp} :: ${message}" | tee -a "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}_script.log"
+  echo "${timestamp} :: ${message}" | tee -a "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}.script.log"
 }
 
 # Print a message without \n at the end
 function echon_log {
   local message=${1}
   local timestamp=`date +%y:%m:%d-%H:%M:%S`
-  echo -n "${timestamp} :: ${message}" | tee -a "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}_script.log"
+  echo -n "${timestamp} :: ${message}" | tee -a "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}.script.log"
+  echo >> "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}.script.log"
+}
+
+# Print a message and log it
+function print_log {
+  local message=${1}
+  local timestamp=`date +%y:%m:%d-%H:%M:%S`
+  echo "${timestamp} :: ${message}" >> "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}.script.log"
+  echo "${message}"
+}
+
+# Print a message without \n and log it
+function printn_log {
+  local message=${1}
+  local timestamp=`date +%y:%m:%d-%H:%M:%S`
+  echo "${timestamp} :: ${message}" >> "/var/vcap/sys/log/${NAME}/${COMPONENT:-$NAME}.script.log"
+  echo -n "${message}"
 }
 
 # Print a message and exit with error
@@ -60,7 +77,7 @@ function pid_guard {
     if [ -n "$pid" ] && [ -e /proc/$pid ]; then
       die "$name is already running, please stop it first"
     fi
-    echo_log "Removing stale pidfile ..."
+    printn_log "Removing stale pidfile ..."
     rm $pidfile
   fi
 }
@@ -75,7 +92,7 @@ function wait_pid {
 
   if [ -e /proc/$pid ]; then
     if [ "$try_kill" = "1" ]; then
-      echon_log "Killing $pidfile: $pid "
+      log "Killing $pidfile: $pid "
       kill $pid
     fi
     while [ -e /proc/$pid ]; do
@@ -84,8 +101,7 @@ function wait_pid {
       if [ $timeout -gt 0 ]; then
         if [ $countdown -eq 0 ]; then
           if [ "$force" = "1" ]; then
-            echo
-            echo_log "Kill timed out, using kill -9 on $pid ..."
+            printn_log "Kill timed out, using kill -9 on $pid ... "
             kill -9 $pid
             sleep 0.5
           fi
@@ -96,12 +112,12 @@ function wait_pid {
       fi
     done
     if [ -e /proc/$pid ]; then
-      echo_log "Timed Out"
+      printn_log "Timed Out. "
     else
-      echo_log "Stopped"
+      log "Stopped."
     fi
   else
-    echo_log "Process $pid is not running"
+    log "Process $pid is not running."
   fi
 }
 
@@ -121,7 +137,7 @@ function wait_pidfile {
     wait_pid $pid $try_kill $timeout $force
     rm -f $pidfile
   else
-    echo_log "Pidfile $pidfile doesn't exist"
+    printn_log "Pidfile $pidfile doesn't exist. "
   fi
 }
 
