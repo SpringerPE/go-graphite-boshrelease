@@ -12,7 +12,6 @@ source /var/vcap/jobs/carbonapi/packages/carbonapi/helpers/setup.sh "carbonapi"
 # Load function lib (alway before setup, there are some global variables needed)
 source /var/vcap/jobs/carbonapi/packages/carbonapi/helpers/lib.sh
 
-
 # There is no configuration for carbonapi, just args which are loaded
 # in a $CARBONAPI_ARGS variable
 source /var/vcap/jobs/carbonapi/config/carbonapi.sh
@@ -20,7 +19,7 @@ source /var/vcap/jobs/carbonapi/config/carbonapi.sh
 case ${1:-help} in
   start)
     echon_log "Starting carbonapi: "
-    pid_guard $PIDFILE
+    pid_guard $PIDFILE $COMPONENT
     # Load python library path for dynamic libs
     ldconf "$LD_LIBRARY_PATH"
     (
