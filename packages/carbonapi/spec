@@ -3,8 +3,10 @@ name: carbonapi
 
 dependencies:
 - golang1.8
-- glide
-- git
+- zlib
+- libpng
+- libcairo
 
 files:
-- carbonapi/*
+- carbonapi/carbonapi-*.tar.gz
+- helpers/**/*
