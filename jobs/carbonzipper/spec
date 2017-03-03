@@ -10,13 +10,30 @@ templates:
   data/properties.sh.erb: data/properties.sh
 
 properties:
+  carbonzipper.graphite:
+    description: "Hash defining graphite endpoint for internal metrics: host, interval."
+    example:
+      host: "host:port"
+      interval: 60
   carbonzipper.maxprocs:
-    description: "GOMAXPROCS"
+    description: "GOMAXPROCS setting."
     default: 0
   carbonzipper.port:
-    description: "port to bind to"
-    default: 8080
+    description: "Carbonzipper port to bind to."
+    default: 9090
   carbonzipper.backends:
-    description: List of backends host keys in a hash
+    description: "List of backends host keys in a hash."
     default:
     - http://127.0.0.1:8080
+  carbonzipper.timeout_ms_total_request:
+    description: "Maximum total backend requesting timeout in ms. How long we may spend making requests."
+    default: 10000
+  carbonzipper.timeout_ms_backend:
+    description: "Timeout, in ms, once the final backend has been contacted. How long it will wait for the slowest response."
+    default: 2000
+  carbonzipper.concurrency_per_server:
+    description: "Number of concurrent requests to any given backend - default is no limit."
+    default: 0
+  carbonzipper.max_idle_con_per_server:
+    description: "Control http.MaxIdleConnsPerHost. Large values can lead to more idle connections on the backend servers."
+    default: 100

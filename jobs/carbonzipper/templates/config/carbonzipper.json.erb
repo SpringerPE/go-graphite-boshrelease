@@ -7,14 +7,19 @@
 #
 # NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
 {
-    "Port": <%= p('carbonzipper.port','8080') %>,
+    "Port": <%= p('carbonzipper.port','9090') %>,
     "MaxProcs": <%= p('carbonzipper.maxprocs','0') %>,
-    "IntervalSec": 60,
+    <% if_p("carbonzipper.graphite") do |graphite| %>
+    "GraphiteHost": "<%= graphite['host'] %>",
+    <% if graphite['interval'] %>
+    "IntervalSec": <%= graphite['interval'] %>,
+    <% end %>
+    <% end %>
     "Buckets": 10,
-    "TimeoutMs": 10000,
-    "TimeoutMsAfterAllStarted": 2000,
-    "ConcurrencyLimitPerServer": 0,
-    "MaxIdleConnsPerHost": 100,
+    "TimeoutMs": <%= p('carbonzipper.timeout_ms_total_request','10000') %>,
+    "TimeoutMsAfterAllStarted": <%= p('carbonzipper.timeout_ms_backend','2000') %>,
+    "ConcurrencyLimitPerServer": <%= p('carbonzipper.concurrency_per_server','0') %>,
+    "MaxIdleConnsPerHost": <%= p('carbonzipper.max_idle_con_per_server','100') %>,
     "Backends": [
     <% if_p("carbonzipper.backends") do %>
     <% p("carbonzipper.backends").each_with_index do |backend, i| %>
