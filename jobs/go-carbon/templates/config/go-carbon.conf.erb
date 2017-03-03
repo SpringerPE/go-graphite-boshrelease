@@ -19,7 +19,7 @@ data-dir = "/var/vcap/store/go-carbon/whisper/"
 # http://graphite.readthedocs.org/en/latest/config-carbon.html#storage-schemas-conf. Required
 schemas-file = "/var/vcap/jobs/go-carbon/config/storage-schemas.conf"
 # http://graphite.readthedocs.org/en/latest/config-carbon.html#storage-aggregation-conf. Optional
-aggregation-file = ""
+aggregation-file = "/var/vcap/jobs/go-carbon/config/storage-aggregation.conf"
 # Workers count. Metrics sharded by "crc32(metricName) % workers"
 workers = <%= p("go-carbon.whisper_workers") %>
 # Limits the number of whisper update_many() calls per second. 0 - no limit

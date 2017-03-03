@@ -8,6 +8,7 @@ templates:
   bin/go-carbon_ctl: bin/go-carbon_ctl
   config/go-carbon.conf.erb: config/go-carbon.conf
   config/storage-schema.conf.erb: config/storage-schemas.conf
+  config/storage-aggregation.conf.erb: config/storage-aggregation.conf
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
 
@@ -70,8 +71,9 @@ properties:
       - name: "default_1min_for_1day"
         pattern: ".*"
         retentions: "60s:1d"
+
   go-carbon.aggregations:
-    description: Aggregations
+    description: storage aggregations
     default: []
 
   go-carbon.carbonserver.enabled:
