@@ -1,17 +1,21 @@
 #!/bin/sh
 
-CARBONAPI_ZIPPER="<%= p('carbonapi.carbonzipper','http://localhost:8080') %>"
+CARBONAPI_ZIPPER="<%= p('carbonapi.carbonzipper','http://127.0.0.1:9090') %>"
 CARBONAPI_PORT="<%= p('carbonapi.port','80') %>"
 CARBONAPI_LOGDIR=/var/vcap/sys/logs/carbonapi/
 
 CARBONAPI_ARGS="-z=${CARBONAPI_ZIPPER} -p=${CARBONAPI_PORT} -logdir=${CARBONAPI_LOGDIR}"
 
-<% if_p("carbonapi.max_cpus") do |cpus| %>
+<% if_p("carbonapi.cpus") do |cpus| %>
 CARBONAPI_ARGS="$CARBONAPI_ARGS -cpus=<%= cpus %>"
 <% end %>
 
 <% if_p("carbonapi.concurrency") do |l| %>
 CARBONAPI_ARGS="$CARBONAPI_ARGS -l=<%= l %>"
+<% end %>
+
+<% if_p("carbonapi.idleconns") do |i| %>
+CARBONAPI_ARGS="$CARBONAPI_ARGS -idleconns=<%= i %>"
 <% end %>
 
 <% if_p("carbonapi.timezone") do |tz| %>
@@ -35,4 +39,3 @@ CARBONAPI_ARGS="$CARBONAPI_ARGS -memsize=<%= cache['memsize'] %>"
 <% end %>
 
 export CARBONAPI_ARGS
-
