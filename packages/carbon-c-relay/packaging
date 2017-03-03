@@ -1,16 +1,30 @@
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
-VERSION="2.6"
+CARBON_C_RELAY_VERSION="2.6"
 PACKAGE="carbon-c-relay"
 
 # Available variables
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
-cd $BOSH_COMPILE_TARGET/${PACKAGE}/
-tar xvfz ${PACKAGE}-${VERSION}.tar.gz
-cd ${PACKAGE}-${VERSION}
-make
-mkdir -p ${BOSH_INSTALL_TARGET}/bin
-install -m 0755 relay ${BOSH_INSTALL_TARGET}/bin
+echo "Changing dir to ${BOSH_COMPILE_TARGET}/${PACKAGE}/ ..."
+pushd ${BOSH_COMPILE_TARGET}/${PACKAGE}/
+
+	echo "Extracting carbon-c-relay ${CARBON_C_RELAY_VERSION} ..."
+	tar xvfz ${PACKAGE}-${CARBON_C_RELAY_VERSION}.tar.gz
+
+	echo "Building ${PACKAGE}-${CARBON_C_RELAY_VERSION}..."
+	pushd ${PACKAGE}-${CARBON_C_RELAY_VERSION}
+		make
+		mkdir -p ${BOSH_INSTALL_TARGET}/bin
+		install -m 0755 relay ${BOSH_INSTALL_TARGET}/bin
+	popd
+
+popd
+
+pushd ${BOSH_COMPILE_TARGET}/
+
+	echo "Install shell helpers ..."
+	cp -av helpers ${BOSH_INSTALL_TARGET}/
+popd

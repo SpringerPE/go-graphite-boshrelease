@@ -3,13 +3,19 @@
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
-# Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/go-carbon/helpers/ctl_setup.sh 'go-carbon'
+# Load job properties
+source /var/vcap/jobs/go-carbon/data/properties.sh
+
+# Setup env vars and folders for the ctl script
+source /var/vcap/jobs/go-carbon/packages/go-carbon/helpers/setup.sh "go-carbon"
+
+# Load function lib (alway before setup, there are some global variables needed)
+source /var/vcap/jobs/go-carbon/packages/go-carbon/helpers/lib.sh
 
 case $1 in
   start)
     echo "Starting go-carbon: $(date) ..."
-    pid_guard $PIDFILE $JOB_NAME
+    pid_guard $PIDFILE $COMPONENT
 
     # Performance settings
     if grep -q '/instance' /proc/self/cgroup; then
@@ -42,14 +48,22 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -v -u vcap:vcap \
-        /var/vcap/jobs/go-carbon/packages/go-carbon/bin/go-carbon \
-        -config="/var/vcap/jobs/go-carbon/config/go-carbon.conf" \
-        -daemon=true \
-        -pidfile=$PIDFILE
+    (
+        {
+            exec chpst -v -u vcap:vcap \
+                /var/vcap/jobs/go-carbon/packages/go-carbon/bin/go-carbon \
+                -config="/var/vcap/jobs/go-carbon/config/go-carbon.conf" \
+                -daemon=true \
+                -pidfile=$PIDFILE
+        } >>${LOG_DIR}.stdout.log \
+        2>>${LOG_DIR}.stderr.log
+    ) &
+    echo $! > $PIDFILE
+    echo "$(<${PIDFILE}). Done"
+
     ;;
   stop)
-    echo "Stopping carbonserver $(date) ..."
+    echo "Stopping go-carbon $(date) ..."
     kill_and_wait $PIDFILE
     ;;
   *)

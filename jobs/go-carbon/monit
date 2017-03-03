@@ -4,8 +4,3 @@ check process go-carbon
   stop program "/var/vcap/jobs/go-carbon/bin/monit_debugger go-carbon_ctl '/var/vcap/jobs/go-carbon/bin/go-carbon_ctl stop'"
   group vcap
 
-check process carbonserver 
-  with pidfile /var/vcap/sys/run/go-carbon/carbonserver.pid
-  start program "/var/vcap/jobs/go-carbon/bin/monit_debugger carbonserver_ctl '/var/vcap/jobs/go-carbon/bin/carbonserver_ctl start'"
-  stop program "/var/vcap/jobs/go-carbon/bin/monit_debugger carbonserver_ctl '/var/vcap/jobs/go-carbon/bin/carbonserver_ctl stop'"
-  group vcap

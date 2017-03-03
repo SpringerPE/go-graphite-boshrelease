@@ -1,0 +1,21 @@
+# Aggregation definitions for Whisper files. Entries are scanned in order,
+# and first match wins. This file is scanned for changes every 60 seconds.
+#
+#  [name]
+#  pattern = regex
+#  aggregationMethod = {min, max, average, sum, last}
+#  xFilesFactor = [0.0 - 1.0] #OPTIONAL
+
+<%- if_p("go-carbon.aggregations") do %>
+<%- p("go-carbon.aggregations").each do |aggregation| %>
+[<%= aggregation["name"] %>]
+pattern = <%= aggregation["pattern"] %>
+aggregationMethod =  <%= aggregation["aggregationMethod"] %>
+<%- if aggregation.has_key? 'xFilesFactor' %>
+xFilesFactor = <%= aggregation["xFilesFactor"] %>
+<% end %>
+
+<% end %>
+<% end %>
+
+
