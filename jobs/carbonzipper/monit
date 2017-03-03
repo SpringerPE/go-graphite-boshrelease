@@ -1,5 +1,5 @@
 check process carbonzipper 
   with pidfile /var/vcap/sys/run/carbonzipper/carbonzipper.pid
-  start program "/var/vcap/jobs/carbonzipper/bin/carbonzipper_ctl start'"
-  stop program "/var/vcap/jobs/carbonzipper/bin/carbonzipper_ctl stop'"
+  start program "/var/vcap/jobs/carbonzipper/bin/carbonzipper_ctl start"
+  stop program "/var/vcap/jobs/carbonzipper/bin/carbonzipper_ctl stop"
   group vcap
