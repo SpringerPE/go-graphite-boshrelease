@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PACKAGE="go-carbon"
-VERSION="0.7"
+VERSION="0.9.1"
 FILE="go-carbon-${VERSION}.tar.gz"
 URL="https://github.com/lomik/go-carbon.git"
 

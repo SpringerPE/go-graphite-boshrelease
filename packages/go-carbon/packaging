@@ -1,18 +1,35 @@
 # abort script on any command that exits with a non zero value
 set -e -x
 
-echo "Extracting go-carbon ..."
-tar xvf go-carbon/go-carbon-0.7.tar.gz
+VERSION=0.9.1
+GOLANG_VERSION=1.8
 
-echo "Setting the GO env variables ..."
-export GOPATH=${BOSH_COMPILE_TARGET}/go-carbon-0.7/_vendor
-export GOROOT=$(readlink -nf /var/vcap/packages/golang1.6)
-export PATH=${GOROOT}/bin:${PATH}
+# Available variables
+# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
-echo "Installing go-carbon ..."
-pushd go-carbon-0.7
-  go build -o go-carbon
-  mkdir -p ${BOSH_INSTALL_TARGET}/bin
-  install -m 0755 go-carbon ${BOSH_INSTALL_TARGET}/bin
-  # go-carbon --config-print-default > /usr/local/etc/carbon.conf
+
+echo "Changing dir to ${BOSH_COMPILE_TARGET}/${PACKAGE}/ ..."
+pushd ${BOSH_COMPILE_TARGET}/${PACKAGE}/
+	echo "Extracting go-carbon ..."
+	tar xvf go-carbon/go-carbon-${VERSION}.tar.gz
+
+	echo "Setting the GO env variables ..."
+	export GOPATH=${BOSH_COMPILE_TARGET}/go-carbon-${VERSION}/_vendor
+	export GOROOT=$(readlink -nf /var/vcap/packages/golang${GOLANG_VERSION})
+	export PATH=${GOROOT}/bin:${PATH}
+
+	echo "Installing go-carbon ..."
+	pushd go-carbon-${VERSION}
+	  go build -o go-carbon
+	  mkdir -p ${BOSH_INSTALL_TARGET}/bin
+	  install -m 0755 go-carbon ${BOSH_INSTALL_TARGET}/bin
+	  # go-carbon --config-print-default > /usr/local/etc/carbon.conf
+	popd
+popd
+
+pushd ${BOSH_COMPILE_TARGET}/
+
+	echo "Install shell helpers ..."
+	cp -av helpers ${BOSH_INSTALL_TARGET}/
 popd
