@@ -32,19 +32,22 @@ case ${1:-help} in
             # To be able to listen on privileged ports
             setcap 'cap_net_bind_service=+ep' $(readlink -nf $(which carbonapi))
 
-            exec chpst -v -u vcap:vcap carbonapi ${CARBONAPI_ARGS}
+            exec chpst -v -u vcap:vcap \
+              carbonapi ${CARBONAPI_ARGS} \
+                -logdir=${LOG_DIR}
 
-        } >>$LOG_DIR/carbonapi.stdout.log \
-        2>>$LOG_DIR/carbonapi.stderr.log
+        } >>$LOG_DIR/$COMPONENT.stdout.log \
+        2>>$LOG_DIR/$COMPONENT.stderr.log
     ) &
     echo $! > $PIDFILE
-    echo "$(<${PIDFILE}). Done"
+    printn_log "$(<${PIDFILE}) "
+    print_log "Done"
     ;;
   stop)
-    echo_log "Stopping carbonapi: $(<${PIDFILE}). "
+    echon_log "Stopping carbonapi: $(<${PIDFILE}) "
     kill_and_wait $PIDFILE
     rm -f $PIDFILE
-    echo_log "Done"
+    print_log "Done"
     ;;
   *)
     echo "Usage: $0 {start|stop}"
