@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PACKAGE="carbonapi"
-VERSION="4332883"
+VERSION="6ea1863"
 FILE="carbonapi-${VERSION}.tar.gz"
 URL="https://github.com/dgryski/carbonapi.git"
 
@@ -13,7 +13,8 @@ if [ ! -s "${PACKAGE}/${FILE}" ]; then
     echo "> Doing Checkout to tag ..."
     git checkout ${VERSION}
     echo "> Getting all the go dependencies ..."
-    GOPATH=$(pwd) go get
+    GOPATH=$(pwd) go get "rsc.io/c2go/cc"
+    GOPATH=$(pwd) go get -tags cairo -d
   popd
   echo "> Creating ${PACKAGE}/${FILE} ..."
   tar --exclude-vcs --exclude .git --exclude .gitmodules --exclude .gitignore -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}

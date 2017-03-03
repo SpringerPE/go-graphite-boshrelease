@@ -1,17 +1,50 @@
-# abort script on any command that exits with a non zero value
+#!/usr/bin/env bash
 set -e -x
 
-echo "Extracting carbonzipper ..."
-tar xvf carbonzipper/carbonzipper-462ed6c.tar.gz
+# Grab the versions that are in the directory FIXME!
+CARBONZIPPER_VERSION=$(ls -v -r carbonzipper/carbonzipper-*.tar.gz | sed 's/.*\/carbonzipper-\(.*\)\.tar\.gz$/\1/' | head -1)
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
+echo "Setting path ..."
+for package_bin_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/bin 2>/dev/null); do
+    PATH="${package_bin_dir}:${PATH}"
+done
+export PATH
+
+echo "Defining libraries path ..."
+for package_lib_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/lib 2>/dev/null); do
+  LDFLAGS="-L${package_lib_dir} ${LDFLAGS}"
+  LIBRARY_PATH="${package_lib_dir}:${LIBRARY_PATH}"
+  [ -d "${package_lib_dir}/pkgconfig" ] && PKG_CONFIG_PATH="${package_lib_dir}/pkgconfig:${PKG_CONFIG_PATH}"
+done
+export LDFLAGS
+export LIBRARY_PATH
+export PKG_CONFIG_PATH
+export LD_LIBRARY_PATH="${LIBRARY_PATH}"
+
+export CFLAGS="-fPIC ${CFLAGS}"
+for package_include_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/include 2>/dev/null); do
+    CPATH="${package_include_dir}:${CPATH}"
+done
+export CPATH
+
+
+echo "Extracting carbonzipper ${CARBONZIPPER_VERSION} ..."
+tar xvf carbonzipper/carbonzipper-${CARBONZIPPER_VERSION}.tar.gz
 
 echo "Setting the GO env variables ..."
-export GOPATH=${BOSH_COMPILE_TARGET}/carbonzipper-462ed6c
-export GOROOT=$(readlink -nf /var/vcap/packages/golang1.6)
+export GOPATH=${BOSH_COMPILE_TARGET}/carbonzipper-${CARBONZIPPER_VERSION}
+export GOROOT=$(readlink -nf /var/vcap/packages/golang1.8)
 export PATH=${GOROOT}/bin:${PATH}
 
-echo "Installing carbonzipper ..."
-pushd carbonzipper-462ed6c
+echo "Building carbonzipper ..."
+pushd carbonzipper-${CARBONZIPPER_VERSION}
   go build -o carbonzipper
   mkdir -p ${BOSH_INSTALL_TARGET}/bin
   install -m 0755 carbonzipper ${BOSH_INSTALL_TARGET}/bin
 popd
+
+# Install shell helpers
+echo "Adding shell helpers ..."
+cp -av helpers ${BOSH_INSTALL_TARGET}/
+

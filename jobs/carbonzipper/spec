@@ -1,0 +1,22 @@
+---
+name: carbonzipper
+
+packages:
+- carbonzipper
+
+templates:
+  bin/carbonzipper_ctl: bin/carbonzipper_ctl
+  config/carbonzipper.json.erb: config/carbonzipper.json
+  data/properties.sh.erb: data/properties.sh
+
+properties:
+  carbonzipper.maxprocs:
+    description: "GOMAXPROCS"
+    default: 0
+  carbonzipper.port:
+    description: "port to bind to"
+    default: 8080
+  carbonzipper.backends:
+    description: List of backends host keys in a hash
+    default:
+    - http://127.0.0.1:8080

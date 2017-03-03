@@ -74,7 +74,4 @@ export TMP_DIR="/var/vcap/sys/tmp/$NAME"
 mkdir -p "$TMP_DIR" && chmod 775 "$TMP_DIR" && chown vcap "$TMP_DIR"
 export TMPDIR="$TMP_DIR"
 
-export CONFD_DIR="${JOB_DIR}/config/conf.d"
-mkdir -p "$CONFD_DIR" && chmod 775 "$CONFD_DIR" && chown vcap "$CONFD_DIR"
-
 export LANG=POSIX

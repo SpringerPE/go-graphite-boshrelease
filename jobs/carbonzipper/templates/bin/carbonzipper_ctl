@@ -4,21 +4,17 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # Load job properties
-source /var/vcap/jobs/carbonapi/data/properties.sh
+source /var/vcap/jobs/carbonzipper/data/properties.sh
 
 # Setup env vars and folders for the ctl script
-source /var/vcap/jobs/carbonapi/packages/carbonapi/helpers/setup.sh "carbonapi"
+source /var/vcap/jobs/carbonzipper/packages/carbonzipper/helpers/setup.sh "carbonzipper"
 
 # Load function lib (alway before setup, there are some global variables needed)
-source /var/vcap/jobs/carbonapi/packages/carbonapi/helpers/lib.sh
-
-# There is no configuration for carbonapi, just args which are loaded
-# in a $CARBONAPI_ARGS variable
-source /var/vcap/jobs/carbonapi/config/carbonapi.sh
+source /var/vcap/jobs/carbonzipper/packages/carbonzipper/helpers/lib.sh
 
 case ${1:-help} in
   start)
-    echon_log "Starting carbonapi: "
+    echon_log "Starting carbonzipper: "
     pid_guard $PIDFILE $COMPONENT
     # Load python library path for dynamic libs
     ldconf "$LD_LIBRARY_PATH"
@@ -30,18 +26,20 @@ case ${1:-help} in
             ulimit -n 100000
 
             # To be able to listen on privileged ports
-            setcap 'cap_net_bind_service=+ep' $(readlink -nf $(which carbonapi))
+            setcap 'cap_net_bind_service=+ep' $(readlink -nf $(which carbonzipper))
 
-            exec chpst -v -u vcap:vcap carbonapi ${CARBONAPI_ARGS}
+            exec chpst -v -u vcap:vcap carbonzipper \
+              -c /var/vcap/jobs/carbonzipper/config/carbonzipper.json \
+              -logdir ${LOG_DIR}
 
-        } >>$LOG_DIR/carbonapi.stdout.log \
-        2>>$LOG_DIR/carbonapi.stderr.log
+        } >>$LOG_DIR/$COMPONENT.stdout.log \
+        2>>$LOG_DIR/$COMPONENT.stderr.log
     ) &
     echo $! > $PIDFILE
     echo "$(<${PIDFILE}). Done"
     ;;
   stop)
-    echo_log "Stopping carbonapi: $(<${PIDFILE}). "
+    echo_log "Stopping carbonzipper: $(<${PIDFILE}). "
     kill_and_wait $PIDFILE
     rm -f $PIDFILE
     echo_log "Done"

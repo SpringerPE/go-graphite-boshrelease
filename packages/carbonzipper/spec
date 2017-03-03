@@ -1,6 +1,9 @@
 ---
 name: carbonzipper
+
 dependencies:
-  - golang1.6
+- golang1.8
+
 files:
-  - carbonzipper/carbonzipper-462ed6c.tar.gz
+- carbonzipper/carbonzipper-*.tar.gz
+- helpers/**/*

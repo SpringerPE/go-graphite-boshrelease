@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PACKAGE="carbonzipper"
-VERSION="462ed6c"
+VERSION="082d450"
 FILE="carbonzipper-${VERSION}.tar.gz"
 URL="https://github.com/dgryski/carbonzipper"
 
@@ -13,7 +13,7 @@ if [ ! -s "${PACKAGE}/${FILE}" ]; then
     echo "> Doing Checkout to tag ..."
     git checkout ${VERSION}
     echo "> Getting all the go dependencies ..."
-    GOPATH=$(pwd) go get
+    GOPATH=$(pwd) go get -d
   popd
   echo "> Creating ${PACKAGE}/${FILE} ..."
   tar --exclude-vcs --exclude .git --exclude .gitmodules --exclude .gitignore -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
