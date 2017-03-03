@@ -30,48 +30,93 @@ max-updates-per-second = 0
 # Limit of in-memory stored points (not metrics)
 max-size = <%= p("go-carbon.cache_max_size") %>
 # Capacity of queue between receivers and cache
-input-buffer = <%= p("go-carbon.cache_input_buffer") %>
+# Strategy to persist metrics. Values: "max","sorted","noop"
+#   "max" - write metrics with most unwritten datapoints first
+#   "sorted" - sort by timestamp of first unwritten datapoint.
+#   "noop" - pick metrics to write in unspecified order,
+#            requires least CPU and improves cache responsiveness
+write-strategy = "<%= p("go-carbon.write_strategy") %>"
+
+
+[udp]
+<%- if p("go-carbon.udp.enabled") == true %>
+enabled = true
+# Enable optional logging of incomplete messages (chunked by MTU)
+log-incomplete = false
+listen = "<%= p("go-carbon.udp.host", "") %>:<%= p("go-carbon.udp.port", "2003") %>"
+# Optional internal queue between receiver and cache
+buffer-size = 0
+<%- else %>
+enabled = false
+<%- end %>
 
 
 [tcp]
 listen = ":<%= p("go-carbon.tcp_listen") %>"
 enabled = true
-
-
-[udp]
-<% if_p("go-carbon.udp") do |udp| %>
-enabled = true
-# Enable optional logging of incomplete messages (chunked by MTU)
-log-incomplete = false
-listen = "<%= p("go-carbon.udp.host", "") %>:<%= p("go-carbon.udp.port", "2003") %>"
-<% end.else do %>
-enabled = false
-<% end %>
+# Optional internal queue between receiver and cache
+buffer-size = 0
 
 
 [pickle]
-<% if_p("go-carbon.pickle") do |pickle| %>
+<%- if p("go-carbon.pickle.enabled") == true %>
 enabled = true
 # Limit message size for prevent memory overflow
 max-message-size = 67108864
 listen = "<%= p("go-carbon.pickle.host", "") %>:<%= p("go-carbon.pickle.port", "2004") %>"
-<% end.else do %>
+# Optional internal queue between receiver and cache
+buffer-size = 0
+<%- else %>
 enabled = false
-<% end %>
+<%- end %>
 
 
 [carbonlink]
-<% if_p("go-carbon.carbonlink") do |carbonlink| %>
+<%- if p("go-carbon.carbonlink.enabled") == true %>
 enabled = true
 # Close inactive connections after "read-timeout"
 read-timeout = "30s"
-# Return empty result if cache not reply
-query-timeout = "100ms"
 listen = "<%= p("go-carbon.carbonlink.host", "") %>:<%= p("go-carbon.carbonlink.port", "7002") %>"
-<% end.else do %>
+<%- else %>
 enabled = false
-<% end %>
+<%- end %>
 
+
+[carbonserver]
+# Carbonserver support is still experimental and may contain bugs
+# Or be incompatible with github.com/grobian/carbonserver
+<%- if p("go-carbon.carbonserver.enabled") == true %>
+enabled = true
+listen = "<%= p("go-carbon.carbonserver.host") %>:<%= p("go-carbon.carbonserver.port") %>"
+# Buckets to track response times
+buckets = 10
+# Maximum amount of globs in a single metric
+max-globs = 100
+# carbonserver-specific metrics will be sent as counters
+# For compatibility with grobian/carbonserver
+metrics-as-counters = false
+# Read and Write timeouts for HTTP server
+read-timeout = "<%= p("go-carbon.carbonserver.read_timeout") %>"
+write-timeout = "<%= p("go-carbon.carbonserver.write_timeout") %>"
+# carbonserver keeps track of all available whisper files
+# in memory. This determines how often it will check FS
+# for new metrics.
+scan-frequency = "5m0s"
+<%- else %>
+enabled = false
+<%- end %>
+
+[dump]
+<%- if p("go-carbon.dump.enabled") == true %>
+# Enable dump/restore function on USR2 signal
+enabled = true
+# Directory for store dump data. Should be writeable for carbon
+path = ""
+# Restore speed. 0 - unlimited
+restore-per-second = 0
+<%- else %>
+enabled = false
+<%- end %>
 
 [pprof]
 listen = "localhost:7007"
