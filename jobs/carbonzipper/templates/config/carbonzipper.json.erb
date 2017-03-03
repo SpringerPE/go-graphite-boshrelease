@@ -1,0 +1,26 @@
+# NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+#
+# A single shell-style (#) comment block may appear at the top of the file
+# and will be stripped off. However, the remainder of the file must be valid JSON.
+# (So the `//` comments below will cause it to fail)
+# (grep -v '^#\|\/\/\s' example.conf | jq '.') will extract the JSON.
+#
+# NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+{
+    "Port": <%= p('carbonzipper.port','8080') %>,
+    "MaxProcs": <%= p('carbonzipper.maxprocs','0') %>,
+    "IntervalSec": 60,
+    "Buckets": 10,
+    "TimeoutMs": 10000,
+    "TimeoutMsAfterAllStarted": 2000,
+    "ConcurrencyLimitPerServer": 0,
+    "MaxIdleConnsPerHost": 100,
+    "Backends": [
+    <% if_p("carbonzipper.backends") do %>
+    <% p("carbonzipper.backends").each_with_index do |backend, i| %>
+    "<%= backend["host"] %>"<%= ',' if i < (p("carbonzipper.backends").size - 1) %>
+    <% end %>
+    <% end %>
+    ]
+}
+

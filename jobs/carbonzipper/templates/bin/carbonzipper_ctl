@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Load job properties
+source /var/vcap/jobs/carbonzipper/data/properties.sh
+
+# Setup env vars and folders for the ctl script
+source /var/vcap/jobs/carbonzipper/packages/carbonzipper/helpers/setup.sh "carbonzipper"
+
+# Load function lib (alway before setup, there are some global variables needed)
+source /var/vcap/jobs/carbonzipper/packages/carbonzipper/helpers/lib.sh
+
+case ${1:-help} in
+  start)
+    echon_log "Starting carbonzipper: "
+    pid_guard $PIDFILE $COMPONENT
+    # Load python library path for dynamic libs
+    ldconf "$LD_LIBRARY_PATH"
+    (
+        {
+            # Allow a few more queued connections than are allowed by default
+            echo 1024 > /proc/sys/net/core/somaxconn
+            # Allowed number of open file descriptors
+            ulimit -n 100000
+
+            # To be able to listen on privileged ports
+            setcap 'cap_net_bind_service=+ep' $(readlink -nf $(which carbonzipper))
+
+            exec chpst -v -u vcap:vcap carbonzipper \
+              -c /var/vcap/jobs/carbonzipper/config/carbonzipper.json \
+              -logdir ${LOG_DIR}
+
+        } >>$LOG_DIR/$COMPONENT.stdout.log \
+        2>>$LOG_DIR/$COMPONENT.stderr.log
+    ) &
+    echo $! > $PIDFILE
+    echo "$(<${PIDFILE}). Done"
+    ;;
+  stop)
+    echo_log "Stopping carbonzipper: $(<${PIDFILE}). "
+    kill_and_wait $PIDFILE
+    rm -f $PIDFILE
+    echo_log "Done"
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    ;;
+esac
+
