@@ -38,7 +38,15 @@ for package_dir in $(ls -d /var/vcap/packages/*); do
     done
   fi
 done
-export PATH="$PACKAGES/$NAME/checks.d:$PACKAGES/$NAME/agent:$PACKAGES/$NAME/embedded/bin:$PATH"
+export PATH="$PACKAGES/$NAME/embedded/bin:$PATH"
+
+# 'embebbed' folder is a special case for packages which have its dependencies
+# embebbed inside its package folder. Those embebbed package dependencies can
+# be compiled as normal packages, then the "main" package (after compiled)
+# copies the dependencies to its "embebbed" folder. This minimizes the collision
+# of packages. A good example of this implementation is datadog-agent, which was
+# built with a lot of dependencies, but all of them are packed in its embedded
+# folder
 for package_lib_dir in $(ls -d $PACKAGES/$NAME/embedded/lib 2>/dev/null); do
     LD_LIBRARY_PATH="${package_lib_dir}:${LD_LIBRARY_PATH}"
 done
@@ -50,6 +58,13 @@ for package_lib_dir in $(ls -d $PACKAGES/$NAME/embedded/lib/python*/site-package
 done
 export LD_LIBRARY_PATH
 
+# Gem paths
+GEM_PATH=${GEM_PATH:-''}
+for gem_dir in $(ls -d $PACKAGES/*/lib/ruby/gems/*/ 2>/dev/null); do
+    GEM_PATH="${gem_dir}:${GEM_PATH}"
+done
+export GEM_PATH
+
 # Python modules
 PYTHONPATH=${PYTHONPATH:-''}
 for python_mod_dir in $(ls -d $PACKAGES/*/lib/python*/site-packages 2>/dev/null); do
@@ -58,7 +73,6 @@ done
 for python_mod_dir in $(ls -d $PACKAGES/$NAME/embedded/lib/python*/site-packages 2>/dev/null); do
     PYTHONPATH="${python_mod_dir}:${PYTHONPATH}"
 done
-PYTHONPATH="$PACKAGES/$NAME/agent:$PACKAGES/$NAME/agent/checks/libs:$PACKAGES/$NAME/checks.d:$PYTHONPATH"
 export PYTHONPATH
 
 # Setup log and tmp folders
@@ -68,10 +82,10 @@ mkdir -p "$LOG_DIR" && chmod 775 "$LOG_DIR" && chown vcap "$LOG_DIR"
 export RUN_DIR="/var/vcap/sys/run/$NAME"
 mkdir -p "$RUN_DIR" && chmod 775 "$RUN_DIR" && chown vcap "$RUN_DIR"
 
-export PIDFILE="${RUN_DIR}/${COMPONENT}.pid"
-
 export TMP_DIR="/var/vcap/sys/tmp/$NAME"
 mkdir -p "$TMP_DIR" && chmod 775 "$TMP_DIR" && chown vcap "$TMP_DIR"
 export TMPDIR="$TMP_DIR"
 
-export LANG=POSIX
+export LANG=C
+export PIDFILE="${RUN_DIR}/${COMPONENT}.pid"
+
