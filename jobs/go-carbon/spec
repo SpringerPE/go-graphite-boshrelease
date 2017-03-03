@@ -12,6 +12,13 @@ templates:
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
 
+provides:
+- name: go-carbon-backend
+  type: conn
+  properties:
+    - go-carbon.tcp_listen
+    - go-carbon.udp.port
+
 properties:
   go-carbon.metric_interval:
     description: 

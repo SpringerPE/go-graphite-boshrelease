@@ -10,6 +10,10 @@ templates:
   data/properties.sh.erb: data/properties.sh
   config/carbon-c-relay.conf: config/carbon-c-relay.conf
 
+consumes:
+- name: go-carbon-backend
+  type: conn
+
 properties:
   carbon-c-relay.lb:
     description: "Load balancing for the backends: <forward | any_of [useall] | failover | <carbon_ch | fnv1a_ch | jump_fnv1a_ch>"
