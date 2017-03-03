@@ -40,7 +40,8 @@ export LIBRARY_PATH="/var/vcap/packages/zlib/lib:${LIBRARY_PATH}"
 export CPPFLAGS="-I/var/vcap/packages/zlib/include ${CPPFLAGS}"
 export LDFLAGS="-L/var/vcap/packages/zlib/lib ${LDFLAGS}"
 pushd cairo-${CAIRO_VERSION}
-  ./configure --prefix=${BOSH_INSTALL_TARGET} --enable-xlib=no --enable-xlib-xrender=no --enable-xcb=no --enable-quartz=no --enable-win32=no --enable-ft=no --enable-fc=no --enable-ps=no --enable-pdf=no --enable-svg=yes 
+  # ./configure --prefix=${BOSH_INSTALL_TARGET} --enable-xlib=no --enable-xlib-xrender=no --enable-xcb=no --enable-quartz=no --enable-win32=no --enable-ft=no --enable-fc=no --enable-ps=no --enable-pdf=no --enable-svg=yes
+  ./configure --prefix=${BOSH_INSTALL_TARGET} --enable-xlib-xrender=no --enable-xcb=no --enable-quartz=no --enable-win32=no --enable-ft=no --enable-fc=no --enable-ps=no --enable-pdf=no --enable-svg=yes
   make
   make install
 popd
