@@ -7,15 +7,15 @@
 #  xFilesFactor = [0.0 - 1.0] #OPTIONAL
 
 <%- if_p("go-carbon.aggregations") do %>
-<%- p("go-carbon.aggregation").each do |aggregation| %>
+<%- p("go-carbon.aggregations").each do |aggregation| %>
 [<%= aggregation["name"] %>]
 pattern = <%= aggregation["pattern"] %>
 aggregationMethod =  <%= aggregation["aggregationMethod"] %>
-<%- if_p("aggregation.xFilesFactor") %>
+<%- if aggregation.has_key? 'xFilesFactor' %>
 xFilesFactor = <%= aggregation["xFilesFactor"] %>
-<%- end %>
+<% end %>
 
-<%- end %>
-<%- end %>
+<% end %>
+<% end %>
 
 
