@@ -18,6 +18,7 @@ provides:
   properties:
     - go-carbon.tcp_listen
     - go-carbon.udp.port
+    - go-carbon.carbonserver.port
 
 properties:
   go-carbon.metric_interval:
