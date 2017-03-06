@@ -21,9 +21,9 @@
     "ConcurrencyLimitPerServer": <%= p('carbonzipper.concurrency_per_server','0') %>,
     "MaxIdleConnsPerHost": <%= p('carbonzipper.max_idle_con_per_server','100') %>,
     "Backends": [
-    <% if_p("carbonzipper.backends") do %>
-    <% p("carbonzipper.backends").each_with_index do |backend, i| %>
-    "<%= backend["host"] %>"<%= ',' if i < (p("carbonzipper.backends").size - 1) %>
+    <% if_link("go-carbon-backend") do |link| %>
+    <% link.instances.each_with_index do |backend, i| %>
+	    "http://<%= backend.address %>:<%= link.p('go-carbon.carbonserver.port') %>"<%= ',' if i < (link.instances.size - 1) %>
     <% end %>
     <% end %>
     ]

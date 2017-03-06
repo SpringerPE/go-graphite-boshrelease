@@ -9,6 +9,10 @@ templates:
   config/carbonzipper.json.erb: config/carbonzipper.json
   data/properties.sh.erb: data/properties.sh
 
+consumes:
+- name: go-carbon-backend
+  type: conn
+
 properties:
   carbonzipper.graphite:
     description: "Hash defining graphite endpoint for internal metrics: host, interval."
