@@ -13,13 +13,14 @@ templates:
   data/properties.sh.erb: data/properties.sh
 
 provides:
-- name: go-carbon-tcp
+- name: go-carbon-backend
   type: tcp
   properties:
     - go-carbon.tcp_listen
 - name: go-carbon-udp
   type: udp
   properties:
+    - go-carbon.udp.enabled
     - go-carbon.udp.port
 - name: go-carbon-carbonserver
   type: carbonserver

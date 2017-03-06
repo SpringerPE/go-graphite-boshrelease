@@ -23,9 +23,6 @@ properties:
   carbon-c-relay.replication:
     description: Replication factor over the backends
     default: 2
-  carbon-c-relay.backends:
-    description: List of backends host (and optionally port) keys in a hash
-    default: []
   carbon-c-relay.ext_clusters:
     description: List of hash with the definition of external clusters
     default: []

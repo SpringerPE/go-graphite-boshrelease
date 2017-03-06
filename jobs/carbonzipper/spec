@@ -25,10 +25,6 @@ properties:
   carbonzipper.port:
     description: "Carbonzipper port to bind to."
     default: 9090
-  carbonzipper.backends:
-    description: "List of backends host keys in a hash."
-    default:
-    - http://127.0.0.1:8080
   carbonzipper.timeout_ms_total_request:
     description: "Maximum total backend requesting timeout in ms. How long we may spend making requests."
     default: 10000
