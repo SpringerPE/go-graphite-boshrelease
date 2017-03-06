@@ -10,8 +10,8 @@ templates:
   data/properties.sh.erb: data/properties.sh
 
 consumes:
-- name: go-carbon-backend
-  type: conn
+- name: go-carbon-carbonserver
+  type: carbonserver
 
 properties:
   carbonzipper.graphite:

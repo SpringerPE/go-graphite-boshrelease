@@ -11,8 +11,10 @@ templates:
   config/carbon-c-relay.conf: config/carbon-c-relay.conf
 
 consumes:
-- name: go-carbon-backend
-  type: conn
+- name: go-carbon-tcp
+  type: tcp
+- name: go-carbon-udp
+  type: udp
 
 properties:
   carbon-c-relay.lb:
