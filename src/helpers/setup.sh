@@ -86,6 +86,10 @@ export TMP_DIR="/var/vcap/sys/tmp/$NAME"
 mkdir -p "$TMP_DIR" && chmod 775 "$TMP_DIR" && chown vcap "$TMP_DIR"
 export TMPDIR="$TMP_DIR"
 
+export STORE_DIR="/var/vcap/store/$NAME"
+mkdir -p "$STORE_DIR" && chmod 775 "$STORE_DIR" && chown vcap "$STORE_DIR"
+
+
 export LANG=C
 export PIDFILE="${RUN_DIR}/${COMPONENT}.pid"
 
