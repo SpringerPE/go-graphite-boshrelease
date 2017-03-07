@@ -1,0 +1,8 @@
+---
+name: statsd
+
+dependencies:
+  - node
+
+files:
+  - statsd/statsd-0.8.0.tar.gz # https://github.com/etsy/statsd/archive/v0.8.0.tar.gz

@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e -x
+
+STATSD_VERSION=0.8.0
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
+export PATH=/var/vcap/packages/node/bin:$PATH
+
+tar -zxf statsd/statsd-${STATSD_VERSION}.tar.gz
+
+cp -a statsd-${STATSD_VERSION}/* $BOSH_INSTALL_TARGET
