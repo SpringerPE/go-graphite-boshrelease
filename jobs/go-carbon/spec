@@ -13,18 +13,30 @@ templates:
   data/properties.sh.erb: data/properties.sh
 
 provides:
-- name: go-carbon-backend
+- name: go-carbon-tcp
   type: tcp
   properties:
+    - go-carbon.tcp.enabled
     - go-carbon.tcp_listen
 - name: go-carbon-udp
   type: udp
   properties:
     - go-carbon.udp.enabled
     - go-carbon.udp.port
+- name: go-carbon-pickle
+  type: pickle
+  properties:
+    - go-carbon.pickle.enabled
+    - go-carbon.pickle.port
+- name: go-carbon-carbonlink
+  type: carbonlink
+  properties:
+    - go-carbon.carbonlink.enabled
+    - go-carbon.carbonlink.port
 - name: go-carbon-carbonserver
   type: carbonserver
   properties:
+    - go-carbon.carbonserver.enabled
     - go-carbon.carbonserver.port
 
 properties:
@@ -43,8 +55,12 @@ properties:
   go-carbon.write_strategy:
     description: "Strategy to persist metrics. Values: max, sorted, noop"
     default: "max"
+
+  go-carbon.tcp.enabled:
+    description: enable tcp if true
+    default: true
   go-carbon.tcp_listen:
-    description:
+    description: binding port for tcp
     default: 2003
 
   go-carbon.udp.enabled:
