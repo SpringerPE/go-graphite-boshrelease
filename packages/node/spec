@@ -1,0 +1,8 @@
+---
+name: node
+
+dependencies:
+  - python
+
+files:
+  - node/node-v0.6.21.tar.gz # https://nodejs.org/dist/v0.6.21/node-v0.6.21.tar.gz
