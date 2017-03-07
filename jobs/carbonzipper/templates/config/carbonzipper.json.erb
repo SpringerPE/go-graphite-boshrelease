@@ -7,8 +7,8 @@
 #
 # NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
 {
-    "Port": <%= p('carbonzipper.port','9090') %>,
-    "MaxProcs": <%= p('carbonzipper.maxprocs','0') %>,
+    "Port": <%= p('carbonzipper.port') %>,
+    "MaxProcs": <%= p('carbonzipper.maxprocs') %>,
     <% if_p("carbonzipper.graphite") do |graphite| %>
     "GraphiteHost": "<%= graphite['host'] %>",
     <% if graphite['interval'] %>
@@ -16,10 +16,10 @@
     <% end %>
     <% end %>
     "Buckets": 10,
-    "TimeoutMs": <%= p('carbonzipper.timeout_ms_total_request','10000') %>,
-    "TimeoutMsAfterAllStarted": <%= p('carbonzipper.timeout_ms_backend','2000') %>,
-    "ConcurrencyLimitPerServer": <%= p('carbonzipper.concurrency_per_server','0') %>,
-    "MaxIdleConnsPerHost": <%= p('carbonzipper.max_idle_con_per_server','100') %>,
+    "TimeoutMs": <%= p('carbonzipper.timeout_ms_total_request') %>,
+    "TimeoutMsAfterAllStarted": <%= p('carbonzipper.timeout_ms_backend') %>,
+    "ConcurrencyLimitPerServer": <%= p('carbonzipper.concurrency_per_server') %>,
+    "MaxIdleConnsPerHost": <%= p('carbonzipper.max_idle_con_per_server') %>,
     "Backends": [
     <% if_link("go-carbon-carbonserver") do |link| %>
     <% link.instances.each_with_index do |backend, i| %>
