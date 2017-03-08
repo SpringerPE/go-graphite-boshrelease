@@ -1,0 +1,46 @@
+---
+name: statsd
+
+packages:
+  - node
+  - statsd
+
+templates:
+  bin/statsd_ctl.erb: bin/statsd_ctl
+  config/config.js.erb: conf/localConfig.js
+
+properties:
+  statsd.port:
+    description: Port to listen for messages on over UDP.
+    default: 8125
+  statsd.graphiteHost:
+    description: graphite host
+    default: "localhost"
+  statsd.graphitePort:
+    description: graphite port
+    default: 2003
+  statsd.prefixStats:
+    description: prefix string for statsd self stats
+    default: ""
+  statsd.deleteIdleStats:
+    description: Don't send values to graphite for inactive counters, sets, gauges, or timers.
+    default: false
+  statsd.deleteIdleGauges:
+    description: Don't send values to graphite for inactive gauges
+    default: false
+  statsd.deleteIdleSets:
+    description: Don't send values to graphite for inactive sets
+    default: false
+  statsd.deleteIdleCounters:
+    description: Don't send values to graphite for inactive counters
+    default: false
+  statsd.deleteIdleTimers:
+    description: Don't send values to graphite for inactive timers
+    default: false
+  statsd.percentThreshold:
+    description:
+    default: [90]
+  statsd.automaticReload:
+    description: enable statsd automatic configuration reload
+    default: true
+

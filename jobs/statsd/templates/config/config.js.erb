@@ -1,0 +1,28 @@
+{
+    port: "<%= p('statsd.port') %>"
+    ,backends: [
+        './backends/graphite',
+        ]
+    ,server: "./servers/tcp"     
+    ,graphiteHost: "<%= p('statsd.graphiteHost') %>"
+    ,graphitePort: "<%= p('statsd.graphitePort') %>"
+    <% if_p("statsd.prefixStats") do %>
+    ,prefixStats: "<%= p('statsd.prefixStats') %>"
+    <% end %>
+
+    <% if_p('statsd.percentThreshold') do |percentThreshold| %>
+    <% if percentThreshold.size > 0 %>
+    ,percentThreshold: [
+    <% percentThreshold.each_with_index do |percent, i| %>
+        <%= percent %><%= ',' if i < (percentThreshold.size - 1) %>
+    <% end %> ]
+    <% end %>
+    <% end %>
+
+    ,automaticConfigReload:<% if p('statsd.automaticReload') == true %>true<% else %>false<% end %>
+    ,deleteIdleStats: <% if p('statsd.deleteIdleStats') == true %>true<% else %>false<% end %>
+    ,deleteGauges: <% if p('statsd.deleteIdleGauges') == true %>true<% else %>false<% end %>
+    ,deleteTimers: <% if p('statsd.deleteIdleTimers') == true %>true<% else %>false<% end %>
+    ,deleteSets: <% if p('statsd.deleteIdleSets') == true %>true<% else %>false<% end %>
+    ,deleteCounters: <% if p('statsd.deleteIdleCounters') == true %>true<% else %>false<% end %>
+}
