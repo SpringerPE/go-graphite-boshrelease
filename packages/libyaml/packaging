@@ -1,0 +1,15 @@
+# abort script on any command that exit with a non zero value
+set -e -x
+
+LIBYAML_VERSION=0.1.7
+
+echo "Extracting libyaml version ${LIBYAML_VERSION} ..."
+tar xzf libyaml/yaml-${LIBYAML_VERSION}.tar.gz
+cd yaml-${LIBYAML_VERSION}
+
+echo "Configuring libyaml..."
+./configure --prefix=${BOSH_INSTALL_TARGET}
+
+echo "Compiling and installing libyaml..."
+make
+make install
