@@ -1,0 +1,4 @@
+---
+name: pkgconfig
+files:
+  - pkgconfig/pkg-config-0.29.1.tar.gz # https://pkg-config.freedesktop.org/releases/pkg-config-0.29.1.tar.gz
