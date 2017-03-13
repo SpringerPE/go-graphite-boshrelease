@@ -9,6 +9,12 @@ templates:
   bin/statsd_ctl.erb: bin/statsd_ctl
   config/config.js.erb: conf/localConfig.js
 
+provides:
+- name: statsd-backend
+  type: statsd
+  properties:
+  - statsd.port
+
 properties:
   statsd.port:
     description: Port to listen for messages on over UDP.
