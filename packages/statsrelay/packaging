@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# abort script on any command that exits with a non zero value
+set -e -x
+
+STATSRELAY_VERSION=f0e8abed
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
+echo "Setting path ..."
+for package_bin_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/bin 2>/dev/null); do
+    PATH="${package_bin_dir}:${PATH}"
+done
+export PATH
+
+echo "Defining libraries path ..."
+for package_lib_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/lib 2>/dev/null); do
+  LDFLAGS="-L${package_lib_dir} ${LDFLAGS}"
+  LIBRARY_PATH="${package_lib_dir}:${LIBRARY_PATH}"
+  [ -d "${package_lib_dir}/pkgconfig" ] && PKG_CONFIG_PATH="${package_lib_dir}/pkgconfig:${PKG_CONFIG_PATH}"
+done
+export LDFLAGS
+export LIBRARY_PATH
+export PKG_CONFIG_PATH
+export LD_LIBRARY_PATH="${LIBRARY_PATH}"
+
+export CFLAGS="-fPIC ${CFLAGS}"
+for package_include_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/include 2>/dev/null); do
+    CPATH="${package_include_dir}:${CPATH}"
+done
+export CPATH
+
+pushd ${BOSH_COMPILE_TARGET}/statsrelay/
+	echo "Extracting statsrelay version ${STATSRELAY_VERSION} ..."
+	tar xvf statsrelay-${STATSRELAY_VERSION}.tar.gz
+
+	pushd statsrelay-${STATSRELAY_VERSION}/
+		./autogen.sh
+		./configure --prefix=${BOSH_INSTALL_TARGET}
+		make clean
+		make
+		make check
+		make install
+	popd
+popd
+
+pushd ${BOSH_COMPILE_TARGET}/
+
+	echo "Install shell helpers ..."
+	cp -av helpers ${BOSH_INSTALL_TARGET}/
+popd

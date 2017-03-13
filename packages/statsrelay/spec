@@ -1,0 +1,12 @@
+---
+name: statsrelay
+
+dependencies:
+  - libyaml
+  - libev
+  - pkgconfig
+  - autotools
+
+files:
+- statsrelay/statsrelay-f0e8abed.tar.gz
+- helpers/**/*

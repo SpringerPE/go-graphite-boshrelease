@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+PACKAGE="statsrelay"
+VERSION="f0e8abed"
+FILE="statsrelay-${VERSION}.tar.gz"
+URL="https://github.com/uber/statsrelay.git"
+
+if [ ! -s "${PACKAGE}/${FILE}" ]; then
+  mkdir -p ${PACKAGE}
+  echo "> Cloning source repo ${URL} ..."
+  git clone ${URL} "${PACKAGE}-${VERSION}"
+  pushd "${PACKAGE}-${VERSION}"
+    echo "> Doing Checkout to tag ..."
+    git checkout ${VERSION}
+  popd
+  echo "> Creating ${PACKAGE}/${FILE} ..."
+  tar --exclude-vcs --exclude .git --exclude .gitmodules --exclude .gitignore --exclude='./test/' -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
+  echo "> Deleting temp folder ..."
+  rm -rf "${PACKAGE}-${VERSION}"
+fi
