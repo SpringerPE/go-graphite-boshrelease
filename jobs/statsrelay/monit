@@ -1,0 +1,5 @@
+check process statsrelay
+  with pidfile /var/vcap/sys/run/statsrelay/statsrelay.pid
+  start program "/var/vcap/jobs/statsrelay/bin/statsrelay_ctl start" with timeout 30 seconds
+  stop program "/var/vcap/jobs/statsrelay/bin/statsrelay_ctl stop"
+  group vcap

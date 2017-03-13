@@ -1,0 +1,32 @@
+---
+name: statsrelay
+
+packages:
+  - statsrelay
+  - libev
+
+templates:
+  bin/statsrelay_ctl.erb: bin/statsrelay_ctl
+  config/statsrelay.yaml.erb: config/statsrelay.yaml
+  data/properties.sh.erb: data/properties.sh
+
+consumes:
+- name: statsd-backend
+  type: statsd
+
+properties:
+  statsrelay.bind_address:
+    description: binding address for statsrelay
+    default: 0.0.0.0
+  statsrelay.port:
+    description: binding port for statsrelay
+    default: 9125
+  statsrelay.validate:
+    description:
+    default: true
+  statsrelay.shards_number:
+    description:
+    default: 4196
+  statsrelay.log_level:
+    description: log level
+    default: INFO

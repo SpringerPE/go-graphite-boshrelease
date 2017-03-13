@@ -1,0 +1,39 @@
+statsd:
+  bind: <%= p("statsrelay.bind_address") %>:<%= p("statsrelay.port") %>
+  validate: <%= p("statsrelay.validate") %>
+  shard_map:
+  <% if_link("statsd-backend") do |link| %>
+    <% 
+    	# Number of shards
+    	shards = p("statsrelay.shards_number")
+    	# Number of statsd backend nodes
+	nodes = link.instances.size
+	bucket_size = shards / nodes
+	#If the number of shards is not divisible by the nodes, how many shards are left unassigned
+	remainder = shards % nodes
+
+	indexes = []
+	shards_map = {}
+
+	(1..nodes).each do |node|
+		
+		# Assign one additional shard to the first (shards % nodes) nodes
+		# and offset the end_index accordingly
+		offset = remainder > node ? node : remainder
+
+		#Start index is 0 if this is the first node we take into consideration
+		#otherwise it is = to the previous node end_index + 1
+		start_index = indexes.size == 0 ? 0 : (indexes[-1] + 1)
+		end_index = (node * bucket_size) + offset
+
+		shards_map[node-1] = (start_index..end_index).to_a
+
+		indexes << end_index
+	end
+     %>
+    <% shards_map.each do |node_index, shards| %>
+      <% shards.each do |shard_number| %>
+         <%= shard_number %>: "<%= link.instances[node_index].address %>:<%= link.p('statsd.port') %>"
+      <% end %>
+    <% end %>
+<% end %>

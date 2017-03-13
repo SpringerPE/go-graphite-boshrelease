@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Load job properties
+source /var/vcap/jobs/statsrelay/data/properties.sh
+
+# Setup env vars and folders for the ctl script
+source /var/vcap/jobs/statsrelay/packages/statsrelay/helpers/setup.sh "statsrelay"
+
+# Load function lib (alway before setup, there are some global variables needed)
+source /var/vcap/jobs/statsrelay/packages/statsrelay/helpers/lib.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $COMPONENT
+
+    (
+        {
+            exec chpst -u vcap:vcap /var/vcap/jobs/statsrelay/packages/statsrelay/bin/statsrelay \
+                 --config=/var/vcap/jobs/statsrelay/config/statsrelay.yaml \
+                 <% if p("statsrelay.validate") == true %>
+                 --check-config=/var/vcap/jobs/statsrelay/config/statsrelay.yaml \
+                 <% end %>
+                  --version \
+                  --log-level <%= p("statsrelay.log_level") %>
+        } >>${LOG_DIR}.stdout.log \
+        2>>${LOG_DIR}.stderr.log
+    ) &
+    echo $! > $PIDFILE
+    echo "$(<${PIDFILE}). Done"
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: statsrelay_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0
