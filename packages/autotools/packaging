@@ -1,0 +1,33 @@
+# packages/autotools/packaging
+
+# abort script on any command that exit with a non zero value
+# treat unset variables as an error when substituting.
+set -e
+set -u
+
+AUTOCONF_VERSION=2.69
+AUTOMAKE_VERSION=1.15
+
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
+tar xzf autotools/autoconf-${AUTOCONF_VERSION}.tar.gz
+
+pushd autoconf-${AUTOCONF_VERSION}
+	./configure  --prefix=${BOSH_INSTALL_TARGET}
+	make
+	make install
+popd
+
+echo "Setting path ..."
+for package_bin_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/bin 2>/dev/null); do
+    PATH="${package_bin_dir}:${PATH}"
+done
+export PATH
+
+tar xzf autotools/automake-${AUTOMAKE_VERSION}.tar.gz
+
+pushd automake-${AUTOMAKE_VERSION}
+	./configure  --prefix=${BOSH_INSTALL_TARGET}
+	make
+	make install
+popd
