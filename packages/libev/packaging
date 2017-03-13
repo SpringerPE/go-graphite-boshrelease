@@ -1,0 +1,15 @@
+# abort script on any command that exit with a non zero value
+set -e -x
+
+LIBEV_VERSION=4.24
+
+echo "Extracting libev version ${LIBEV_VERSION} ..."
+tar xzf libev/libev-${LIBEV_VERSION}.tar.gz
+cd libev-${LIBEV_VERSION}
+
+echo "Configuring libev..."
+./configure --prefix=${BOSH_INSTALL_TARGET}
+
+echo "Compiling and installing libev..."
+make
+make install
