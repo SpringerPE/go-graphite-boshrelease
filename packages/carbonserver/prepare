@@ -18,7 +18,7 @@ if [ ! -s "${PACKAGE}/${FILE}" ]; then
     echo "> Doing Checkout to tag ..."
     git checkout ${VERSION}
     echo "> Getting all the go dependencies ..."
-    GOPATH=$(pwd) go get
+    GOPATH=$(pwd) go get -d
   popd
   echo "> Creating ${PACKAGE}/${FILE} ..."
   tar --exclude-vcs --exclude .git --exclude .gitmodules --exclude .gitignore -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
