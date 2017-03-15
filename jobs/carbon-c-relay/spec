@@ -10,11 +10,22 @@ templates:
   data/properties.sh.erb: data/properties.sh
   config/carbon-c-relay.conf: config/carbon-c-relay.conf
 
+provides:
+- name: carbon-c-relay
+  type: relay
+  properties:
+  - carbon_c_relay.port
+
 consumes:
 - name: go-carbon-tcp
   type: tcp
 - name: go-carbon-udp
   type: udp
+- name: relay
+  type: relay
+  optional: true
+
+
 
 properties:
   carbon-c-relay.lb:
