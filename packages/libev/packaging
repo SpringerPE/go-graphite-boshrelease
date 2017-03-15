@@ -1,15 +1,16 @@
+#!/usr/bin/env bash
+
 # abort script on any command that exit with a non zero value
 set -e -x
 
-LIBEV_VERSION=4.24
+LIBEV_VERSION=$(ls -v -r libev/libev-*.tar.gz | sed 's/.*\/libev-\(.*\)\.tar\.gz$/\1/' | head -1)
 
 echo "Extracting libev version ${LIBEV_VERSION} ..."
-tar xzf libev/libev-${LIBEV_VERSION}.tar.gz
-cd libev-${LIBEV_VERSION}
 
-echo "Configuring libev..."
-./configure --prefix=${BOSH_INSTALL_TARGET}
-
-echo "Compiling and installing libev..."
-make
-make install
+tar xzf "libev/libev-${LIBEV_VERSION}.tar.gz"
+pushd libev-${LIBEV_VERSION}/
+	echo "Configuring libev..."
+	./configure --prefix=${BOSH_INSTALL_TARGET}
+	echo "Compiling and installing libev..."
+	make && make install
+popd

@@ -8,5 +8,5 @@ dependencies:
 - libcairo
 
 files:
-- carbonapi/carbonapi-*.tar.gz
+- carbonapi/carbonapi-6ea1863.tar.gz
 - helpers/**/*

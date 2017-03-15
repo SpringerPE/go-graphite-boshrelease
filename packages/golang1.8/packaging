@@ -1,4 +1,6 @@
-set -ex
+#!/usr/bin/env bash
+
+set -e -x
 
 echo "Extracting go binaries ... "
 tar xzf golang1.8/go1.8.linux-amd64.tar.gz

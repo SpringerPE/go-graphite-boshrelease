@@ -1,3 +1,4 @@
+#!/bin/bash
 # packages/python/packaging
 
 # abort script on any command that exit with a non zero value
@@ -5,11 +6,12 @@
 set -e
 set -u
 
-VERSION=2.7.13
+PYTHON_VERSION=$(ls -v -r python/Python-*.tgz | sed 's/.*\/Python-\(.*\)\.tgz$/\1/' | head -1)
 
-cd python
-tar xfz Python-${VERSION}.tgz
-cd Python-${VERSION}
-./configure  --prefix=${BOSH_INSTALL_TARGET}
-make
-make install
+echo "Extracting python version ${PYTHON_VERSION}..."
+tar xfz python/Python-${PYTHON_VERSION}.tgz
+pushd Python-${PYTHON_VERSION}/
+	./configure  --prefix=${BOSH_INSTALL_TARGET}
+	make && make install
+popd
+

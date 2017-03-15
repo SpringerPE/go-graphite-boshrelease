@@ -29,22 +29,19 @@ for package_include_dir in $(ls -d ${BOSH_PACKAGES_DIR}/*/include 2>/dev/null); 
 done
 export CPATH
 
-pushd ${BOSH_COMPILE_TARGET}/statsrelay/
-	echo "Extracting statsrelay version ${STATSRELAY_VERSION} ..."
-	tar xvf statsrelay-${STATSRELAY_VERSION}.tar.gz
-
-	pushd statsrelay-${STATSRELAY_VERSION}/
-		./autogen.sh
-		./configure --prefix=${BOSH_INSTALL_TARGET}
-		make clean
-		make
-		make check
-		make install
-	popd
+echo "Extracting statsrelay version ${STATSRELAY_VERSION} ..."
+tar xvf "statsrelay/statsrelay-${STATSRELAY_VERSION}.tar.gz"
+echo "Installing statsrelay..."
+pushd statsrelay-${STATSRELAY_VERSION}/
+	./autogen.sh
+	./configure --prefix=${BOSH_INSTALL_TARGET}
+	make clean
+	make
+	make check
+	make install
 popd
 
 pushd ${BOSH_COMPILE_TARGET}/
-
 	echo "Install shell helpers ..."
 	cp -av helpers ${BOSH_INSTALL_TARGET}/
 popd

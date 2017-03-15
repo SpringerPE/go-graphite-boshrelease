@@ -1,15 +1,13 @@
 # abort script on any command that exit with a non zero value
 set -e -x
 
-LIBYAML_VERSION=0.1.7
+LIBYAML_VERSION=$(ls -v -r libyaml/yaml-*.tar.gz | sed 's/.*\/yaml-\(.*\)\.tar\.gz$/\1/' | head -1)
 
 echo "Extracting libyaml version ${LIBYAML_VERSION} ..."
-tar xzf libyaml/yaml-${LIBYAML_VERSION}.tar.gz
-cd yaml-${LIBYAML_VERSION}
-
-echo "Configuring libyaml..."
-./configure --prefix=${BOSH_INSTALL_TARGET}
-
-echo "Compiling and installing libyaml..."
-make
-make install
+tar xzf "libyaml/yaml-${LIBYAML_VERSION}.tar.gz"
+pushd yaml-${LIBYAML_VERSION}/
+	echo "Configuring libyaml..."
+	./configure --prefix=${BOSH_INSTALL_TARGET}
+	echo "Compiling and installing libyaml..."
+	make && make install
+popd

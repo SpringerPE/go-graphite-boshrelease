@@ -2,7 +2,7 @@
 set -e -x
 
 # Grab the versions that are in the directory FIXME!
-CARBONAPI_VERSION=$(ls -v -r carbonapi/carbonapi-*.tar.gz | sed 's/.*\/carbonapi-\(.*\)\.tar\.gz$/\1/' | head -1)
+CARBONAPI_VERSION=6ea1863
 BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
 
 echo "Setting path ..."

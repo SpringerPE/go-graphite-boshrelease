@@ -1,17 +1,20 @@
 # abort script on any command that exits with a non zero value
 set -e -x
 
+CARBONSERVER_VERSION=88ae672
+BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
+
 echo "Extracting carbonserver ..."
-tar xvf carbonserver/carbonserver-88ae672.tar.gz
+tar xvf carbonserver/carbonserver-${CARBONSERVER_VERSION}.tar.gz
 
 echo "Setting the GO env variables ..."
-export GOPATH=${BOSH_COMPILE_TARGET}/carbonserver-88ae672
-export GOROOT=$(readlink -nf /var/vcap/packages/golang1.6)
+export GOPATH=${BOSH_COMPILE_TARGET}/carbonserver-${CARBONSERVER_VERSION}
+export GOROOT=$(readlink -nf /var/vcap/packages/golang1.8)
 export PATH=${GOROOT}/bin:${PATH}
 
 echo "Installing carbonserver ..."
-pushd carbonserver-88ae672
-  go build -o carbonserver
-  mkdir -p ${BOSH_INSTALL_TARGET}/bin
-  install -m 0755 carbonserver ${BOSH_INSTALL_TARGET}/bin
+pushd carbonserver-${CARBONSERVER_VERSION}
+	go build -o carbonserver
+	mkdir -p ${BOSH_INSTALL_TARGET}/bin
+	install -m 0755 carbonserver ${BOSH_INSTALL_TARGET}/bin
 popd

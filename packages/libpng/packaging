@@ -8,7 +8,7 @@ LIBPNG_VERSION=$(ls -v -r libpng/libpng-*.tar.gz | sed 's/.*\/libpng-\(.*\)\.tar
 BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
 
 echo "Extracting libpng ${LIBPNG_VERSION} ... "
-tar xzvf "libpng/libpng-${LIBPNG_VERSION}.tar.gz"
+tar xzf "libpng/libpng-${LIBPNG_VERSION}.tar.gz"
 
 echo "Defining libraries path ..."
 export CPPFLAGS="-I/var/vcap/packages/zlib/include ${CPPFLAGS}"
@@ -17,8 +17,6 @@ export LIBRARY_PATH="/var/vcap/packages/zlib/lib:${LIBRARY_PATH}"
 
 echo "Building libpng ... "
 pushd "libpng-${LIBPNG_VERSION}"
-  ./configure --prefix=${BOSH_INSTALL_TARGET}
-  make
-  make install
+	./configure --prefix=${BOSH_INSTALL_TARGET}
+	make && make install
 popd
-

@@ -2,7 +2,7 @@
 set -e -x
 
 # Grab the versions that are in the directory FIXME!
-CARBONZIPPER_VERSION=$(ls -v -r carbonzipper/carbonzipper-*.tar.gz | sed 's/.*\/carbonzipper-\(.*\)\.tar\.gz$/\1/' | head -1)
+CARBONZIPPER_VERSION=082d450
 BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
 
 echo "Setting path ..."

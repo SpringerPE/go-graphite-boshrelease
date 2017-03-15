@@ -1,15 +1,16 @@
+#!/bin/bash
+
 # abort script on any command that exit with a non zero value
 set -e -x
 
-PKGCONFIG_VERSION=0.29.1
+PKGCONFIG_VERSION=$(ls -v -r pkgconfig/pkg-config-*.tar.gz | sed 's/.*\/pkg-config-\(.*\)\.tar\.gz$/\1/' | head -1)
 
 echo "Extracting pkg-config version ${PKGCONFIG_VERSION} ..."
-tar xzf pkgconfig/pkg-config-${PKGCONFIG_VERSION}.tar.gz
-cd pkg-config-${PKGCONFIG_VERSION}
+tar xzf "pkgconfig/pkg-config-${PKGCONFIG_VERSION}.tar.gz"
+pushd pkg-config-${PKGCONFIG_VERSION}/
 
-echo "Configuring pkg-config..."
-./configure --with-internal-glib --prefix=${BOSH_INSTALL_TARGET}
-
-echo "Compiling and installing pkg-config..."
-make
-make install
+	echo "Configuring and installing pkg-config..."
+	./configure --with-internal-glib --prefix=${BOSH_INSTALL_TARGET}
+	make
+	make install
+popd

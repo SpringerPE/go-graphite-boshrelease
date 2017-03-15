@@ -2,16 +2,15 @@
 
 set -e -x
 
-NODE_VERSION=0.6.21
+NODE_VERSION=$(ls -v -r node/node-v*.tar.gz | sed 's/.*\/node-v\(.*\)\.tar\.gz$/\1/' | head -1)
 
 export PATH=/var/vcap/packages/python/bin:$PATH
 export LD_LIBRARY_PATH=/var/vcap/packages/python/lib
 
 echo "Extracting node version ${NODE_VERSION} ..."
-tar -zxf node/node-v${NODE_VERSION}.tar.gz
-
-cd node-v${NODE_VERSION}
-
-echo "Configure and install node version ${NODE_VERSION} ..."
-./configure --prefix=${BOSH_INSTALL_TARGET}
-make && make install
+tar -zxf "node/node-v${NODE_VERSION}.tar.gz"
+pushd node-v${NODE_VERSION}
+	echo "Configure and install node version ${NODE_VERSION} ..."
+	./configure --prefix=${BOSH_INSTALL_TARGET}
+	make && make install
+popd
