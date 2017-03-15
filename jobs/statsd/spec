@@ -8,6 +8,7 @@ packages:
 templates:
   bin/statsd_ctl.erb: bin/statsd_ctl
   config/config.js.erb: conf/localConfig.js
+  data/properties.sh.erb: data/properties.sh
 
 provides:
 - name: statsd-backend
