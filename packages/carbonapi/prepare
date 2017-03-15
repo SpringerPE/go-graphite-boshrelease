@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
+set -e
+
 PACKAGE="carbonapi"
 VERSION="6ea1863"
 FILE="carbonapi-${VERSION}.tar.gz"
 URL="https://github.com/dgryski/carbonapi.git"
+
+command -v git >/dev/null 2>&1 || { echo "Please install git before running the prepare script.  Aborting." >&2; exit 1; }
+command -v go >/dev/null 2>&1 || { echo "Please install golang before running the prepare script.  Aborting." >&2; exit 1; }
 
 if [ ! -s "${PACKAGE}/${FILE}" ]; then
   mkdir -p ${PACKAGE}

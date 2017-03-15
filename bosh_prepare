@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 SRC=$(pwd)/blobs
 SHELL=/bin/bash
 AWK=awk

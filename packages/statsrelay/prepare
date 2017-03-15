@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+set -e
+
 PACKAGE="statsrelay"
 VERSION="f0e8abed"
 FILE="statsrelay-${VERSION}.tar.gz"
 URL="https://github.com/uber/statsrelay.git"
+
+command -v git >/dev/null 2>&1 || { echo "Please install git before running the prepare script.  Aborting." >&2; exit 1; }
 
 if [ ! -s "${PACKAGE}/${FILE}" ]; then
   mkdir -p ${PACKAGE}
