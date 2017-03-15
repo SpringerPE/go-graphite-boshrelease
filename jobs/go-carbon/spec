@@ -6,6 +6,7 @@ packages:
 
 templates:
   bin/go-carbon_ctl: bin/go-carbon_ctl
+  bin/pre-start.erb: bin/pre-start
   config/go-carbon.conf.erb: config/go-carbon.conf
   config/storage-schema.conf.erb: config/storage-schemas.conf
   config/storage-aggregation.conf.erb: config/storage-aggregation.conf
@@ -123,7 +124,17 @@ properties:
     description:
     default: "60s"
 
-
   go-carbon.dump.enabled:
-      description: enable dump
-      default: false
+    description: enable dump
+    default: false
+
+  go-carbon.whisper_maintenance_enabled:
+    description: Enable cron maintenance job to delete unmodified whisper files
+    default: true
+  go-carbon.whisper_maintenance_keep_days:
+    description: "Days to keep unmodified whisper files (find mtime parameter)"
+    default: 14
+  go-carbon.whisper_maintenance_crontab:
+    description: "Crontab definition to setup maintenance job (<Minute> <Hour> <Day_of_the_Month> <Month_of_the_Year> <Day_of_the_Week>)"
+    default: "0 22 * * *"
+

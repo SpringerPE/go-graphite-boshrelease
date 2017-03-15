@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#
+# The purpose of this script is to setup a crontab job in order to delete
+# unused whisper files
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+KEEP_DAYS="<%= p('go-carbon.whisper_maintenance_keep_days') %>"
+CRONTAB="<%= p('go-carbon.whisper_maintenance_crontab') %>"
+
+<% if p("go-carbon.whisper_maintenance_enabled") == true || p("go-carbon.whisper_maintenance_enabled") =~ (/(true|t|yes|y|1)$/i) %>
+cat << EOF > /etc/cron.d/go-carbon-whisper-maintenace
+${CRONTAB} root find /var/vcap/store/go-carbon/whisper -type f -mtime +${KEEP_DAYS} -name '*.wsp' -delete && find /var/vcap/store/go-carbon/whisper -depth -type d -empty -delete
+EOF
+<% else %>
+rm -f /etc/cron.d/go-carbon-whisper-maintenace
+<% end %>
+
