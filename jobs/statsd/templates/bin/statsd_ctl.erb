@@ -1,6 +1,16 @@
 #!/bin/bash
 
-set -e
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Load job properties
+source /var/vcap/jobs/statsd/data/properties.sh
+
+# Setup env vars and folders for the ctl script
+source /var/vcap/jobs/statsd/packages/statsd/helpers/setup.sh "statsd"
+
+# Load function lib (alway before setup, there are some global variables needed)
+source /var/vcap/jobs/statsd/packages/statsd/helpers/lib.sh
 
 case $1 in
 
