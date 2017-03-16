@@ -33,18 +33,18 @@ properties:
 
   os-tuning.ip_local_port_range:
     description: "Ephemeral port range"
-    example: "10000 65535"
+    default: "10000 65535"
   os-tuning.tcp_fin_timeout:
     description: "Determines the time that must elapse before TCP/IP can release a closed connection and reuse its resources"
-    example: 5
+    default: 5
   os-tuning.tcp_tw_recycle:
     description: "It enables fast recycling of TIME_WAIT sockets. The default value is 0 (disabled)"
-    example: 0
+    default: 0
   os-tuning.tcp_tw_reuse:
     description: "Allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint. The default value is 0 (disabled)"
-    example: 0
+    default: 1
 
   os-tuning.somaxconn:
     description: "Max queued connections than are allowed by default"
-    example: 1024
+    default: 1024
 
