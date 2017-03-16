@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+
+<% if_p("os-tuning.vm_dirty_ratio") do |vm| %>
+sysctl vm.dirty_ratio=<%= vm %>
+# In case VM is restarted
+echo "vm.dirty_ratio=<%= vm %>" > /etc/sysctl.d/70-bosh-vm-dirty_ratio.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-vm-dirty_ratio.conf
+<% end %>
+
+<% if_p("os-tuning.vm_dirty_background_ratio") do |vm| %>
+sysctl vm.dirty_background_ratio=<%= vm %>
+# In case VM is restarted
+echo "vm.dirty_background_ratio=<%= vm %>" > /etc/sysctl.d/70-bosh-vm-dirty_background_ratio.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-vm-dirty_background_ratio.conf
+<% end %>
+
+<% if_p("os-tuning.vm_dirty_expire_centisecs") do |vm| %>
+sysctl vm.dirty_expire_centisecs=<%= vm %>
+# In case VM is restarted
+echo "vm.dirty_expire_centisecs=<%= vm %>" > /etc/sysctl.d/70-bosh-vm-dirty_expire_centisecs.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-vm-dirty_expire_centisecs.conf
+<% end %>
+
+
+<% if_p("os-tuning.default_scheduler") do |scheduler| %>
+SCHEDULER="<%= scheduler %>"
+for drive_scheduler in /sys/block/sd?/queue/scheduler; do
+  if [ "$(<$drive_scheduler)" != "none" ]; then
+    echo ${SCHEDULER} > "$drive_scheduler"
+  fi
+done
+# In case VM is restarted
+cat << EOF > /etc/udev/rules.d/60-scheduler.rules
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="${SCHEDULER}"
+EOF
+<% end.else do %>
+rm -f /etc/udev/rules.d/60-scheduler.rules
+<% end %>
+
+
+<% if_p("os-tuning.ip_local_port_range") do |ports| %>
+# Ephemeral port range
+sysctl -w net.ipv4.ip_local_port_range="<%= ports %>"
+# In case VM is restarted
+echo "net.ipv4.ip_local_port_range='<%= ports %>'" > /etc/sysctl.d/70-bosh-ip_local_port_range.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-ip_local_port_range.conf
+<% end %>
+
+<% if_p("os-tuning.tcp_fin_timeout") do |fin| %>
+# TCP_FIN_TIMEOUT
+# This setting determines the time that must elapse before TCP/IP can release a closed connection and reuse
+# its resources. During this TIME_WAIT state, reopening the connection to the client costs less than establishing
+# a new connection. By reducing the value of this entry, TCP/IP can release closed connections faster, making more
+# resources available for new connections. Addjust this in the presense of many connections sitting in the
+# TIME_WAIT state:
+sysctl net.ipv4.tcp_fin_timeout=<%= fin %>
+# In case VM is restarted
+echo "net.ipv4.tcp_fin_timeout=<%= fin %>" > /etc/sysctl.d/70-bosh-tcp_fin_timeout.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-tcp_fin_timeout.conf
+<% end %>
+
+<% if_p("os-tuning.tcp_tw_recycle") do |recycle| %>
+# TCP_TW_RECYCLE
+# It enables fast recycling of TIME_WAIT sockets. The default value is 0 (disabled). The sysctl documentation
+# incorrectly states the default as enabled. It can be changed to 1 (enabled) in many cases. Known to cause some
+# issues with hoststated (load balancing and fail over) if enabled, should be used with caution.
+sysctl net.ipv4.tcp_tw_recycle=<%= recycle %>
+# In case VM is restarted
+echo "net.ipv4.tcp_tw_recycle=<%= recycle %>" > /etc/sysctl.d/70-bosh-tcp_tw_recycle.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-tcp_tw_recycle.conf
+<% end %>
+
+<% if_p("os-tuning.tcp_tw_reuse") do |reuse| %>
+# TCP_TW_REUSE
+# This allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint.
+# Default value is 0 (disabled). It is generally a safer alternative to tcp_tw_recycle
+sysctl net.ipv4.tcp_tw_reuse=<%= reuse %>
+# In case VM is restarted
+echo "net.ipv4.tcp_tw_reuse=<%= reuse %>" > /etc/sysctl.d/70-bosh-tcp_tw_reuse.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-tcp_tw_reuse.conf
+<% end %>
+
+
+<% if_p("os-tuning.somaxconn") do |maxconn| %>
+# Allow a few more queued connections than are allowed by default
+sysctl net.core.somaxconn=<%= maxconn %>
+# In case VM is restarted
+echo "net.core.somaxconn=<%= maxconn %>" > /etc/sysctl.d/70-bosh-core_somaxconn.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-core_somaxconn.conf
+<% end %>
+
+
+<% if_p("os-tuning.tcp_keepalive_time") do |keepalive| %>
+sysctl net.ipv4.tcp_keepalive_time=<%= keepalive %>
+# In case VM is restarted
+echo "net.ipv4.tcp_keepalive_time=<%= keepalive %>" > /etc/sysctl.d/70-bosh-tcp-keepalive_time.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-tcp-keepalive_time.conf
+<% end %>
+
+<% if_p("os-tuning.tcp_keepalive_interval") do |keepalive| %>
+sysctl net.ipv4.tcp_keepalive_intvl=<%= keepalive %>
+# In case VM is restarted
+echo "net.ipv4.tcp_keepalive_intvl=<%= keepalive %>" > /etc/sysctl.d/70-bosh-tcp-keepalive_intvl.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-tcp-keepalive_intvl.conf
+<% end %>
+
+<% if_p("os-tuning.tcp_keepalive_probes") do |keepalive| %>
+sysctl net.ipv4.tcp_keepalive_probes=<%= keepalive %>
+# In case VM is restarted
+echo "net.ipv4.tcp_keepalive_probes=<%= keepalive %>" > /etc/sysctl.d/70-bosh-tcp-keepalive_probes.conf
+<% end.else do %>
+rm -f /etc/sysctl.d/70-bosh-tcp-keepalive_probes.conf
+<% end %>
+
