@@ -37,25 +37,25 @@ properties:
     description: List of hash with the definition of external clusters
     default: []
   carbon-c-relay.ext_rules:
-    description: List of hash with the definition of rules to send to external clusters
+    description: List of hash with the definition of rules to apply when sending metrics to the external clusters
     default: []
   carbon-c-relay.rewrite:
-    description: List of hash with the definition of rules to rewrite metrics
+    description: List of hash with the definition of rules to rewrite metric names
     default: []
   carbon_c_relay.port:
-    description: listen on port for connections
+    description: binding port for the carbon-c-relay process
     default: 2003
   carbon_c_relay.workers:
     description: number of worker threads
     default: 4
   carbon_c_relay.batch_size:
-    description: server send batch size
+    description: "Set the amount of metrics that sent to remote servers at once to batchsize"
     default: 2500
   carbon_c_relay.queue_size:
-    description: server queue size
+    description: "Size of the queue associated with the server, allows for disruptions and bursts to be handled"
     default: 25000
   carbon_c_relay.stats_interval:
-    description: statistics sending interval in seconds
+    description: "Set the interval in which statistics are being generated and sent by the relay to interval seconds"
     default: 60
   carbon_c_relay.stats_prefix:
     description: adds prefix into the namespace when sending stats. Example using "LIVE" you will get "carbon.relays.LIVE_carbon_c_relay_leader_z1_0"

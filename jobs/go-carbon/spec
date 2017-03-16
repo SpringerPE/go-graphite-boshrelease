@@ -42,47 +42,47 @@ provides:
 
 properties:
   go-carbon.metric_interval:
-    description: 
+    description: "Interval of storing internal metrics"
     default: "1m0s"
   go-carbon.max_cpu:
-    description: Number of CPUs to use (GOMAXPROCS)
+    description: "Number of CPUs to use (GOMAXPROCS)"
     default: 0
   go-carbon.whisper_workers:
-    description:
+    description: "Workers count. Metrics sharded by 'crc32(metricName) % workers'"
     default: 16
   go-carbon.cache_max_size:
-    description:
+    description: "Limit of in-memory stored points (not metrics)"
     default: 20000000
   go-carbon.write_strategy:
     description: "Strategy to persist metrics. Values: max, sorted, noop"
     default: "max"
 
   go-carbon.tcp.enabled:
-    description: enable tcp if true
+    description: "enable tcp protocol if true"
     default: true
   go-carbon.tcp_listen:
-    description: binding port for tcp
+    description: "tcp binding port for go-carbon process. Requires go-carbon.tcp.enabled to be set to true"
     default: 2003
 
   go-carbon.udp.enabled:
-    description: enable udp if true
+    description: "enable udp protocol if true"
     default: false
   go-carbon.udp.port:
-    description: udp port
+    description: "udp binding port for go-carbon process. Requires go-carbon.udp.enabled to be set to true"
     default: 2003
   go-carbon.udp.host:
-    description: udp host
-    default: ""
+    description: "udp binding host for go-carbon process. Requires go-carbon.udp.enabled to be set to true"
+    default: "localhost"
 
   go-carbon.pickle.enabled:
-    description: enable pickle if true
+    description: "enable pickle protocol if true"
     default: false
   go-carbon.pickle.port:
     description: pickle port
     default: 2004
   go-carbon.pickle.host:
     description: pickle host
-    default: ""
+    default: "localhost"
 
   go-carbon.carbonlink.enabled:
     description: enable carbonlink if true
@@ -92,10 +92,10 @@ properties:
     default: 2007
   go-carbon.carbonlink.host:
     description: carbonlink host
-    default: ""
+    default: "localhost"
 
   go-carbon.schemas:
-    description: Storage schemas
+    description: "Storage schemas as in http://graphite.readthedocs.org/en/latest/config-carbon.html#storage-schemas-conf."
     default:
       - name: "carbon"
         pattern: "^carbon\\."
@@ -105,27 +105,27 @@ properties:
         retentions: "60s:1d"
 
   go-carbon.aggregations:
-    description: storage aggregations
+    description: "storage aggregations as in http://graphite.readthedocs.org/en/latest/config-carbon.html#storage-aggregation-conf"
     default: []
 
   go-carbon.carbonserver.enabled:
-      description:
+      description: "enable carbonserver if set to true"
       default: false
   go-carbon.carbonserver.port:
-    description: carbonserver port
+    description: "binding port for carbonserver"
     default: 8080
   go-carbon.carbonserver.host:
-    description: carbonserver host
+    description: "binding host for carbonserverS"
     default: "localhost"
   go-carbon.carbonserver.read_timeout:
-    description:
+    description: "Read timeout for HTTP server"
     default: "60s"
   go-carbon.carbonserver.write_timeout:
-    description:
+    description: "Write timeout for HTTP server"
     default: "60s"
 
   go-carbon.dump.enabled:
-    description: enable dump
+    description: "Enable dump/restore function on USR2 signal"
     default: false
 
   go-carbon.whisper_maintenance_enabled:

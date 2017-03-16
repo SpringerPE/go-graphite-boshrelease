@@ -14,12 +14,12 @@ templates:
 
 properties:
   carbonapi.graphite:
-    description: "Hash defining graphite endpoint for internal metrics: host, interval"
+    description: "Hash defining graphite endpoint for internal carbonapi metrics: host:port, interval"
     example:
       host: "host:port"
       interval: 60
   carbonapi.cache:
-    description: "Hash defining the type of cache to use: mem or memcache"
+    description: "Hash defining the type of cache to use: allowed values are: <mem | memcache>"
     default:
       type: mem
       memsize: 0
@@ -27,7 +27,7 @@ properties:
     description: "Concurrency limit (for api queries)"
     default: 20
   carbonapi.idleconns:
-    description: "Max idle connections"
+    description: "Max number of idle connections"
     default: 10
   carbonapi.cpus:
     description: "Number of CPUs to use (GOMAXPROCS, 0 == unlimited)"
@@ -39,5 +39,5 @@ properties:
     description: "Carbonzipper backend URL"
     default: "http://127.0.0.1:9090"
   carbonapi.port:
-    description: "Carbonapi listen port"
+    description: "binding port for the carbonapi process"
     default: 80

@@ -15,7 +15,7 @@ consumes:
 
 properties:
   carbonzipper.graphite:
-    description: "Hash defining graphite endpoint for internal metrics: host, interval."
+    description: "Hash defining the graphite endpoint for internal carbonzipper metrics: host:port, interval."
     example:
       host: "host:port"
       interval: 60
@@ -23,7 +23,7 @@ properties:
     description: "GOMAXPROCS setting."
     default: 0
   carbonzipper.port:
-    description: "Carbonzipper port to bind to."
+    description: "port the carbonzipper process binds to"
     default: 9090
   carbonzipper.timeout_ms_total_request:
     description: "Maximum total backend requesting timeout in ms. How long we may spend making requests."

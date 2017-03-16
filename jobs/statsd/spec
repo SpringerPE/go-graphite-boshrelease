@@ -18,36 +18,36 @@ provides:
 
 properties:
   statsd.port:
-    description: Port to listen for messages on over UDP.
+    description: "Port to listen for messages on over UDP."
     default: 8125
   statsd.graphiteHost:
-    description: graphite host
+    description: "hostname or IP of Graphite server"
     default: "localhost"
   statsd.graphitePort:
-    description: graphite port
+    description: "port for the graphite text collector"
     default: 2003
   statsd.prefixStats:
-    description: prefix string for statsd self stats
+    description: "prefix to use for the statsd statistics data for this running instance of statsd"
     default: ""
   statsd.deleteIdleStats:
-    description: Don't send values to graphite for inactive counters, sets, gauges, or timers.
+    description: "Don't send values to graphite for inactive counters, sets, gauges, or timers."
     default: false
   statsd.deleteIdleGauges:
-    description: Don't send values to graphite for inactive gauges
+    description: "Don't send values to graphite for inactive gauges"
     default: false
   statsd.deleteIdleSets:
-    description: Don't send values to graphite for inactive sets
+    description: "Don't send values to graphite for inactive sets"
     default: false
   statsd.deleteIdleCounters:
-    description: Don't send values to graphite for inactive counters
+    description: "Don't send values to graphite for inactive counters"
     default: false
   statsd.deleteIdleTimers:
-    description: Don't send values to graphite for inactive timers
+    description: "Don't send values to graphite for inactive timers"
     default: false
   statsd.percentThreshold:
-    description:
+    description: "for time information, calculate the Nth percentile(s), (can be a single value or list of floating-point values)"
     default: [90]
   statsd.automaticReload:
-    description: enable statsd automatic configuration reload
+    description: "enable statsd automatic configuration reload"
     default: true
 
