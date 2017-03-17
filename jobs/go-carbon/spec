@@ -15,17 +15,17 @@ templates:
 
 provides:
 - name: go-carbon-tcp
-  type: tcp
+  type: carbon-tcp
   properties:
     - go-carbon.tcp.enabled
     - go-carbon.tcp_listen
 - name: go-carbon-udp
-  type: udp
+  type: carbon-udp
   properties:
     - go-carbon.udp.enabled
     - go-carbon.udp.port
 - name: go-carbon-pickle
-  type: pickle
+  type: carbon-pickle
   properties:
     - go-carbon.pickle.enabled
     - go-carbon.pickle.port
@@ -34,7 +34,7 @@ provides:
   properties:
     - go-carbon.carbonlink.enabled
     - go-carbon.carbonlink.port
-- name: go-carbon-carbonserver
+- name: carbonserver
   type: carbonserver
   properties:
     - go-carbon.carbonserver.enabled

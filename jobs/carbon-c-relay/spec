@@ -18,9 +18,9 @@ provides:
 
 consumes:
 - name: go-carbon-tcp
-  type: tcp
+  type: carbon-tcp
 - name: go-carbon-udp
-  type: udp
+  type: carbon-udp
 - name: relay
   type: relay
   optional: true
