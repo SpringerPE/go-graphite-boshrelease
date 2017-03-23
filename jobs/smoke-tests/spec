@@ -1,0 +1,30 @@
+---
+name: smoke-tests
+
+packages:
+  - golang1.8
+  - smoke-tests
+
+templates:
+  run.erb: bin/run
+  config.json.erb: bin/config.json
+
+properties:
+  smoke_tests.host:
+    description: The Graphite Backend endpoint URL (where to send the metrics)
+  smoke_tests.port:
+    default: 2003
+    description: The Graphite Backend endpoint port
+  smoke_tests.api_host:
+    description: The Graphite api endpoint URL (from where to read the metrics)
+  smoke_tests.api_port:
+    description: The Graphite api endpoint port
+  smoke_tests.tcp_enabled:
+    description: set to true to enable tcp smoke tests
+    default: true
+  smoke_tests.udp_enabled:
+    description: set to true to enable udp smoke tests
+    default: false
+  smoke_tests.ginkgo_opts:
+    description: options to pass to ginkgo
+    default: "-r"

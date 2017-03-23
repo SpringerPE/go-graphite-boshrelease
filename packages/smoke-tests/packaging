@@ -1,0 +1,21 @@
+# abort script on any command that exits with a non zero value
+set -e -x
+
+SMOKE_TESTS_VERSION=$(ls -v -r smoke-tests/graphite-smoke-tests-*.tar.gz | sed 's/.*\/graphite-smoke-tests-\(.*\)\.tar\.gz$/\1/' | head -1)
+
+# Available variables
+# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+
+REPO_DIR=${BOSH_INSTALL_TARGET}/src/github.com/SpringerPE/graphite-smoke-tests
+mkdir -p ${REPO_DIR}
+
+
+pushd ${BOSH_COMPILE_TARGET}/
+
+	echo "Extracting graphite-smoke-tests ..."
+	tar xvf smoke-tests/graphite-smoke-tests-${SMOKE_TESTS_VERSION}.tar.gz
+
+	echo "Install smoke tests ..."
+	cp -av graphite-smoke-tests-${SMOKE_TESTS_VERSION}/* ${REPO_DIR}
+popd
