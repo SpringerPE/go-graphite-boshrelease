@@ -21,10 +21,10 @@ instance groups in order to setup automatically the carbon relays and the carbon
 ---
 name: go-graphite-boshrelease
 # replace with `bosh status --uuid`
-director_uuid: REPLACE
+director_uuid: CHANGE_ME
 
 releases:
-- name: go-graphite-boshrelease
+- name: go-graphite
   version: latest
 
 stemcells:
@@ -44,7 +44,7 @@ instance_groups:
   - name: online_tools
   jobs:
   - name: go-carbon
-    release: go-graphite-boshrelease
+    release: go-graphite
     properties:
       go-carbon:
         tcp_listen: 2030
@@ -88,6 +88,28 @@ instance_groups:
         backends: 
         - host: localhost
           port: 2030
+
+- name: smoke_tests
+  instances: 1
+  vm_type: small
+  stemcell: trusty
+  lifecycle: errand
+  vm_extensions: []
+  azs:
+  - Online_Prod
+  networks:
+  - name: online_tools
+  jobs:
+  - name: smoke-tests
+    release: go-graphite
+    properties:
+      smoke_tests:
+        api_host: CHANGE_ME
+        api_port: 80
+        host: CHANGE_ME
+        port: 2003
+        tcp_enabled: true
+        udp_enabled: false
 
 update:
   canaries: 1
@@ -149,6 +171,12 @@ In order to publish a final release, you can run `./bosh_final_release` for:
 * Pushes and commits the changes to git
 
 After that, you can also, upload the new release to bosh director `bosh upload release`
+
+
+#### Smoke tests
+
+The release provides a job ro run smoke tests as a Bosh errand `bosh run errand smoke_tests`.
+See the previous manifest for the configuration of the errand.
 
 
 ## Authors
