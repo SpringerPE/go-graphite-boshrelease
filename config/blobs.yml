@@ -1,1 +1,109 @@
---- {}
+---
+carbon-c-relay/carbon-c-relay-2.6.tar.gz:
+  object_id: df4245b2-97e9-46e3-85cd-fea4aa9bbb1c
+  sha: fa509626e3aa5e2a67d720dbbae88430f927b83a
+  size: 103576
+glide/glide-v0.12.3-linux-amd64.tar.gz:
+  object_id: 490ca1fc-33cc-42c9-84a8-cbac8c1ee7bd
+  sha: 4d13f6a61e7325c8166629f00a4cb560d8a317c7
+  size: 3424944
+libpng/libpng-1.6.28.tar.gz:
+  object_id: f5efbd93-ce19-4b9e-a345-20878ed11cc4
+  sha: 004556d65f21baed83755f8e094112711e39ebae
+  size: 1483231
+smoke-tests/graphite-smoke-tests-0.4.tar.gz:
+  object_id: 9d537d41-b39b-4cb1-9747-95e87ae8d00f
+  sha: 4830124cf8f0a2002bb63c019641820b2d753169
+  size: 940755
+smoke-tests/graphite-smoke-tests-0.2.tar.gz:
+  object_id: 2b0cc074-b157-48a6-ab55-3db61846e7c8
+  sha: d2204dd6d71a06c8115f6ca841e05ace5122e948
+  size: 940671
+smoke-tests/graphite-smoke-tests-0.1.tar.gz:
+  object_id: fb404393-06ff-4b3c-9cbe-860c0ef633ea
+  sha: 73bd4dc888426a4a0eecfc5721247b0708201c43
+  size: 722840
+smoke-tests/graphite-smoke-tests-0.3.tar.gz:
+  object_id: e3dad818-2d77-4d4c-ae2c-ed8c1a0d92b7
+  sha: b1d928ebd97128c1fc94523402ccecfc8d6d82d8
+  size: 940756
+zlib/zlib-1.2.11.tar.gz:
+  object_id: 2339cd0d-2f3f-4893-a794-3cbe08ed59be
+  sha: e6d119755acdf9104d7ba236b1242696940ed6dd
+  size: 607698
+golang1.8/go1.8.linux-amd64.tar.gz:
+  object_id: bb2d89eb-78ff-4cea-8615-0d9c1bad6e17
+  sha: a93fe8fc245e3554f956bc823f30ef4eb23c2068
+  size: 89803580
+carbonserver/carbonserver-88ae672.tar.gz:
+  object_id: b196cc92-220e-4c53-89d3-e7b3e135e284
+  sha: 6454510c3b4ed95f2b55c56e0d1db077efa0e0e2
+  size: 2841435
+pkgconfig/pkg-config-0.29.1.tar.gz:
+  object_id: 29e09ab2-8ccd-4602-8e1b-6098c305a49c
+  sha: 271ce928f6d673cc16cbced2bfd14a5f2e5d3d37
+  size: 2013454
+git/git-2.12.0.tar.gz:
+  object_id: a9531298-f4aa-4eb5-a2f0-bce77f32e32c
+  sha: 4be31c6c5ecf77bc64f6cdf075171a5f7e0b7c44
+  size: 6381790
+golang1.6/go1.6.linux-amd64.tar.gz:
+  object_id: 203b5065-7148-4bda-a2c1-335cf14ee223
+  sha: 01a6a28dbe31a53103b600979bbbbd63a8104456
+  size: 84799480
+libcairo/pkg-config-0.29.1.tar.gz:
+  object_id: 7641c2de-44e6-4155-8300-bc39a29e87cb
+  sha: 271ce928f6d673cc16cbced2bfd14a5f2e5d3d37
+  size: 2013454
+libcairo/pixman-0.32.8.tar.gz:
+  object_id: 6cbae679-9c1d-48f6-9fdb-193394f59727
+  sha: c1119bbdb587c56009b653e6f81c083f98a20135
+  size: 825746
+libcairo/cairo-1.14.8.tar.xz:
+  object_id: 3eeddc94-0303-4e8f-81ac-6b470f156f54
+  sha: c6f7b99986f93c9df78653c3e6a3b5043f65145e
+  size: 35392464
+python/Python-2.7.13.tgz:
+  object_id: 098692ed-2532-4fd1-b521-b318dab38b12
+  sha: dce2b862a30099ee48c19a7c34e2d7c2eeff5670
+  size: 17076672
+node/node-v0.6.21.tar.gz:
+  object_id: fb0b36db-acb3-47c1-a759-20b90df90741
+  sha: 31f564bf34c64b07cae3b9a88a87b4a08bab4dc5
+  size: 10235165
+autotools/autoconf-2.69.tar.gz:
+  object_id: 3bc083e2-d086-4ea3-b40b-3dc024413746
+  sha: 562471cbcb0dd0fa42a76665acf0dbb68479b78a
+  size: 1927468
+autotools/automake-1.15.tar.gz:
+  object_id: ce2d54cb-3cb7-4a30-ae5e-9184975c818c
+  sha: b5a840c7ec4321e78fdc9472e476263fa6614ca1
+  size: 2244206
+libyaml/yaml-0.1.7.tar.gz:
+  object_id: 43cbf896-dd37-4c24-886b-b63de9e0b44e
+  sha: 3590cbf092ef4c71bc0a9b404c00a626b1e04dee
+  size: 527518
+go-carbon/go-carbon-0.9.1.tar.gz:
+  object_id: 9f15b280-23bd-4c57-990c-e6ea320f454c
+  sha: f0b77bf86fc520fc78d34c4a276a35bc7fcd9240
+  size: 2902271
+statsrelay/statsrelay-f0e8abed.tar.gz:
+  object_id: 8b6f31c9-59d1-40ef-8dd9-aee8af47e27f
+  sha: 60b325f99219c4ce33118de60229ba0e6a77e3ac
+  size: 38603
+libev/libev-4.24.tar.gz:
+  object_id: b8bcfe05-0507-4d83-bc23-0b1efb7ece0c
+  sha: 436dd8eff00a45f8805b8cacfe4dd3bd993caedb
+  size: 524264
+carbonapi/carbonapi-6ea1863.tar.gz:
+  object_id: 60cfbe80-b9bf-46ef-a0d9-ac22d3604c92
+  sha: 1473f64f2d8a432cd4126b836560cd7c0c0de64e
+  size: 6028411
+carbonzipper/carbonzipper-082d450.tar.gz:
+  object_id: cef61a2a-209f-4a6c-bb51-7b67596fabda
+  sha: 62d0de0361c80321aea7fce0ee044a46f173adeb
+  size: 2875876
+statsd/statsd-0.8.0.tar.gz:
+  object_id: 583be037-ab9b-420b-bcbc-f367c2d88e75
+  sha: 5868ff01d3f2fa316bf7d9f9ad8e972db2fd963f
+  size: 62619
