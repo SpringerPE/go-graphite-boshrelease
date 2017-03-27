@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x
 
 DESCRIPTION="Bosh Release for graphite go-carbon stack, c-carbon-relay and statsd"
 GITHUB_REPO="SpringerPE/go-graphite-boshrelease"
