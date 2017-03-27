@@ -56,7 +56,7 @@ VERSION=$(ls -r -v releases/$RELEASE/$RELEASE-*.yml | sed 's/.*\/.*-\(.*\)\.yml$
 # Create a new tag and update the changes
 echo "Commiting git changes ..."
 git add .final_builds releases/$RELEASE/index.yml "releases/$RELEASE/$RELEASE-$VERSION.yml"
-git commit -m "$RELEASE v$VERSION boshrelease"
+git diff-index --quiet HEAD || git commit -m "$RELEASE v$VERSION boshrelease"
 
 # Push all the changes
 git push --tags
