@@ -84,7 +84,15 @@ instance_groups:
     release: go-graphite-boshrelease
     properties:
       carbon-c-relay:
-        replication: 1
+        clusters:
+          - name: "cluster1"
+            lb: "jump_fnv1a_ch"
+            replication: 1
+            instances: [0, 2]
+          - name: "cluster2"
+            lb: "jump_fnv1a_ch"
+            replication: 1
+            instances: [1, 3]
         backends: 
         - host: localhost
           port: 2030

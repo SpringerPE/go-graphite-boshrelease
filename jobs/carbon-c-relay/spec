@@ -17,22 +17,22 @@ provides:
   - carbon_c_relay.port
 
 consumes:
-- name: go-carbon-tcp
-  type: carbon-tcp
-- name: go-carbon-udp
-  type: carbon-udp
+- name: go-carbon
+  type: carbon
 - name: relay
   type: relay
   optional: true
 
 
 properties:
-  carbon-c-relay.lb:
-    description: "Load balancing for the backends: <forward | any_of [useall] | failover | <carbon_ch | fnv1a_ch | jump_fnv1a_ch>"
-    default: "fnv1a_ch"
-  carbon-c-relay.replication:
-    description: Replication factor over the backends
-    default: 2
+
+  carbon-c-relay.clusters:
+    description: "List of dictionaries each describing a cluster in the form {lb:'<forward | any_of [useall] | failover | <carbon_ch | fnv1a_ch | jump_fnv1a_ch>', replication: <replication_factor}"
+    default: 
+    - name: "default"
+      lb: "jump_fnv1a_ch"
+      replication: 1
+      instances: [0]
   carbon-c-relay.ext_clusters:
     description: List of hash with the definition of external clusters
     default: []
