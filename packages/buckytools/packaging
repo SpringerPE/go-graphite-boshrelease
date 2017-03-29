@@ -15,7 +15,7 @@ export PATH=${GOROOT}/bin:${PATH}
 BUCKYTOOLS_LOCATION=${GOPATH}/src/github.com/jjneely/buckytools
 
 
-echo "Extracting glide ${BUCKYTOOLS_VERSION} ... "
+echo "Extracting buckytools ${BUCKYTOOLS_VERSION} ... "
 tar xzf "buckytools/buckytools-${BUCKYTOOLS_VERSION}.tar.gz"
 mkdir -p ${BUCKYTOOLS_LOCATION}/
 mkdir -p ${GOPATH}/bin
