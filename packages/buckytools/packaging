@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Grab the latest versions that are in the directory
+BUCKYTOOLS_VERSION=$(ls -v -r buckytools/buckytools-*.tar.gz | sed 's/.*\/buckytools-\(.*\)\.tar\.gz$/\1/' | head -1)
+commands="bucky buckyd bucky-fill bucky-isempty bucky-pickle-relay bucky-sparsify"
+
+echo "Setting the GO env variables ..."
+export GOPATH=${BOSH_COMPILE_TARGET}
+export GOROOT=$(readlink -nf /var/vcap/packages/golang1.8)
+export PATH=${GOROOT}/bin:${PATH}
+
+# Path to the buckytools go source code
+BUCKYTOOLS_LOCATION=${GOPATH}/src/github.com/jjneely/buckytools
+
+
+echo "Extracting glide ${BUCKYTOOLS_VERSION} ... "
+tar xzf "buckytools/buckytools-${BUCKYTOOLS_VERSION}.tar.gz"
+mkdir -p ${BUCKYTOOLS_LOCATION}/
+mkdir -p ${GOPATH}/bin
+mkdir -p ${GOPATH}/pkg
+
+pushd "${BOSH_COMPILE_TARGET}"
+	cp -r buckytools-${BUCKYTOOLS_VERSION}/* ${BUCKYTOOLS_LOCATION}
+	cp -r ${BUCKYTOOLS_LOCATION}/vendor/* ${GOPATH}/src/
+popd
+
+echo "Installing buckytools ..."
+mkdir ${BOSH_INSTALL_TARGET}/bin
+pushd "${BUCKYTOOLS_LOCATION}/"
+	for command in $commands; do
+		pushd $command
+			GOBIN=${BOSH_INSTALL_TARGET}/bin go install
+		popd
+	done
+popd
+
+# Install shell helpers
+echo "Adding shell helpers ..."
+cp -av helpers ${BOSH_INSTALL_TARGET}/
