@@ -15,14 +15,11 @@ provides:
   type: relay
   properties:
   - carbon_c_relay.port
+  - carbon-c-relay.clusters
 
 consumes:
 - name: go-carbon
   type: carbon
-- name: relay
-  type: relay
-  optional: true
-
 
 properties:
 
@@ -32,7 +29,7 @@ properties:
     - name: "default"
       lb: "jump_fnv1a_ch"
       replication: 1
-      instances: [0]
+      azs: []
   carbon-c-relay.ext_clusters:
     description: List of hash with the definition of external clusters
     default: []
