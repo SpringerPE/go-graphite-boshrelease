@@ -10,10 +10,10 @@ KEEP_DAYS="<%= p('go-carbon.whisper_maintenance_keep_days') %>"
 CRONTAB="<%= p('go-carbon.whisper_maintenance_crontab') %>"
 
 <% if p("go-carbon.whisper_maintenance_enabled") == true || p("go-carbon.whisper_maintenance_enabled") =~ (/(true|t|yes|y|1)$/i) %>
-cat << EOF > /etc/cron.d/go-carbon-whisper-maintenace
+cat << EOF > /etc/cron.d/go-carbon-whisper-maintenance
 ${CRONTAB} root find /var/vcap/store/go-carbon/whisper -type f -mtime +${KEEP_DAYS} -name '*.wsp' -delete && find /var/vcap/store/go-carbon/whisper -depth -type d -empty -delete
 EOF
 <% else %>
-rm -f /etc/cron.d/go-carbon-whisper-maintenace
+rm -f /etc/cron.d/go-carbon-whisper-maintenance
 <% end %>
 
