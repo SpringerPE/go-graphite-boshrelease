@@ -5,5 +5,5 @@ dependencies:
   - golang1.8
 
 files:
-- buckytools/buckytools-0.1.9-2.tar.gz  # https://github.com/jjneely/buckytools/archive/0.1.9-2.tar.gz
+- buckytools/buckytools-8583b2f.tar.gz  # 
 - helpers/**/*
