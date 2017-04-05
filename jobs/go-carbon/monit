@@ -4,3 +4,8 @@ check process go-carbon
   stop program "/var/vcap/jobs/go-carbon/bin/monit_debugger go-carbon_ctl '/var/vcap/jobs/go-carbon/bin/go-carbon_ctl stop'"
   group vcap
 
+check process buckytools
+  with pidfile /var/vcap/sys/run/go-carbon/buckytools.pid
+  start program "/var/vcap/jobs/go-carbon/bin/monit_debugger buckytools_ctl '/var/vcap/jobs/go-carbon/bin/buckytools_ctl start'"
+  stop program "/var/vcap/jobs/go-carbon/bin/monit_debugger buckytools_ctl '/var/vcap/jobs/go-carbon/bin/buckytools_ctl stop'"
+  group vcap

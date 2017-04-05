@@ -7,7 +7,7 @@ set -u # report the usage of uninitialized variables
 source /var/vcap/jobs/go-carbon/data/properties.sh
 
 # Setup env vars and folders for the ctl script
-source /var/vcap/jobs/go-carbon/packages/go-carbon/helpers/setup.sh "go-carbon"
+source /var/vcap/jobs/go-carbon/packages/go-carbon/helpers/setup.sh "go-carbon" "go-carbon"
 
 # Load function lib (alway before setup, there are some global variables needed)
 source /var/vcap/jobs/go-carbon/packages/go-carbon/helpers/lib.sh

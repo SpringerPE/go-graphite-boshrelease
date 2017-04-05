@@ -3,15 +3,23 @@ name: go-carbon
 
 packages:
 - go-carbon
+- buckytools
 
 templates:
   bin/go-carbon_ctl: bin/go-carbon_ctl
+  bin/buckytools_ctl: bin/buckytools_ctl
   bin/pre-start.erb: bin/pre-start
   config/go-carbon.conf.erb: config/go-carbon.conf
   config/storage-schema.conf.erb: config/storage-schemas.conf
   config/storage-aggregation.conf.erb: config/storage-aggregation.conf
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
+
+consumes:
+- name: carbon-c-relay
+  type: relay
+- name: go-carbon
+  type: carbon
 
 provides:
 - name: go-carbon
@@ -129,3 +137,12 @@ properties:
     description: "Crontab definition to setup maintenance job (<Minute> <Hour> <Day_of_the_Month> <Month_of_the_Year> <Day_of_the_Week>)"
     default: "0 22 * * *"
 
+  buckytools.address:
+    description: "binding address for the buckyd daemon"
+    default: "0.0.0.0"
+  buckytools.port:
+    description: "binding port for the buckyd daemon"
+    default: 4242
+  buckytools.sparse:
+    description: "are the metric sparse"
+    default: false
