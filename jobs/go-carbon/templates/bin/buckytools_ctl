@@ -19,14 +19,16 @@ carbon_link = link('carbon-c-relay')
 go_carbon_link = link("go-carbon")
 clusters = carbon_link.p('carbon-c-relay.clusters')
 
+#find which cluster this instance should belong to
 current_cluster = clusters.find {|cluster| cluster['azs'].include? spec.az}
 lb = current_cluster['lb']
 replication = current_cluster['replication']
 cluster_name = current_cluster['name']
 
 nodes = []
+#Force the ordering of the instance list by instance index key
 instances = go_carbon_link.instances.sort_by { |instance| instance.index }
-
+#Find all the other instances which belong to this same cluster
 instances.each do |instance|
      if (current_cluster['azs'].include? instance.az) then
          nodes << instance
