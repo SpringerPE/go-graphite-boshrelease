@@ -5,6 +5,7 @@ packages:
 - carbon-c-relay
 
 templates:
+  bin/pre-start.erb: bin/pre-start
   bin/carbon-c-relay_ctl: bin/carbon-c-relay_ctl
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh

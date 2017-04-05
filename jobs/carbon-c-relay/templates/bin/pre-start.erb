@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Perform some validation checks on the carbon-c-relay.clusters property
+<%
+clusters = p("carbon-c-relay.clusters")
+
+#Check global cluster properties
+if clusters.size < 1 then
+	raise "At least one carbon-c-relay cluster must be specified: #{cluster.size} given"
+end
+
+clusters_azs = {}
+#Check properties cluster by cluster
+clusters.each_with_index do |cluster, i|
+	raise "'name' property missing for cluster: #{i}" if !cluster.key?("name")
+	cluster_name = cluster["name"]
+	raise "'azs' property missing for cluster '#{cluster_name}'" if !cluster.key?("azs")
+
+	current_azs = cluster["azs"]
+	if current_azs.size < 1 then
+		raise "Cluster '#{cluster_name}' should define at least one az"
+	end
+
+	clusters_azs.each do |name, azs|
+		current_azs.each do |az|
+			if azs.include? az then
+				raise "cluster #{cluster_name} cannot reuse availability zone '#{az}' already used by cluster '#{name}'"
+			end
+		end
+	end
+
+	clusters_azs[cluster_name] = current_azs
+
+	raise "'replication' property missing for cluster '#{cluster_name}'" if !cluster.key?("replication")
+end
+%>
