@@ -43,7 +43,7 @@ One cluster can be deployed across several `az`s, like in the following example:
 however you cannot define different clusters using the same availability zone. For example this is not allowed, and a validation error is going to be raised at deployment time. Because of this limitation it is also impossible to define more `carbon-c-relay` clusters than the number of configured azs.
 So in a typical 3 azs architecture you can create maximum 3 different clusters each of them deployed to a different az.
 
-###Example of erroneous configuration
+### Example of erroneous configuration
 ```
     properties:
       carbon-c-relay:
