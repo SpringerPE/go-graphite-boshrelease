@@ -123,3 +123,7 @@ buckytools/buckytools-9d2c799.tar.gz:
   object_id: d5844bd8-71e3-47e8-9e8e-32f7d15a13fc
   sha: 076ebbe9b85734b9d063d4172d4aac4fdcbbf3fd
   size: 95212
+carbon-c-relay/carbon-c-relay-3.0.tar.gz:
+  object_id: 1beee9a5-f86d-43df-a029-bf14c37c8447
+  sha: 46561a05a344c7597484f05d99bb18cd6f9f6768
+  size: 153479
