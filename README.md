@@ -9,11 +9,11 @@ The aim of this bosh release is to deploy a go-graphite cluster consisting of th
 * [buckytools](https://github.com/jjneely/buckytools) to provide a management layer on top of go-carbon
 
 ## Requirements
-We structured the release around the conceps of availability zones and clusters. One of the properties required by the `carbon-c-relay` job
-gives you a way of configuring the architecture of your `go-graphite` metrics deployment.
-`go-carbon` instances are assigned automatically to a specific cluster based on the `az` value of their vm instance. This is achieved by taking advantage of [bosh links](https://bosh.io/docs/links.html).
+We structured the release around the concepts of availability zones and clusters. 
+One of the properties required by the `carbon-c-relay` job gives you a way of designing the architecture of your `go-graphite` metrics deployment.
+The `go-carbon` instances are assigned automatically to a specific cluster based on the `az` value of their vm instance. This is achieved by taking advantage of [bosh links](https://bosh.io/docs/links.html) and of [first class AZs](https://bosh.io/docs/azs.html).
 
-Let's discuss this idea more in details:
+Let's discuss this idea more in details with the help of one example:
 ```
     properties:
       carbon-c-relay:
@@ -27,9 +27,9 @@ Let's discuss this idea more in details:
             replication: 1
             azs: ["z2"]
 ```
-`clusters` is a list of dictionaries, each representing a carbon-c-relay cluster. The cluster instances are grouped by availability zone.
+In this configuration snippet `clusters` is defined as list of dictionaries, and each entry is representing a `carbon-c-relay` cluster. The cluster instances are futhermore grouped and isolated by availability zone.
 
-One cluster can be deployed across several `az`s, like in the following example:
+A single cluster can be deployed across several `az`s, if needed, like in the following example:
 ```
     properties:
       carbon-c-relay:
@@ -37,13 +37,14 @@ One cluster can be deployed across several `az`s, like in the following example:
           - name: "cluster1"
             lb: "jump_fnv1a_ch"
             replication: 1
-            azs: ["z1", "z2"] #<- A cluster can use as many azs as we'd like
+            azs: ["z1", "z2"] #<- A cluster can use as many azs as you'd like
 ```
 
-however you cannot define different clusters using the same availability zone. For example this is not allowed, and a validation error is going to be raised at deployment time. Because of this limitation it is also impossible to define more `carbon-c-relay` clusters than the number of configured azs.
-So in a typical 3 azs architecture you can create maximum 3 different clusters each of them deployed to a different az.
+however you cannot define different clusters within the same availability zone and this would cause a validation error to be raised at deployment time. Because of this limitation it is also impossible to define more `carbon-c-relay` clusters than the number of configured azs.
 
-### Example of erroneous configuration
+So in a typical `n` azs architecture you can create maximum `n` different clusters each of them belonging to a different az.
+
+##### Example of erroneous configuration
 ```
     properties:
       carbon-c-relay:
@@ -58,7 +59,8 @@ So in a typical 3 azs architecture you can create maximum 3 different clusters e
             azs: ["z2", "z3"]   #<- Error: "z2 is already used by cluster `cluster1`" 
 ```
 
-You need to deploy at least **#azs * 2** `go-carbon` instances. This is due to a limitation in the current implementation of `buckytools` which does not support clusters formed by a single instance.
+##### Warning
+You need to deploy at least **#azs * 2** `go-carbon` instances, or equivalently at least 2 instances per az. This is due to a limitation in the current implementation of `buckytools` which does not support clusters formed by a single instance.
 
 ## Usage
 
