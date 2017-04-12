@@ -3,7 +3,7 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # Grab the latest versions that are in the directory
-BUCKYTOOLS_VERSION=8583b2f
+BUCKYTOOLS_VERSION=9d2c799
 commands="bucky buckyd bucky-fill bucky-isempty bucky-pickle-relay bucky-sparsify"
 
 echo "Setting the GO env variables ..."
