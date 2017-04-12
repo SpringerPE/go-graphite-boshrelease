@@ -6,7 +6,59 @@ The aim of this bosh release is to deploy a go-graphite cluster consisting of th
 * [go-carbon](https://github.com/lomik/go-carbon) sever to storage metrics
 * [carbonzipper](https://github.com/dgryski/carbonzipper) to transparently merge graphite carbon backends
 * [carbonapi](https://github.com/dgryski/carbonapi) to provide the graphite API 
+* [buckytools](https://github.com/jjneely/buckytools) to provide a management layer on top of go-carbon
 
+## Requirements
+We structured the release around the conceps of availability zones and clusters. One of the properties required by the `carbon-c-relay` job
+gives you a way of configuring the architecture of your `go-graphite` metrics deployment.
+`go-carbon` instances are assigned automatically to a specific cluster based on the `az` value of their vm instance. This is achieved by taking advantage of [bosh links](https://bosh.io/docs/links.html).
+
+Let's discuss this idea more in details:
+```
+    properties:
+      carbon-c-relay:
+        clusters:
+          - name: "cluster1"
+            lb: "jump_fnv1a_ch"
+            replication: 1
+            azs: ["z1"]
+          - name: "cluster2"
+            lb: "jump_fnv1a_ch"
+            replication: 1
+            azs: ["z2"]
+```
+`clusters` is a list of dictionaries, each representing a carbon-c-relay cluster. The cluster instances are grouped by availability zone.
+
+One cluster can be deployed across several `az`s, like in the following example:
+```
+    properties:
+      carbon-c-relay:
+        clusters:
+          - name: "cluster1"
+            lb: "jump_fnv1a_ch"
+            replication: 1
+            azs: ["z1", "z2"] #<- A cluster can use as many azs as we'd like
+```
+
+however you cannot define different clusters using the same availability zone. For example this is not allowed, and a validation error is going to be raised at deployment time. Because of this limitation it is also impossible to define more `carbon-c-relay` clusters than the number of configured azs.
+So in a typical 3 azs architecture you can create maximum 3 different clusters each of them deployed to a different az.
+
+###Example of erroneous configuration
+```
+    properties:
+      carbon-c-relay:
+        clusters:
+          - name: "cluster1"
+            lb: "jump_fnv1a_ch"
+            replication: 1
+            azs: ["z1", "z2"]
+          - name: "cluster2"
+            lb: "jump_fnv1a_ch"
+            replication: 1
+            azs: ["z2", "z3"]   #<- Error: "z2 is already used by cluster `cluster1`" 
+```
+
+You need to deploy at least **#azs * 2** `go-carbon` instances. This is due to a limitation in the current implementation of `buckytools` which does not support clusters formed by a single instance.
 
 ## Usage
 
@@ -15,36 +67,57 @@ section, or using the `yml` file in the `releases` folder.
 
 This release makes use of [Bosh links](https://bosh.io/docs/links.html) between
 instance groups in order to setup automatically the carbon relays and the carbonzippers
-(for carbon API). This an example of V2 manifest:
+(for carbon API). This an example of V2 manifest (for google cloud):
 
 ```
 ---
+---
 name: go-graphite-boshrelease
-# replace with `bosh status --uuid`
-director_uuid: CHANGE_ME
+director_uuid: 01f1714f-0550-44c9-b024-20a738e79212
 
 releases:
-- name: go-graphite
+- name: go-graphite-boshrelease
   version: latest
 
 stemcells:
 - alias: trusty
-  name: bosh-vsphere-esxi-ubuntu-trusty-go_agent
-  version: latest
+  name: bosh-google-kvm-ubuntu-trusty-go_agent
+  version: 3312.6
 
 instance_groups:
-- name: test
-  instances: 2
-  vm_type: small
+- name: smoke_tests
+  instances: 1
+  vm_type: common
   stemcell: trusty
+  lifecycle: errand
   vm_extensions: []
-  azs:
-  - Online_Prod
+  azs: [z1, z2]
   networks:
-  - name: online_tools
+  - name: tools
+  jobs:
+  - name: smoke-tests
+    release: go-graphite-boshrelease
+    properties:
+      smoke_tests:
+        api_host: "10.255.3.251"
+        api_port: 10000
+        host: "10.255.3.250"
+        port: 2003
+        tcp_enabled: true
+        udp_enabled: false
+
+- name: graphite-backend
+  instances: 4
+  persistent_disk_pool: graphite-disks
+  vm_type: graphite-backend
+  stemcell: trusty
+  vm_extensions: [graphite-api-europe-west1-backend-service]
+  azs: [z1, z2]
+  networks:
+  - name: tools
   jobs:
   - name: go-carbon
-    release: go-graphite
+    release: go-graphite-boshrelease
     properties:
       go-carbon:
         tcp_listen: 2030
@@ -52,34 +125,52 @@ instance_groups:
         - name: stats
           pattern: '^stats\..*'
           retentions: '10:8d'
-        - name: netapp
-          pattern: '^netapp\..*'
-          retentions: '60s:14d'
-          retentions: '60s:1d,600s:8d'
         - name: default
           pattern: '.*'
           retentions: '60s:14d'
         aggregations:
-        - name: anura_counts_stats_sum
-          pattern: '^stats_counts\.services\.anura\..*\.live\.event\..*\.sum$'
+        - name: team1_stats_sum
+          pattern: '^stats\.services\.team1\..*\.live\.event\..*\.sum$'
           aggregationMethod: sum
           xFilesFactor: 0.0
-        udp:
-          enabled: true
-          port: 2030
+        - name: team1_counts_stats_sum
+          pattern: '^stats_counts\.services\.team1\..*\.live\.event\..*\.sum$'
+          aggregationMethod: sum
+          xFilesFactor: 0.0
         carbonserver:
           enabled: true
           port: 8080
           host: "0.0.0.0"
-          read_timeout: "50s"
-          write_timeout: "50s"
+
   - name: carbonzipper
     release: go-graphite-boshrelease
     properties:
       carbonzipper:
         port: 9090
-        backends:
-          - "http://127.0.0.1:8080"
+
+  - name: carbonapi
+    release: go-graphite-boshrelease
+    properties:
+      carbonapi:
+        port: 10000
+
+  - name: statsd
+    release: go-graphite-boshrelease
+    properties:
+      statsd:
+        graphiteHost: "10.255.3.250"
+        graphitePort: 2003
+        percentThreshold: [90, 95, 99]
+
+- name: carbon-c-relay
+  instances: 2
+  vm_type: graphite-relay
+  vm_extensions: [graphite-europe-west1-backend-service]
+  stemcell: trusty
+  azs: [z1, z2]
+  networks:
+  - name: tools
+  jobs:
   - name: carbon-c-relay
     release: go-graphite-boshrelease
     properties:
@@ -88,43 +179,25 @@ instance_groups:
           - name: "cluster1"
             lb: "jump_fnv1a_ch"
             replication: 1
-            instances: [0, 2]
+            azs: ["z1"]
           - name: "cluster2"
             lb: "jump_fnv1a_ch"
             replication: 1
-            instances: [1, 3]
-        backends: 
-        - host: localhost
-          port: 2030
-
-- name: smoke_tests
-  instances: 1
-  vm_type: small
-  stemcell: trusty
-  lifecycle: errand
-  vm_extensions: []
-  azs:
-  - Online_Prod
-  networks:
-  - name: online_tools
-  jobs:
-  - name: smoke-tests
-    release: go-graphite
+            azs: ["z2"]
+  - name: statsrelay
+    release: go-graphite-boshrelease
     properties:
-      smoke_tests:
-        api_host: CHANGE_ME
-        api_port: 80
-        host: CHANGE_ME
-        port: 2003
-        tcp_enabled: true
-        udp_enabled: false
+      statsrelay:
+        port: 8125
 
+# recommend serial True if there are a lot of nodes (TODO)
 update:
   canaries: 1
   max_in_flight: 1
-  serial: false
+  serial: true
   canary_watch_time: 1000-60000
   update_watch_time: 1000-60000
+
 ```
 
 For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment manifest & deploy a cluster:
