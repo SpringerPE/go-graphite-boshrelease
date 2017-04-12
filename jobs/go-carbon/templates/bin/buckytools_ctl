@@ -45,7 +45,7 @@ case $1 in
         {
             exec chpst -v -u vcap:vcap \
                 /var/vcap/jobs/go-carbon/packages/buckytools/bin/buckyd<% if p("buckytools.sparse") == true %> -sparse<% end %> \
-                -node <%= spec.address %>:<%= spec.index %> \
+                -node <%= spec.address %> \
                 -bind <%= p("buckytools.address") %>:<%= p("buckytools.port") %> \
                 -hash <% case lb when "jump_fnv1a_ch" %>jump_fnv1a<% when "carbon" %>carbon<% end %> \
                 -prefix /var/vcap/store/go-carbon/whisper/ \
