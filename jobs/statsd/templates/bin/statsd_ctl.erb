@@ -22,6 +22,7 @@ case $1 in
 
     # Copy templated files to the correct locations
     cp /var/vcap/jobs/statsd/conf/localConfig.js /var/vcap/packages/statsd/localConfig.js
+    chown -H vcap:vcap /var/vcap/packages/statsd/localConfig.js
 
     # Set file permissions
     chown -H vcap:vcap /var/vcap/sys/log/statsd
