@@ -36,9 +36,9 @@ golang1.8/go1.8.linux-amd64.tar.gz:
   sha: a93fe8fc245e3554f956bc823f30ef4eb23c2068
   size: 89803580
 carbonserver/carbonserver-88ae672.tar.gz:
-  object_id: b196cc92-220e-4c53-89d3-e7b3e135e284
-  sha: 6454510c3b4ed95f2b55c56e0d1db077efa0e0e2
-  size: 2841435
+  object_id: 7e1de8aa-1baa-4fa2-a43a-e8dc8614ba15
+  sha: 1511be0954054885f29cabdf837744f5b84e9070
+  size: 2833522
 pkgconfig/pkg-config-0.29.1.tar.gz:
   object_id: 29e09ab2-8ccd-4602-8e1b-6098c305a49c
   sha: 271ce928f6d673cc16cbced2bfd14a5f2e5d3d37
@@ -88,21 +88,21 @@ go-carbon/go-carbon-0.9.1.tar.gz:
   sha: f0b77bf86fc520fc78d34c4a276a35bc7fcd9240
   size: 2902271
 statsrelay/statsrelay-f0e8abed.tar.gz:
-  object_id: 8b6f31c9-59d1-40ef-8dd9-aee8af47e27f
-  sha: 60b325f99219c4ce33118de60229ba0e6a77e3ac
-  size: 38603
+  object_id: 8b62e6a5-0f6e-4334-a8e2-4733cd7a36fd
+  sha: 1f8a820c08a4859b78a348f1b9e92e0106915b81
+  size: 38148
 libev/libev-4.24.tar.gz:
   object_id: b8bcfe05-0507-4d83-bc23-0b1efb7ece0c
   sha: 436dd8eff00a45f8805b8cacfe4dd3bd993caedb
   size: 524264
 carbonapi/carbonapi-6ea1863.tar.gz:
-  object_id: 60cfbe80-b9bf-46ef-a0d9-ac22d3604c92
-  sha: 1473f64f2d8a432cd4126b836560cd7c0c0de64e
-  size: 6028411
+  object_id: dea2ba41-57c0-4f09-a704-88a731a064d7
+  sha: bb1d8484a3be953100349d7fd62b3e60f707b94c
+  size: 6008700
 carbonzipper/carbonzipper-082d450.tar.gz:
-  object_id: cef61a2a-209f-4a6c-bb51-7b67596fabda
-  sha: 62d0de0361c80321aea7fce0ee044a46f173adeb
-  size: 2875876
+  object_id: 19fabf99-cc6f-4c91-842a-0615e62f0dbb
+  sha: d9e74111390017718992fa605105e225726545bc
+  size: 2868285
 statsd/statsd-0.8.0.tar.gz:
   object_id: 583be037-ab9b-420b-bcbc-f367c2d88e75
   sha: 5868ff01d3f2fa316bf7d9f9ad8e972db2fd963f
@@ -127,3 +127,7 @@ carbon-c-relay/carbon-c-relay-3.0.tar.gz:
   object_id: 1beee9a5-f86d-43df-a029-bf14c37c8447
   sha: 46561a05a344c7597484f05d99bb18cd6f9f6768
   size: 153479
+autoconf/autoconf-2.69.tar.gz:
+  object_id: 86b34c78-3b31-4d66-85c6-57a363ee69bb
+  sha: 562471cbcb0dd0fa42a76665acf0dbb68479b78a
+  size: 1927468
