@@ -84,9 +84,9 @@ libyaml/yaml-0.1.7.tar.gz:
   sha: 3590cbf092ef4c71bc0a9b404c00a626b1e04dee
   size: 527518
 go-carbon/go-carbon-0.9.1.tar.gz:
-  object_id: 9f15b280-23bd-4c57-990c-e6ea320f454c
-  sha: f0b77bf86fc520fc78d34c4a276a35bc7fcd9240
-  size: 2902271
+  object_id: ddb2e806-3ab6-4a54-bb13-b02c50fb20ff
+  sha: 0cba369da23b9be20cc5c3b81dfd0d436abde2cc
+  size: 2899064
 statsrelay/statsrelay-f0e8abed.tar.gz:
   object_id: 8b62e6a5-0f6e-4334-a8e2-4733cd7a36fd
   sha: 1f8a820c08a4859b78a348f1b9e92e0106915b81
