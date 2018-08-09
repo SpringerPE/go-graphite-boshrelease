@@ -6,8 +6,10 @@
     ,server: "./servers/tcp"     
     ,graphiteHost: "<%= p('statsd.graphiteHost') %>"
     ,graphitePort: "<%= p('statsd.graphitePort') %>"
-    <% if_p("statsd.prefixStats") do %>
-    ,prefixStats: "<%= p('statsd.prefixStats') %>"
+    <% if_p("statsd.prefixStats") do |prefixStats| %>
+    ,prefixStats: "<%= prefixStats %>"
+    <% end.else do %>
+    ,prefixStats: "statsd.<%= spec.deployment %>-<%= spec.az %>-<%= spec.index %>"
     <% end %>
 
     <% if_p('statsd.percentThreshold') do |percentThreshold| %>
