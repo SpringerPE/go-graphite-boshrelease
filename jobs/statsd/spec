@@ -28,7 +28,6 @@ properties:
     default: 2003
   statsd.prefixStats:
     description: "prefix to use for the statsd statistics data for this running instance of statsd"
-    default: ""
   statsd.deleteIdleStats:
     description: "Don't send values to graphite for inactive counters, sets, gauges, or timers."
     default: false
