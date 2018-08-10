@@ -73,9 +73,7 @@ instance groups in order to setup automatically the carbon relays and the carbon
 
 ```
 ---
----
 name: go-graphite-boshrelease
-director_uuid: 01f1714f-0550-44c9-b024-20a738e79212
 
 releases:
 - name: go-graphite-boshrelease
@@ -219,16 +217,16 @@ library dependencies, they are just using `go get` which is a wrapper around git
 and it always fetchs from master, which makes difficult to create reproducible bosh
 releases. The idea behind BOSH is making use of blobs which are the external source
 components packed, so, in order to get a source code blob for those components,
-you have to run `bosh_prepare` (on the root folder), which will create them with all
+you have to run `update-blobs.sh` (on the root folder), which will create them with all
 the dependencies inside by executing `packages/<package>/prepare`.
 
-Requirements for `bosh_prepare`:
+Requirements for `update-blobs.sh`:
 
 * golang (tested with golang 1.8)
 * mercurial VCS (hg backend for some golang libs)
 * git VCS
 
-Then, you can run `bosh_prepare` to download all the source code blobs
+Then, you can run `update-blobs.sh` to download all the source code blobs
 (and optionally upload them to the blobstore).
 
 
@@ -237,26 +235,28 @@ Steps to build a new release:
 ```
 git clone https://github.com/SpringerPE/go-graphite-boshrelease.git
 cd go-graphite-boshrelease
-bosh target BOSH_HOST
-./bosh_prepare
-bosh create release --force && bosh upload release
+./update-blobs.sh
+bosh create-release --force && bosh upload-release
 ```
 
+### Creating a new final release and publishing to GitHub releases:
 
-### Final releases
+Run: `./create-final-public-release.sh [version-number]`
 
-In order to publish a final release, you can run `./bosh_final_release` for:
+Keep in mind you will need a Github token defined in a environment variable `GITHUB_TOKEN`.
+Please get your token here: https://help.github.com/articles/creating-an-access-token-for-command-line-use/
+and run `export GITHUB_TOKEN="xxxxxxxxxxxxxxxxx"`, after that you can use the script.
 
-* Upload all blobs to the public S3 bucket (and set them to public)
-* Create a final Bosh release (increasing the version number)
-* Upload and publish the new boshrelease tgz file in GitHub releases section, so
-  you can point it directly in the manifest file (sha1 checksum is also calculated)
-* Pushes and commits the changes to git
+`version-number` is optional. If not provided it will create a new major version
+(as integer), otherwise you can specify versions like "8.1", "8.1.2". There is a
+regular expresion in the script to check if the format is correct. Bosh client
+does not allow you to create 2 releases with the same version number. If for some
+reason you need to recreate a release version, delete the file created in 
+`releases/cf-logging-boshrelease` and update the index file in the same location,
+you also need to remove the release (and tags) in Github.
 
-After that, you can also, upload the new release to bosh director `bosh upload release`
 
-
-#### Smoke tests
+### Smoke tests
 
 The release provides a job ro run smoke tests as a Bosh errand `bosh run errand smoke_tests`.
 See the previous manifest for the configuration of the errand.
