@@ -3,4 +3,4 @@ blobstore:
   provider: s3
   options:
     bucket_name: go-graphite-boshrelease
-final_name: go-graphite-boshrelease
+final_name: go-graphite
