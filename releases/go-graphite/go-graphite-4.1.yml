@@ -1,0 +1,166 @@
+name: go-graphite
+version: "4.1"
+commit_hash: 7f2460b
+uncommitted_changes: false
+jobs:
+- name: carbon-c-relay
+  version: 6c9c7c91b14caa6581bc8f64dd5085db10a783ae
+  fingerprint: 6c9c7c91b14caa6581bc8f64dd5085db10a783ae
+  sha1: 72f3ffa342b75c8eec9c4876522d77c2c347c728
+- name: carbonapi
+  version: e8c362745f77f288f25bc322c3307c73bee175ec
+  fingerprint: e8c362745f77f288f25bc322c3307c73bee175ec
+  sha1: f5e90b64296c7d1e3b1ff5d163581a8abb39ea48
+- name: carbonzipper
+  version: 9d2d6e1ec96c0d1a98d49a8929c605de61ec8022
+  fingerprint: 9d2d6e1ec96c0d1a98d49a8929c605de61ec8022
+  sha1: c7429670b8cab92c39f16fddfed1cca5e12d0266
+- name: go-carbon
+  version: 1137d265df6450ef0a78e39df1cf2e430c65e1c3
+  fingerprint: 1137d265df6450ef0a78e39df1cf2e430c65e1c3
+  sha1: f513f03529064c14dcd009205ccf4ef54fcbf648
+- name: os-tuning
+  version: b4631ec3a1de05e126271f959d08a41af7cdc9fe
+  fingerprint: b4631ec3a1de05e126271f959d08a41af7cdc9fe
+  sha1: 4c302500c02cd8fddffb16697a8eba38c9f8a354
+- name: smoke-tests
+  version: 305623be04171709cb24e9dc71bd458eccb48f4c
+  fingerprint: 305623be04171709cb24e9dc71bd458eccb48f4c
+  sha1: 9bc507b1a8be346351e857478a6ae35e9112a82e
+- name: statsd
+  version: 46406643ec6617fa864d09652d90a700cb9725cc
+  fingerprint: 46406643ec6617fa864d09652d90a700cb9725cc
+  sha1: 9ae6257388e966a59c7dbab9f99cb155668f8092
+- name: statsrelay
+  version: dfa4533ea0ebaf4b4dd248bd9bd52e31de75dc48
+  fingerprint: dfa4533ea0ebaf4b4dd248bd9bd52e31de75dc48
+  sha1: 0ed426b10f964f47310f18d482e39c3765b8fa2b
+packages:
+- name: autotools
+  version: 72ce23ccee62d9d92255208e99cf0596125e5267
+  fingerprint: 72ce23ccee62d9d92255208e99cf0596125e5267
+  sha1: 77ca2f3070815f3e0a4d50c67611611427ad939c
+  dependencies: []
+- name: buckytools
+  version: e997fbb4baf1c41b8c0174ad2a9c759cad35e8bc
+  fingerprint: e997fbb4baf1c41b8c0174ad2a9c759cad35e8bc
+  sha1: 8701c51f87d02e16cf5adf1fc78947d5280bc990
+  dependencies:
+  - golang1.8
+- name: carbon-c-relay
+  version: d78f7a4aa088cf22262a572979eb39d80d264932
+  fingerprint: d78f7a4aa088cf22262a572979eb39d80d264932
+  sha1: 871e140d523f893f2f773363c484105ce7d85345
+  dependencies: []
+- name: carbonapi
+  version: 33fdff4404d590a863e66e17d415d1a90c95a625
+  fingerprint: 33fdff4404d590a863e66e17d415d1a90c95a625
+  sha1: e501c5f765d8ed9948a2f5bc765b90b9aaa8d86f
+  dependencies:
+  - golang1.8
+  - zlib
+  - libpng
+  - libcairo
+- name: carbonserver
+  version: b85d07c22e73d592e8c2831d937a9230c6340a23
+  fingerprint: b85d07c22e73d592e8c2831d937a9230c6340a23
+  sha1: 3e575a4ccd3839880925266e6b7728771dff238e
+  dependencies:
+  - golang1.8
+- name: carbonzipper
+  version: b53374a7b52f143b0119a5a9ab928c1f498eb0da
+  fingerprint: b53374a7b52f143b0119a5a9ab928c1f498eb0da
+  sha1: ad4665ddec67faf6407b327b79a394a5ea5dbfd1
+  dependencies:
+  - golang1.8
+- name: git
+  version: 2bd5fd76c1bf86a18a700a20baf1f96901886989
+  fingerprint: 2bd5fd76c1bf86a18a700a20baf1f96901886989
+  sha1: b12cd42d104bfcc5df09ad7575c6c846bd5e97f1
+  dependencies:
+  - autotools
+  - python
+- name: glide
+  version: ec691cbef745b450105ea3e9b7ad153a2329d794
+  fingerprint: ec691cbef745b450105ea3e9b7ad153a2329d794
+  sha1: df17dcdf752fd8725d327e5aa12df673b28d34fc
+  dependencies: []
+- name: go-carbon
+  version: 88860bef807bc1936bd56bca4c93ba288e44995a
+  fingerprint: 88860bef807bc1936bd56bca4c93ba288e44995a
+  sha1: 7bbe9bf62a0d579c18b6a85a53be95efacdd497f
+  dependencies:
+  - golang1.8
+- name: golang1.8
+  version: 540e75f1003fb5c92b6cb63b986c2c090855d30f
+  fingerprint: 540e75f1003fb5c92b6cb63b986c2c090855d30f
+  sha1: 25c878744607c9a799734ae8037527299416abfa
+  dependencies: []
+- name: libcairo
+  version: 7cb4351893a9108961c44df04cbec308587e3a2b
+  fingerprint: 7cb4351893a9108961c44df04cbec308587e3a2b
+  sha1: e63077b4ae5015c3da684bc9bbf1ccf6ef74c683
+  dependencies:
+  - zlib
+  - libpng
+- name: libev
+  version: dc34dec6f508bd0b67b6849b614ebfb37a310da5
+  fingerprint: dc34dec6f508bd0b67b6849b614ebfb37a310da5
+  sha1: 62aee6ea6adba5f7bc47648fc11ac33e3468dd1e
+  dependencies: []
+- name: libpng
+  version: 21bc61b8ff12e8bf33a6d8d080eaa2506e723e37
+  fingerprint: 21bc61b8ff12e8bf33a6d8d080eaa2506e723e37
+  sha1: 97e2fccb95aad0439199f27072e18c80ff86ed96
+  dependencies:
+  - zlib
+- name: libyaml
+  version: 0d97d2121dc49dface2b1f4015dd5fcd51af565f
+  fingerprint: 0d97d2121dc49dface2b1f4015dd5fcd51af565f
+  sha1: 590262d556cc9379c1d8cf83afa5604218736fe1
+  dependencies: []
+- name: node
+  version: c8a0891869cb3d6765d29fedbfa9641ae279918b
+  fingerprint: c8a0891869cb3d6765d29fedbfa9641ae279918b
+  sha1: 2c3bdb2862daf1ae239d5800170305c973dc339a
+  dependencies:
+  - python
+- name: pkgconfig
+  version: 274346eb3473376c266179b84024442031eefde2
+  fingerprint: 274346eb3473376c266179b84024442031eefde2
+  sha1: 2c972a38ce2575cd18728674c08a012450516a33
+  dependencies: []
+- name: python
+  version: a489458d1ae8b29cd477b59429f0ed454f7294b8
+  fingerprint: a489458d1ae8b29cd477b59429f0ed454f7294b8
+  sha1: 2258462f2eb1360b71c39bc045a4c231e83f711a
+  dependencies: []
+- name: smoke-tests
+  version: 27256b0fbe4e4057ef9f4c136844c4299cdcf57d
+  fingerprint: 27256b0fbe4e4057ef9f4c136844c4299cdcf57d
+  sha1: 228973c10d8198ab1c0835ea233bd4e5cff853a9
+  dependencies: []
+- name: statsd
+  version: 1bc1b699b8a9fc6f52887033fd0a931c7d064438
+  fingerprint: 1bc1b699b8a9fc6f52887033fd0a931c7d064438
+  sha1: 94a75250cdad04f6c606f7715bcdd401d036c1b4
+  dependencies:
+  - node
+- name: statsrelay
+  version: 210fcc59bb0da15d8e10f09359823b1901c640a7
+  fingerprint: 210fcc59bb0da15d8e10f09359823b1901c640a7
+  sha1: e26e2425f73683f2d92f0682c2ff4e5e25930fe9
+  dependencies:
+  - libyaml
+  - libev
+  - pkgconfig
+  - autotools
+- name: zlib
+  version: bbb5541c3e7eeffd0dab95c1d6d9e1b6cf56e9eb
+  fingerprint: bbb5541c3e7eeffd0dab95c1d6d9e1b6cf56e9eb
+  sha1: 0882268d0cb1d7aee06b4ec42b0937548698bac9
+  dependencies: []
+license:
+  version: 068d7540e98ec3bc8a1b437765c2eb9cbdfb2442
+  fingerprint: 068d7540e98ec3bc8a1b437765c2eb9cbdfb2442
+  sha1: fef6199d06550a262c6e4911ce017e03385876ea

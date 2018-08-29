@@ -1,7 +1,8 @@
----
 builds:
   7eabab73-207f-483b-ae6d-5ee1a5a7ec70:
-    version: '1'
+    version: "1"
   d41799e3-9091-4dce-9a33-400d2d6df03a:
-    version: '2'
-format-version: '2'
+    version: "2"
+  d6ae6ce3-376a-4e9e-7a38-6d1d4a1e5a73:
+    version: "4.1"
+format-version: "2"
