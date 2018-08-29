@@ -21,7 +21,7 @@ if [ ! -s "${PACKAGE}/${FILE}" ]; then
     GOPATH=$(pwd) go get -d
   popd
   echo "> Creating ${PACKAGE}/${FILE} ..."
-  tar --exclude-vcs --exclude .git --exclude .gitmodules --exclude .gitignore -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
+  tar --exclude .git --exclude .gitmodules --exclude .gitignore -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
   echo "> Deleting temp folder ..."
   rm -rf "${PACKAGE}-${VERSION}"
 fi

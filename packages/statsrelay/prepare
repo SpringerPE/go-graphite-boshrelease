@@ -18,7 +18,7 @@ if [ ! -s "${PACKAGE}/${FILE}" ]; then
     git checkout ${VERSION}
   popd
   echo "> Creating ${PACKAGE}/${FILE} ..."
-  tar --exclude-vcs --exclude .git --exclude .gitmodules --exclude .gitignore --exclude='./test/' -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
+  tar --exclude .git --exclude .gitmodules --exclude .gitignore --exclude='./test/' -cvf - "${PACKAGE}-${VERSION}" | gzip > ${PACKAGE}/${FILE}
   echo "> Deleting temp folder ..."
   rm -rf "${PACKAGE}-${VERSION}"
 fi
