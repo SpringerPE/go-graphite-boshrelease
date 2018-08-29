@@ -178,6 +178,7 @@ then
 fi
 
 $GIT fetch --tags
+$GIT push
 
 echo
 echo "*** Description https://github.com/$GITHUB_REPO/releases/tag/v$version: "
