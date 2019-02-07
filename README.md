@@ -258,7 +258,7 @@ you also need to remove the release (and tags) in Github.
 
 ### Smoke tests
 
-The release provides a job ro run smoke tests as a Bosh errand `bosh run errand smoke_tests`.
+The release provides a job to run smoke tests as a Bosh errand `bosh run errand smoke_tests`.
 See the previous manifest for the configuration of the errand.
 
 
