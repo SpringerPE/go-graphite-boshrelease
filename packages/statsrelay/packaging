@@ -3,7 +3,7 @@
 # abort script on any command that exits with a non zero value
 set -e -x
 
-STATSRELAY_VERSION=f0e8abed
+STATSRELAY_VERSION=c0b32fd
 BOSH_PACKAGES_DIR=${BOSH_PACKAGES_DIR:-/var/vcap/packages}
 
 echo "Setting path ..."

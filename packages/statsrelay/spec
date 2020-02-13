@@ -8,5 +8,5 @@ dependencies:
   - autotools
 
 files:
-- statsrelay/statsrelay-f0e8abed.tar.gz
+- statsrelay/statsrelay-c0b32fd.tar.gz
 - helpers/**/*

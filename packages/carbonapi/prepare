@@ -3,7 +3,7 @@
 set -e
 
 PACKAGE="carbonapi"
-VERSION="6ea1863"
+VERSION="4e54407"
 FILE="carbonapi-${VERSION}.tar.gz"
 URL="https://github.com/dgryski/carbonapi.git"
 
